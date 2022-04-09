@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    
+    <script type="application/ld+json">
+
+{  
+  "@context":"http://schema.org",
+  "@type":"Website",
+  "@id":"https:\/\/yuyoung32.github.io",
+  "author": {
+    "@type": "Person",
+    "name": "YuYoung",
+    
+    "image": "https://s1.ax1x.com/2022/04/09/LPwdFs.jpg"
+    
+  },
+  "name":"YuYoung的博客",
+  "description":"",
+  "url":"https:\/\/yuyoung32.github.io\/post\/golang-%E5%B8%B8%E8%A7%81%E4%B8%AD%E9%97%B4%E4%BB%B6\/",
+  "keywords":"[中间件]"
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.96.0 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="YuYoung">
+<meta name="keywords" content="中间件">
+<meta name="description" content="">
+
+
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang-常见中间件">
+<meta name="twitter:title" content="Golang-常见中间件">
+<meta property="og:url" content="https://yuyoung32.github.io/post/golang-%E5%B8%B8%E8%A7%81%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+<meta property="twitter:url" content="https://yuyoung32.github.io/post/golang-%E5%B8%B8%E8%A7%81%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+<meta property="og:site_name" content="YuYoung的博客">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:locale" content="zh-cn">
+
+  
+    <meta property="article:published_time" content="2022-02-22T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2022-02-22T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="项目开发">
+    
+  
+  
+    
+      <meta property="article:tag" content="gin">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg">
+  <meta property="twitter:image" content="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg">
+
+
+
+
+
+  <meta property="og:image" content="https://s1.ax1x.com/2022/04/09/LijlJe.jpg">
+  <meta property="twitter:image" content="https://s1.ax1x.com/2022/04/09/LijlJe.jpg">
+
+
+    <title>Golang-常见中间件</title>
+
+    <link rel="icon" href="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg">
+    
+
+    
+
+    <link rel="canonical" href="https://yuyoung32.github.io/post/golang-%E5%B8%B8%E8%A7%81%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="https://yuyoung32.github.io/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://yuyoung32.github.io/" aria-label="去首页">YuYoung的博客</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://yuyoung32.github.io/#about" aria-label="打开链接: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg" alt="作者的图片" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://yuyoung32.github.io/#about" aria-label="阅读有关作者的更多信息">
+          <img class="sidebar-profile-picture" src="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg" alt="作者的图片" />
+        </a>
+        <h4 class="sidebar-profile-name">YuYoung</h4>
+        
+          <h5 class="sidebar-profile-bio">每天多进步一点</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">首页</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">标签</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">归档</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">关于</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/yuyoung32" target="_blank" rel="noopener" title="GitHub">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      Golang-常见中间件
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2022-02-22T00:00:00Z">
+        
+  
+  
+  
+  
+    2022年2月22日
+  
+
+      </time>
+    
+    
+  
+  
+    <span>发布在</span>
+    
+      <a class="category-link" href="https://yuyoung32.github.io/categories/%e9%a1%b9%e7%9b%ae%e5%bc%80%e5%8f%91">项目开发</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h1 id="table-of-contents">目录</h1>
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#semver">SemVer</a></li>
+    <li><a href="#go-module">Go Module</a>
+      <ul>
+        <li><a href="#gomod">go.mod</a></li>
+      </ul>
+    </li>
+    <li><a href="#sentry">Sentry</a></li>
+    <li><a href="#gorm">Gorm</a>
+      <ul>
+        <li><a href="#增删改查">增删改查</a></li>
+        <li><a href="#连接池">连接池</a></li>
+        <li><a href="#事务处理">事务处理</a></li>
+      </ul>
+    </li>
+    <li><a href="#viper">Viper</a></li>
+    <li><a href="#logrus">Logrus</a></li>
+    <li><a href="#protobuf">Protobuf</a></li>
+    <li><a href="#token和sessionid的区别">Token和SessionId的区别</a></li>
+    <li><a href="#redis">Redis</a></li>
+  </ul>
+</nav>
+
+<h2 id="semver">SemVer</h2>
+<p><a href="https://semver.org/lang/zh-CN/">https://semver.org/lang/zh-CN/</a></p>
+<p>semantic versioning 语义化版本信息，根据版号判断信息</p>
+<p><code>v(major).(minor).(patch)</code></p>
+<p><code>v0.1.0</code>, <code>v1.2.3</code>, or <code>v1.5.0-rc.1</code></p>
+<h2 id="go-module">Go Module</h2>
+<p><a href="https://github.com/golang/go/wiki/Modules">https://github.com/golang/go/wiki/Modules</a></p>
+<p>Summarizing the relationship between repositories, modules, and packages:</p>
+<ul>
+<li>A repository contains one or more Go modules.</li>
+<li>Each module contains one or more Go packages.</li>
+<li>Each package consists of one or more Go source files in a single directory.</li>
+</ul>
+<h3 id="gomod">go.mod</h3>
+<p><code>go.mod</code>是在一系列源码的根目录上，定义了一个module.</p>
+<p>A module is defined by a tree of Go source files with a <code>go.mod</code> file in the tree&rsquo;s root directory. Module source code may be located outside of GOPATH. There are four directives: <code>module</code>, <code>require</code>, <code>replace</code>, <code>exclude</code>.</p>
+<p>Your typical day-to-day workflow can be:</p>
+<ul>
+<li>Add import statements to your <code>.go</code> code as needed.</li>
+<li>Standard commands like <code>go build</code> or <code>go test</code> will <strong>automatically add new dependencies</strong> as needed to satisfy imports (updating <code>go.mod</code> and downloading the new dependencies).</li>
+<li>When needed, more specific versions of dependencies can be chosen with commands such as <code>go get foo@v1.2.3</code>, <code>go get foo@master</code> (<code>foo@default</code> with mercurial), <code>go get foo@e3702bed2</code>, or by editing <code>go.mod</code> directly.</li>
+</ul>
+<h2 id="sentry">Sentry</h2>
+<p><a href="https://docs.sentry.io/platforms/go/">https://docs.sentry.io/platforms/go/</a></p>
+<p>在程序中报告messges,errors,panics。方便定位问题</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sentry</span>.<span style="color:#a6e22e">Init</span>(<span style="color:#a6e22e">sentry</span>.<span style="color:#a6e22e">ClientOptions</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Dsn</span>: <span style="color:#e6db74">&#34;https://examplePublicKey@o0.ingest.sentry.io/0&#34;</span>,
+</span></span><span style="display:flex;"><span>	})
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatalf</span>(<span style="color:#e6db74">&#34;sentry.Init: %s&#34;</span>, <span style="color:#a6e22e">err</span>)
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">sentry</span>.<span style="color:#a6e22e">Flush</span>(<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">sentry</span>.<span style="color:#a6e22e">CaptureMessage</span>(<span style="color:#e6db74">&#34;It works!&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="gorm">Gorm</h2>
+<p><a href="https://www.tizi365.com/archives/6.html">https://www.tizi365.com/archives/6.html</a></p>
+<p>对象-关系映射（Object-Relational Mapping，简称ORM）。实现程序对象到关系数据库数据的映射。</p>
+<p>gorm负责将对模型的读写操作<strong>翻译成sql语句</strong>，然后gorm再把数据库执行sql语句后返回的结果<strong>转化为我们定义的模型对象</strong>。</p>
+<p>Gorm里的sql语句有以下特点</p>
+<ul>
+<li>
+<p>传入的模型指针（结构体指针）可以作为</p>
+<ol>
+<li>指向需要查询的表，例如 <code>Model(&amp;user)</code>或<code>Model(&amp;User{})</code></li>
+<li>使用里面的数据作为查询条件或更改（可使用Where更改里面的数据），例如<code>Model(&amp;user)</code>或<code>Update(&amp;user)</code></li>
+<li>存储查询结果，例如<code>First(&amp;user)</code></li>
+</ol>
+<p>以上几点可能同时用到</p>
+</li>
+</ul>
+<h3 id="增删改查">增删改查</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Create</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">u</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;username = ?&#34;</span>, <span style="color:#e6db74">&#34;tizi365&#34;</span>).<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">u</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Model</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">User</span>{}).<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;username = ?&#34;</span>, <span style="color:#e6db74">&#34;tizi365&#34;</span>).<span style="color:#a6e22e">Update</span>(<span style="color:#e6db74">&#34;password&#34;</span>, <span style="color:#e6db74">&#34;654321&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;username = ?&#34;</span>, <span style="color:#e6db74">&#34;tizi365&#34;</span>).<span style="color:#a6e22e">Delete</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">User</span>{})
+</span></span></code></pre></div><h3 id="连接池">连接池</h3>
+<p>避免重复建立数据库连接带来的性能消耗</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">//定义一个工具包，用来管理gorm数据库连接池的初始化工作。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">tools</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//定义全局的db对象，我们执行数据库操作主要通过他实现。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">_db</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gorm</span>.<span style="color:#a6e22e">DB</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//包初始化函数，golang特性，每个包初始化的时候会自动执行init函数，这里用来初始化gorm。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">init</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span><span style="color:#a6e22e">忽略dsn配置</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">请参考上面例子</span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 声明err变量，下面不能使用:=赋值运算符，否则_db变量会当成局部变量，导致外部无法访问_db变量
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//连接MYSQL, 获得DB类型实例，用于后面的数据库读写操作。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">_db</span>, <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">gorm</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#a6e22e">mysql</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#a6e22e">dsn</span>), <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">gorm</span>.<span style="color:#a6e22e">Config</span>{})
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>		panic(<span style="color:#e6db74">&#34;连接数据库失败, error=&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">Error</span>())
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>     
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">sqlDB</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">DB</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//设置数据库连接池参数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">sqlDB</span>.<span style="color:#a6e22e">SetMaxOpenConns</span>(<span style="color:#ae81ff">100</span>)   <span style="color:#75715e">//设置数据库连接池最大连接数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">sqlDB</span>.<span style="color:#a6e22e">SetMaxIdleConns</span>(<span style="color:#ae81ff">20</span>)   <span style="color:#75715e">//连接池最大允许的空闲连接数，如果没有sql任务需要执行的连接数大于20，超过的连接会被连接池关闭。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//获取gorm db对象，其他包需要执行数据库查询的时候，只要通过tools.getDB()获取db对象即可。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//不用担心协程并发使用同样的db对象会共用同一个连接，db对象在调用他的方法的时候会从数据库连接池中获取新的连接
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">GetDB</span>() <span style="color:#f92672">*</span><span style="color:#a6e22e">gorm</span>.<span style="color:#a6e22e">DB</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">_db</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="事务处理">事务处理</h3>
+<p>保证原子性操作</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Transaction</span>(<span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">tx</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gorm</span>.<span style="color:#a6e22e">DB</span>) <span style="color:#66d9ef">error</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 在事务中执行一些 db 操作（从这里开始，您应该使用 &#39;tx&#39; 而不是 &#39;db&#39;）
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Create</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Animal</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;Giraffe&#34;</span>}).<span style="color:#a6e22e">Error</span>; <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 返回任何错误都会回滚事务
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Create</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Animal</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;Lion&#34;</span>}).<span style="color:#a6e22e">Error</span>; <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 返回 nil 提交事务
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>})
+</span></span></code></pre></div><h2 id="viper">Viper</h2>
+<p><a href="https://www.liwenzhou.com/posts/Go/viper_tutorial/">https://www.liwenzhou.com/posts/Go/viper_tutorial/</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/144323180">https://zhuanlan.zhihu.com/p/144323180</a></p>
+<p>读取，编辑，写入各种格式的配置文件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;github.com/spf13/viper&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//设置文件
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//全路径 根据路径名称直接读取配置文件
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//viper.SetConfigFile(&#34;./config/con.yaml&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//名字+类型+路径 设置名字（无扩展名），设置配置类型，设置配置文件路径（可设置多个进行搜索）
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">viper</span>.<span style="color:#a6e22e">SetConfigType</span>(<span style="color:#e6db74">&#34;yaml&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">viper</span>.<span style="color:#a6e22e">SetConfigName</span>(<span style="color:#e6db74">&#34;con&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">viper</span>.<span style="color:#a6e22e">AddConfigPath</span>(<span style="color:#e6db74">&#34;./config&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//读取文件
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">viper</span>.<span style="color:#a6e22e">ReadInConfig</span>()
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>		panic(<span style="color:#a6e22e">err</span>)
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//读取值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">viper</span>.<span style="color:#a6e22e">Get</span>(<span style="color:#e6db74">&#34;port&#34;</span>), <span style="color:#a6e22e">viper</span>.<span style="color:#a6e22e">Get</span>(<span style="color:#e6db74">&#34;name&#34;</span>), <span style="color:#a6e22e">viper</span>.<span style="color:#a6e22e">Get</span>(<span style="color:#e6db74">&#34;likes&#34;</span>))
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//9999 map[a:1 b:2] [big small]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//设置值，但不会改变原有文件
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">viper</span>.<span style="color:#a6e22e">Set</span>(<span style="color:#e6db74">&#34;port&#34;</span>, <span style="color:#e6db74">&#34;8080&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">viper</span>.<span style="color:#a6e22e">Set</span>(<span style="color:#e6db74">&#34;name&#34;</span>, <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;a&#34;</span>: <span style="color:#e6db74">&#34;大&#34;</span>, <span style="color:#e6db74">&#34;b&#34;</span>: <span style="color:#e6db74">&#34;小&#34;</span>})
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">viper</span>.<span style="color:#a6e22e">Set</span>(<span style="color:#e6db74">&#34;likes&#34;</span>, []<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;coding&#34;</span>, <span style="color:#e6db74">&#34;reading&#34;</span>})
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//保存值到新的文件
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">viper</span>.<span style="color:#a6e22e">WriteConfigAs</span>(<span style="color:#e6db74">&#34;config/con2.yaml&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>		panic(<span style="color:#a6e22e">err</span>)
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//likes:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//- coding
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//- reading
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//name:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//  a: 大
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//  b: 小
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//port: &#34;8080&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//通过设置默认值创建新的文件
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">viper2</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">viper</span>.<span style="color:#a6e22e">New</span>()
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">viper2</span>.<span style="color:#a6e22e">SetDefault</span>(<span style="color:#e6db74">&#34;port&#34;</span>, <span style="color:#e6db74">&#34;2020&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">viper2</span>.<span style="color:#a6e22e">SetDefault</span>(<span style="color:#e6db74">&#34;name&#34;</span>, <span style="color:#e6db74">&#34;jack&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">viper2</span>.<span style="color:#a6e22e">SetDefault</span>(<span style="color:#e6db74">&#34;likes&#34;</span>, []<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;swimming&#34;</span>, <span style="color:#e6db74">&#34;singing&#34;</span>})
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">viper2</span>.<span style="color:#a6e22e">WriteConfigAs</span>(<span style="color:#e6db74">&#34;config/con3.yaml&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//likes:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//- swimming
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//- singing
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//name: jack
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//port: &#34;2020&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p><strong>Viper</strong> 会按照下面的优先级。每个项目的优先级都高于它下面的项目:</p>
+<ol>
+<li>显示调用<code>Set</code>设置值</li>
+<li>命令行参数（<code>flag</code>）</li>
+<li>环境变量</li>
+<li>配置文件</li>
+<li><code>key/value</code> 存储</li>
+<li>默认值</li>
+</ol>
+<h2 id="logrus">Logrus</h2>
+<p>提供日志输出，<a href="https://zhuanlan.zhihu.com/p/105759117">快速入门</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;github.com/sirupsen/logrus&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;log&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;os&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//默认是info级别显示，这里设置TraceLevel都显示
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">logrus</span>.<span style="color:#a6e22e">SetLevel</span>(<span style="color:#a6e22e">logrus</span>.<span style="color:#a6e22e">TraceLevel</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//设置日志格式
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">logrus</span>.<span style="color:#a6e22e">SetFormatter</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">logrus</span>.<span style="color:#a6e22e">JSONFormatter</span>{})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//logrus.Trace(&#34;trace msg&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//logrus.Debug(&#34;debug msg&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">logrus</span>.<span style="color:#a6e22e">Info</span>(<span style="color:#e6db74">&#34;info msg&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//logrus.Warn(&#34;warn msg&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//logrus.Error(&#34;error msg&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//logrus.Fatal(&#34;fatal msg&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//logrus.Panic(&#34;panic msg&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//只会对下面的第一条生效
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">logger</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">logrus</span>.<span style="color:#a6e22e">WithField</span>(<span style="color:#e6db74">&#34;module&#34;</span>, <span style="color:#e6db74">&#34;main&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">logger</span>.<span style="color:#a6e22e">Trace</span>(<span style="color:#e6db74">&#34;trace msg&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">writer3</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">OpenFile</span>(<span style="color:#e6db74">&#34;log.txt&#34;</span>, <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">O_WRONLY</span>|<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">O_CREATE</span>, <span style="color:#ae81ff">0755</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatalf</span>(<span style="color:#e6db74">&#34;create file log.txt failed: %v&#34;</span>, <span style="color:#a6e22e">err</span>)
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//会进行覆写
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">logrus</span>.<span style="color:#a6e22e">SetOutput</span>(<span style="color:#a6e22e">writer3</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">logrus</span>.<span style="color:#a6e22e">Info</span>(<span style="color:#e6db74">&#34;info msg&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="protobuf">Protobuf</h2>
+<p><a href="https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/">https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/</a></p>
+<p>是一个跨平台的序列化库</p>
+<p>序列化(serialization、marshalling)的过程是指将<strong>数据结构</strong>或者对象的状态转换成可以<strong>存储</strong>(比如文件、内存)或者传输的格式(比如网络)。反向操作就是反序列化(deserialization、unmarshalling)的过程</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span>syntax <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;proto3&#34;</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">SearchRequest</span> {<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>  <span style="color:#66d9ef">string</span> query <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>  <span style="color:#66d9ef">int32</span> page_number <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>  <span style="color:#66d9ef">int32</span> result_per_page <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>输出</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">SearchRequest</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Query</span>                <span style="color:#66d9ef">string</span>   <span style="color:#e6db74">`protobuf:&#34;bytes,1,opt,name=query,proto3&#34; json:&#34;query,omitempty&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">PageNumber</span>           <span style="color:#66d9ef">int32</span>    <span style="color:#e6db74">`protobuf:&#34;varint,2,opt,name=page_number,json=pageNumber,proto3&#34; json:&#34;page_number,omitempty&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">ResultPerPage</span>        <span style="color:#66d9ef">int32</span>    <span style="color:#e6db74">`protobuf:&#34;varint,3,opt,name=result_per_page,json=resultPerPage,proto3&#34; json:&#34;result_per_page,omitempty&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">XXX_NoUnkeyedLiteral</span> <span style="color:#66d9ef">struct</span>{} <span style="color:#e6db74">`json:&#34;-&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">XXX_unrecognized</span>     []<span style="color:#66d9ef">byte</span>   <span style="color:#e6db74">`json:&#34;-&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">XXX_sizecache</span>        <span style="color:#66d9ef">int32</span>    <span style="color:#e6db74">`json:&#34;-&#34;`</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">m</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">SearchRequest</span>) <span style="color:#a6e22e">Reset</span>()         { <span style="color:#f92672">*</span><span style="color:#a6e22e">m</span> = <span style="color:#a6e22e">SearchRequest</span>{} }
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">m</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">SearchRequest</span>) <span style="color:#a6e22e">String</span>() <span style="color:#66d9ef">string</span> { <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">proto</span>.<span style="color:#a6e22e">CompactTextString</span>(<span style="color:#a6e22e">m</span>) }
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#f92672">*</span><span style="color:#a6e22e">SearchRequest</span>) <span style="color:#a6e22e">ProtoMessage</span>()    {}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#f92672">*</span><span style="color:#a6e22e">SearchRequest</span>) <span style="color:#a6e22e">Descriptor</span>() ([]<span style="color:#66d9ef">byte</span>, []<span style="color:#66d9ef">int</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fileDescriptor_5ffd045dd4d042c1</span>, []<span style="color:#66d9ef">int</span>{<span style="color:#ae81ff">0</span>}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">init</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">proto</span>.<span style="color:#a6e22e">RegisterType</span>((<span style="color:#f92672">*</span><span style="color:#a6e22e">SearchRequest</span>)(<span style="color:#66d9ef">nil</span>), <span style="color:#e6db74">&#34;abc.SearchRequest&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="token和sessionid的区别">Token和SessionId的区别</h2>
+<p>都是一串字符串，但是sessionId只是一个标识ID，里面没有包含额外信息。需要服务器存储，然后判断是哪个用户然后是否过期。而Token不仅是一个标识ID，里面还包含了过期时间，用户ID。那么这样不需要服务器存储了，但是需要服务器根据Secret进行解密运算。可以说是一个典型的时间换空间的例子。</p>
+<h2 id="redis">Redis</h2>
+<p>进入：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>redis-cli -a password
+</span></span></code></pre></div><p>也可以进入后再auth+密码。</p>
+<p>使用：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>    查看所有的key列表:                   keys *
+</span></span><span style="display:flex;"><span>    设置键值：                          SET key_name value
+</span></span><span style="display:flex;"><span>    查看指定key：                       GET key_name
+</span></span><span style="display:flex;"><span>    删除键及对应的值：                   DEl key_name
+</span></span><span style="display:flex;"><span>    修改 key 的名称:                    RENAME key_name newkey_name
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    判断key是否存在:                    EXISTS key_name
+</span></span><span style="display:flex;"><span>    查看key对应的value类型：            TYPE key_name
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    删除全部							F
+</span></span></code></pre></div>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/%E5%85%B3%E4%BA%8Egin&#43;vue%E7%9A%84%E9%A1%B9%E7%9B%AE%E5%8D%8F%E4%BD%9C%E6%B5%81%E7%A8%8B/" data-tooltip="关于Gin&#43;Vue的项目协作流程" aria-label="下一篇: 关于Gin&#43;Vue的项目协作流程">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/golang-%E5%8F%8D%E5%B0%84%E9%9D%99%E6%80%81%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/" data-tooltip="Golang-反射，静态类型与动态类型" aria-label="上一篇: Golang-反射，静态类型与动态类型">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="分享这个帖子">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="发表评论">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="回到顶部">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+    <script type="text/javascript">
+      var disqus_config = function() {
+        this.page.url = 'https:\/\/yuyoung32.github.io\/post\/golang-%E5%B8%B8%E8%A7%81%E4%B8%AD%E9%97%B4%E4%BB%B6\/';
+        
+          this.page.identifier = '\/post\/golang-%E5%B8%B8%E8%A7%81%E4%B8%AD%E9%97%B4%E4%BB%B6\/'
+        
+      };
+      (function() {
+        
+        
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+          document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+          return;
+        }
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'hugo-tranquilpeak-theme';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2022 YuYoung. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/%E5%85%B3%E4%BA%8Egin&#43;vue%E7%9A%84%E9%A1%B9%E7%9B%AE%E5%8D%8F%E4%BD%9C%E6%B5%81%E7%A8%8B/" data-tooltip="关于Gin&#43;Vue的项目协作流程" aria-label="下一篇: 关于Gin&#43;Vue的项目协作流程">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/golang-%E5%8F%8D%E5%B0%84%E9%9D%99%E6%80%81%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/" data-tooltip="Golang-反射，静态类型与动态类型" aria-label="上一篇: Golang-反射，静态类型与动态类型">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="分享这个帖子">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="发表评论">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="回到顶部">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg" alt="作者的图片" />
+    
+    <h4 id="about-card-name">YuYoung</h4>
+    
+      <div id="about-card-bio">每天多进步一点</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        学生
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        杭州
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    <div id="cover" style="background-image:url('https://s1.ax1x.com/2022/04/09/LPwmee.jpg');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="https://yuyoung32.github.io/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+

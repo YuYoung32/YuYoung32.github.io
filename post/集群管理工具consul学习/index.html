@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    
+    <script type="application/ld+json">
+
+{  
+  "@context":"http://schema.org",
+  "@type":"Website",
+  "@id":"https:\/\/yuyoung32.github.io",
+  "author": {
+    "@type": "Person",
+    "name": "YuYoung",
+    
+    "image": "https://s1.ax1x.com/2022/04/09/LPwdFs.jpg"
+    
+  },
+  "name":"YuYoung的博客",
+  "description":"",
+  "url":"https:\/\/yuyoung32.github.io\/post\/%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0\/",
+  "keywords":"[consul]"
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.96.0 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="YuYoung">
+<meta name="keywords" content="consul">
+<meta name="description" content="">
+
+
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="集群管理工具consul学习笔记">
+<meta name="twitter:title" content="集群管理工具consul学习笔记">
+<meta property="og:url" content="https://yuyoung32.github.io/post/%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0/">
+<meta property="twitter:url" content="https://yuyoung32.github.io/post/%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0/">
+<meta property="og:site_name" content="YuYoung的博客">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:locale" content="zh-cn">
+
+  
+    <meta property="article:published_time" content="2022-03-08T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2022-03-08T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="项目开发">
+    
+      <meta property="article:section" content="工具">
+    
+  
+  
+    
+      <meta property="article:tag" content="微服务">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg">
+  <meta property="twitter:image" content="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg">
+
+
+
+
+
+  <meta property="og:image" content="https://s1.ax1x.com/2022/04/09/LigJrn.jpg">
+  <meta property="twitter:image" content="https://s1.ax1x.com/2022/04/09/LigJrn.jpg">
+
+
+    <title>集群管理工具consul学习笔记</title>
+
+    <link rel="icon" href="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg">
+    
+
+    
+
+    <link rel="canonical" href="https://yuyoung32.github.io/post/%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="https://yuyoung32.github.io/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://yuyoung32.github.io/" aria-label="去首页">YuYoung的博客</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://yuyoung32.github.io/#about" aria-label="打开链接: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg" alt="作者的图片" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://yuyoung32.github.io/#about" aria-label="阅读有关作者的更多信息">
+          <img class="sidebar-profile-picture" src="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg" alt="作者的图片" />
+        </a>
+        <h4 class="sidebar-profile-name">YuYoung</h4>
+        
+          <h5 class="sidebar-profile-bio">每天多进步一点</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">首页</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">标签</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">归档</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">关于</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/yuyoung32" target="_blank" rel="noopener" title="GitHub">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      集群管理工具consul学习笔记
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2022-03-08T00:00:00Z">
+        
+  
+  
+  
+  
+    2022年3月8日
+  
+
+      </time>
+    
+    
+  
+  
+    <span>发布在</span>
+    
+      <a class="category-link" href="https://yuyoung32.github.io/categories/%e9%a1%b9%e7%9b%ae%e5%bc%80%e5%8f%91">项目开发</a>, 
+    
+      <a class="category-link" href="https://yuyoung32.github.io/categories/%e5%b7%a5%e5%85%b7">工具</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h1 id="table-of-contents">目录</h1>
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#consul功能与原理">Consul功能与原理</a>
+      <ul>
+        <li><a href="#一致性算法-gossip协议">一致性算法-Gossip协议</a></li>
+      </ul>
+    </li>
+    <li><a href="#consul操作">Consul操作</a>
+      <ul>
+        <li><a href="#创建服务端">创建服务端</a></li>
+        <li><a href="#挂载服务">挂载服务</a></li>
+        <li><a href="#服务发现">服务发现</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+<h2 id="consul功能与原理">Consul功能与原理</h2>
+<p><a href="https://yushuai-w.gitbook.io/consul/architecture">功能原理</a></p>
+<p>consul是一个集群管理工具，特点：</p>
+<ul>
+<li>服务发现：不需要手动记录各个服务的ip地址，中心能够主动搜寻服务并进行健康检查下线掉不健康的节点</li>
+<li>健康检查：每个agent上线和下线时都会向服务目录添加或者删除自己，此外会根据agent规模定时（几分钟）同步服务目录</li>
+<li>KV存储</li>
+</ul>
+<p>解决了手动配置服务的痛点。</p>
+<p>每个consul agent（节点）有3种模式：</p>
+<ul>
+<li>Client模式，所有注册到当前节点的服务会被转发到SERVER，本身是<strong>不持久化</strong>这些信息</li>
+<li>Server模式，<strong>功能和Client完全一样</strong>，唯一不同的是，它会把所有的信息持久化的本地，这样遇到故障，信息是可以被保留的。一般我们的部署模型是 Server + Client的模式（当然也可以纯Server）, Server 具有Client的全部功能， 但是由于Server负责存储数据，并且强一致性模型的缘故， Server数是<strong>有限的</strong>（3-5个Server节点，Client可以无限扩展的）。之所以是有限的是在权衡故障场景下<strong>可用性</strong>和<strong>性能</strong>之间取得平衡的结果，因为随着机器的增加，共识的速度会逐渐变慢。然而，Client的数量没有限制，它们可以轻松地扩展到数千或数万</li>
+<li>Leader（ServerLeader）模式，和其它Server不一样的一点是，它需要负责1.同步注册的信息给其它的Server，2.同时也要负责各个节点的健康监测。Leader是自动选举的，当Leader下线后会自动选举新的Leader</li>
+</ul>
+<p>工作流程：每个agent都可以注册一些RPC或者说是服务，从网络传给server类型的agent一些RPC，这些RPC会根据服务列表直接访问服务层或者分发给其他Client，那些client再调用服务层。其中LeaderServer由其他server投票选出，通过轮询记录其他agent的地址与注册在agent的服务，这也即服务列表，当然会同步给其他server。当Leader下线后，会触发重新投票选出LeaderServer。</p>
+<p><img src="https://yuyoung32.github.io/%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0.assets/consul-arch-988x1024.png" alt="img"></p>
+<p>端口功能：</p>
+<ul>
+<li>8300：集群内数据的读写和复制</li>
+<li>8301：单个数据中心gossip协议通讯</li>
+<li>8302：跨数据中心gossip协议通讯</li>
+<li>8500：提供获取服务列表、注册服务、注销服务等HTTP接口；提供UI服务</li>
+<li>8600：采用DNS协议提供服务发现功能</li>
+</ul>
+<h3 id="一致性算法-gossip协议">一致性算法-Gossip协议</h3>
+<p><a href="https://cloud.tencent.com/developer/article/1662426">算法详解</a></p>
+<p>朴素原理：Gossip协议是基于六度分隔理论（Six Degrees of Separation）哲学的体现，简单的来说，一个人通过6个中间人可以认识世界任何人。这意味着不需要很多次信息交换，就可以蔓延到整个网络。</p>
+<p>Gossip协议在计算机系统通常以随机的“对等选择”形式实现：以给定的频率，每台计算机随机选择另一台计算机，并共享任何消息。定义十分简单，所以实现方式非常多。</p>
+<p>一种原始的Gossip协议的执行过程：</p>
+<ul>
+<li><strong>种子节点</strong>周期性的散播消息 【假定把周期限定为 1 秒】</li>
+<li>被感染节点随机选择N个邻接节点散播消息【假定fan-out(扇出)设置为6，每次最多往6个节点散播】</li>
+<li>节点只接收消息不反馈结果</li>
+<li>每次散播消息都选择<strong>尚未发送过的节点</strong>进行散播</li>
+<li>谣言传播收到消息的节点<strong>不回传散播</strong>：A -&gt; B，那么B进行散播的时候，不再发给 A</li>
+<li>反熵传播则是相互交换全部信息</li>
+</ul>
+<p>Gossip 协议的消息传播方式有两种：<strong>Anti-Entropy(反熵传播)<strong>和</strong>Rumor-Mongering(谣言传播)</strong>，反熵传播使用“simple epidemics(SI model)”的方式：以固定的概率传播所有的数据。所有参与节点只有两种状态：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">Suspective</span>(<span style="color:#a6e22e">病原</span>)<span style="color:#960050;background-color:#1e0010">：</span><span style="color:#a6e22e">处于</span> <span style="color:#a6e22e">susceptible</span> <span style="color:#a6e22e">状态的节点代表其并没有收到来自其他节点的更新</span><span style="color:#960050;background-color:#1e0010">。</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Infective</span>(<span style="color:#a6e22e">感染</span>)<span style="color:#960050;background-color:#1e0010">：</span><span style="color:#a6e22e">处于</span> <span style="color:#a6e22e">infective</span> <span style="color:#a6e22e">状态的节点代表其有数据更新</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">并且会将这个数据分享给其他节点</span><span style="color:#960050;background-color:#1e0010">。</span>
+</span></span></code></pre></div><p>​      反熵传播过程是每个节点周期性地随机选择其他节点，然后通过互相交换自己的<strong>所有</strong>数据来消除两者之间的差异。反熵传播方法每次节点两两交换自己的所有数据会带来非常大的通信负担，因此不会频繁使用，通常只用<strong>于新加入节点的数据初始化</strong>。</p>
+<p>谣言传播使用“complex epidemics”(SIR model)的方式：以固定的概率<strong>仅传播新到达的数据</strong>。所有参与节点有三种状态：Suspective(病原)、Infective(感染)、Removed(愈除)。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">Removed</span>(<span style="color:#a6e22e">愈除</span>)<span style="color:#f92672">:</span><span style="color:#a6e22e">其已经接收到来自其他节点的更新</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">但是其并不会将这个更新分享给其他节点</span><span style="color:#960050;background-color:#1e0010">。</span>
+</span></span></code></pre></div><p>​      谣言传播过程是消息只包含最新 update，谣言消息在某个时间点之后会被标记为removed，并且不再被传播。缺点是系统有一定的概率会不一致，通常用于<strong>节点间数据增量同步</strong>。</p>
+<p>​      一般来说，为了在通信代价和可靠性之间取得折中，需要将这两种方法结合使用。</p>
+<p>Gossip的优势与缺点：</p>
+<ul>
+<li><strong>可扩展性</strong>（Scalable）：允许节点的任意增加和减少，新增节点的状态最终会与其他节点一致</li>
+<li><strong>容错</strong>（Fault-tolerance）：网络中任何节点的重启或者宕机都不会影响 gossip 协议的运行，具有天然的分布式系统容错特性</li>
+<li><strong>健壮性</strong>（Robust）：gossip 协议是<strong>去中心化</strong>的协议，所以集群中的所有节点都是对等的，没有特殊的节点，所以任何节点出现问题都不会阻止其他节点继续发送消息。任何节点都可以随时加入或离开，而不会影响系统的整体服务质量</li>
+<li><strong>最终一致性</strong>（Convergent consistency）：谣言传播可以是指数级的快速传播，因此新信息传播时，消息可以快速地发送到全局节点，在<strong>有限的时间内能够做到所有节点都拥有最新的数据</strong></li>
+<li><strong>简单</strong></li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li><strong>消息延迟</strong>：节点随机向少数几个节点发送消息，消息最终是通过多个轮次的散播而到达全网，不可避免的造成消息延迟</li>
+<li><strong>消息冗余</strong>：节点定期随机选择周围节点发送消息，而收到消息的节点也会重复该步骤，因此不可避免地引起同一节点多次接收同一消息，增加消息处理的压力。一次通信会对网路带宽、CUP资源造成很大的负载，而这些负载又受限于 通信频率，该频率又影响着算法收敛的速度</li>
+<li><strong>拜占庭问题</strong>：如果有一个恶意传播消息的节点，Gossip协议的分布式系统就会出问题。</li>
+</ul>
+<h2 id="consul操作">Consul操作</h2>
+<h3 id="创建服务端">创建服务端</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>consul agent -server -bootstrap-expect <span style="color:#ae81ff">3</span> -data-dir /tmp/consul -bind<span style="color:#f92672">=</span>192.168.0.104 -client 0.0.0.0 -node<span style="color:#f92672">=</span>s_hallen -rejoin -ui -join 192.168.0.104
+</span></span></code></pre></div><p><a href="https://www.cnblogs.com/sunsky303/p/9209024.html">更多参数说明</a></p>
+<p>参数说明：</p>
+<ul>
+<li>agent：必须有，区分于members，用来承接service</li>
+<li>-server： 定义agent运行在server模式，不加则为client模式</li>
+<li>-bootstrap-expect ：在一个datacenter中期望提供的server节点数目，当该值提供的时候，consul一直等到达到指定sever数目的时候<strong>才会引导</strong>整个集群，否则一直不启动，该标记不能和bootstrap共用</li>
+<li>-data-dir = dir：存储数据的目录（<strong>必填</strong>）</li>
+<li>-node=name：节点在集群中的名称，在一个集群中必须是<strong>唯一的</strong>，默认是该节点的主机名</li>
+<li>-bind：该服务器节点名，该地址用来在集群内部的通讯，集群内的所有节点到地址都必须是可达的，默认是0.0.0.0，即该服务给集群通信的地址</li>
+<li>-ui-dir(-ui)： 提供存放web ui资源的路径，该目录必须是可读的</li>
+<li>-rejoin：默认情况下，Consul将休假视为永久意图，并且在启动时不会再尝试加入集群。该标志允许先前的状态用于重新加入群集</li>
+<li>-config-dir：配置文件目录，里面所有以.json结尾的文件都会被加载</li>
+<li>-client：consul服务侦听地址，这个地址提供HTTP、DNS、RPC等服务，默认是127.0.0.1所以不对外提供服务，如果你要对外提供服务改成0.0.0.0。Consul将绑定客户端接口的地址</li>
+<li>-join：启动时加入的另一位代理的地址，代理在启动时不会加入任何节点</li>
+</ul>
+<h3 id="挂载服务">挂载服务</h3>
+<p>将服务挂载到agent，可以在启动agent时使用<code>-config-dir</code>指定配置文件，文件内加上<code>service</code>字段，在其中写上挂载服务的信息。当服务挂载到agent并启动时，agent会自动检测该服务的健康状态（需要配置<code>checks</code>字段）。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;service&#34;</span>:{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;consul-service-demo&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;consul-service-demo&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;address&#34;</span>: <span style="color:#e6db74">&#34;127.0.0.1&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;port&#34;</span>: <span style="color:#ae81ff">8080</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;tags&#34;</span>: [<span style="color:#e6db74">&#34;uth&#34;</span>,<span style="color:#e6db74">&#34;report&#34;</span>],
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;checks&#34;</span>:[
+</span></span><span style="display:flex;"><span>      {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;http&#34;</span>: <span style="color:#e6db74">&#34;http://127.0.01:8080/health&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;interval&#34;</span>: <span style="color:#e6db74">&#34;10s&#34;</span>
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>参数说明与其他参数</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">id：节点id</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">name:节点name</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">address:节点IP</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">port：节点端口</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">tags：节点标签，是个列表</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">checks：服务检查，列表，否则逻辑层下线后检测不到</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">.Script+</span> <span style="color:#960050;background-color:#1e0010">Interval</span>
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;mem-util&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Memoryutilization&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;script&#34;</span>: <span style="color:#e6db74">&#34;/usr/local/bin/check_mem&#34;</span>,    <span style="color:#75715e">// 必须是shell脚本
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#f92672">&#34;interval&#34;</span>: <span style="color:#e6db74">&#34;10s&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;timeout&#34;</span>: <span style="color:#e6db74">&#34;15s&#34;</span>    <span style="color:#75715e">// 默认是30s
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>          }
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">2</span><span style="color:#960050;background-color:#1e0010">.HTTP+</span> <span style="color:#960050;background-color:#1e0010">Interval</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">请求超时时间等于调用请求的间隔时间</span>
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;api&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;HTTPAPI on port 5000&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;http&#34;</span>: <span style="color:#e6db74">&#34;http://localhost:5000/health&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;interval&#34;</span>: <span style="color:#e6db74">&#34;10s&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;timeout&#34;</span>: <span style="color:#e6db74">&#34;15s&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>	<span style="color:#960050;background-color:#1e0010">常用</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">3</span><span style="color:#960050;background-color:#1e0010">.TCP+</span> <span style="color:#960050;background-color:#1e0010">Interval</span>
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;check&#34;</span>: {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;ssh&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;SSHTCP on port 22&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;tcp&#34;</span>: <span style="color:#e6db74">&#34;localhost:22&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;interval&#34;</span>: <span style="color:#e6db74">&#34;10s&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;timeout&#34;</span>: <span style="color:#e6db74">&#34;1s&#34;</span>
+</span></span><span style="display:flex;"><span>          }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">interval：每隔多长时间检测一次</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">datacenter：同命令行参数-datacenter</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">data_dir：同命令行参数-data_dir</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">bootstrap：同命令行参数-bootstrap</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">bootstrap_expect：同命令行参数-bootstrap_expect</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">bind_addr：同命令行参数-bind</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">enable_syslog：同命令行参数-syslog</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">log_level：同命令行参数-log_level</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">node_name：同命令行参数node</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">server：是否是server节点</span>
+</span></span></code></pre></div><h3 id="服务发现">服务发现</h3>
+<p>调用方获取相应服务地址的过程就是服务发现。一个service可以只挂载到一个agent上，当然这样就体现不出来微服务的容错性，可以同一个service挂载到多个agent上这样就可以实现容错性（注意虽然节点不同，但是服务名字相同）。那么调用端要选择哪个agent进行调用呢？这个问题留给调用端来解决。</p>
+<p>方案1：在调用端内将agent<strong>IP地址</strong>写死，if-else不断尝试连接，这样理论上可行，但是实际上没人用，因为这样是硬编码，如果需要新增agent会改代码，亦或者单纯的agent够多（几千个client是常见的事情）代码会很难看。这种方法忽略了consul自带的重要的功能：<strong>服务发现</strong>。</p>
+<p>方案2：使用consul自带的功能：服务发现。抛弃了硬编码形式。有几种方式可以获得在consul注册的服务</p>
+<ol>
+<li>
+<p>http api形式，直接从consul里获取到服务（健康的或者不健康的）。调用api直接获得列表</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">config</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">api</span>.<span style="color:#a6e22e">DefaultConfig</span>()
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 任意agent地址
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">Address</span> = <span style="color:#e6db74">&#34;127.0.0.1:8500&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//waitIndex是blocking query的实现机制，是watch机制的核心，只有改变了才返回
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">waitIndex</span> <span style="color:#66d9ef">uint64</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">client_api</span>,<span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">api</span>.<span style="color:#a6e22e">NewClient</span>(<span style="color:#a6e22e">config</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 获取健康的服务，名称为“my_say_hi”
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">services</span>,<span style="color:#a6e22e">_</span>,<span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">client_api</span>.<span style="color:#a6e22e">Health</span>().<span style="color:#a6e22e">Service</span>(<span style="color:#e6db74">&#34;my_say_hi&#34;</span>,<span style="color:#e6db74">&#34;say_hi&#34;</span>,<span style="color:#66d9ef">true</span>,<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">api</span>.<span style="color:#a6e22e">QueryOptions</span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">WaitIndex</span>:<span style="color:#a6e22e">waitIndex</span>,
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//选择一个，获取其服务地址
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">address</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">services</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">Service</span>.<span style="color:#a6e22e">Address</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">port</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">services</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">Service</span>.<span style="color:#a6e22e">Port</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">url</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;%s:%d&#34;</span>,<span style="color:#a6e22e">address</span>,<span style="color:#a6e22e">port</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//连接与调用
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">conn</span>,<span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">grpc</span>.<span style="color:#a6e22e">Dial</span>(<span style="color:#a6e22e">url</span>,<span style="color:#a6e22e">grpc</span>.<span style="color:#a6e22e">WithInsecure</span>())
+</span></span></code></pre></div></li>
+</ol>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/golang-%E5%86%85%E7%BD%AEcontainer%E5%8C%85/" data-tooltip="Golang-内置container包" aria-label="下一篇: Golang-内置container包">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/go-micro%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-tooltip="Go-micro学习笔记" aria-label="上一篇: Go-micro学习笔记">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="分享这个帖子">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="发表评论">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="回到顶部">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+    <script type="text/javascript">
+      var disqus_config = function() {
+        this.page.url = 'https:\/\/yuyoung32.github.io\/post\/%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0\/';
+        
+          this.page.identifier = '\/post\/%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0\/'
+        
+      };
+      (function() {
+        
+        
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+          document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+          return;
+        }
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'hugo-tranquilpeak-theme';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2022 YuYoung. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/golang-%E5%86%85%E7%BD%AEcontainer%E5%8C%85/" data-tooltip="Golang-内置container包" aria-label="下一篇: Golang-内置container包">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/go-micro%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-tooltip="Go-micro学习笔记" aria-label="上一篇: Go-micro学习笔记">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="分享这个帖子">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="发表评论">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="回到顶部">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg" alt="作者的图片" />
+    
+    <h4 id="about-card-name">YuYoung</h4>
+    
+      <div id="about-card-bio">每天多进步一点</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        学生
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        杭州
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    <div id="cover" style="background-image:url('https://s1.ax1x.com/2022/04/09/LPwmee.jpg');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="https://yuyoung32.github.io/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+
