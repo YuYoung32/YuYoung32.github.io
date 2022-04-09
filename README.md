@@ -6,4 +6,4 @@
 
 😍 Likes: cool AI application
 
-Contact: 📧youmg_em@foxmail.com
+Contact: 📧young_em@foxmail.com
