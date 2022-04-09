@@ -2,26 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go与Java on YuYoung的博客</title>
-    <link>www.yuyoung32.com/tags/go%E4%B8%8Ejava/</link>
+    <link>https://yuyoung32.github.io/tags/go%E4%B8%8Ejava/</link>
     <description>Recent content in Go与Java on YuYoung的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 04 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="www.yuyoung32.com/tags/go%E4%B8%8Ejava/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 04 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://yuyoung32.github.io/tags/go%E4%B8%8Ejava/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>函数闭包</title>
-      <link>www.yuyoung32.com/post/%E5%87%BD%E6%95%B0%E9%97%AD%E5%8C%85/</link>
+      <link>https://yuyoung32.github.io/post/%E5%87%BD%E6%95%B0%E9%97%AD%E5%8C%85/</link>
       <pubDate>Mon, 04 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>www.yuyoung32.com/post/%E5%87%BD%E6%95%B0%E9%97%AD%E5%8C%85/</guid>
+      <guid>https://yuyoung32.github.io/post/%E5%87%BD%E6%95%B0%E9%97%AD%E5%8C%85/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Golang-对interface的理解</title>
-      <link>www.yuyoung32.com/post/golang-%E5%AF%B9interface%E7%9A%84%E7%90%86%E8%A7%A3/</link>
+      <link>https://yuyoung32.github.io/post/golang-%E5%AF%B9interface%E7%9A%84%E7%90%86%E8%A7%A3/</link>
       <pubDate>Sun, 03 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>www.yuyoung32.com/post/golang-%E5%AF%B9interface%E7%9A%84%E7%90%86%E8%A7%A3/</guid>
+      <guid>https://yuyoung32.github.io/post/golang-%E5%AF%B9interface%E7%9A%84%E7%90%86%E8%A7%A3/</guid>
       <description></description>
     </item>
     
