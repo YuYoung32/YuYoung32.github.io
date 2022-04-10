@@ -344,7 +344,7 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
 </span></span></code></pre></div><p>如果把struct类比成类的话，他们的重载可以比作下图。实际上Go也可以实现像java那一对多。</p>
-<p>![重载](./example_draft - 副本 (2).assets/未命名文件.png)</p>
+<p><img src="https://yuyoung32.github.io/Golang-%E5%AF%B9interface%E7%9A%84%E7%90%86%E8%A7%A3.assets/%E6%9C%AA%E5%91%BD%E5%90%8D%E6%96%87%E4%BB%B6.png" alt="重载"></p>
 <h4 id="利用interface做到多态">利用interface做到多态</h4>
 <p>​		函数名前加上receiver即称为方法。不同receiver接收不同类型，甚至可以是基本类型如int（需要type定义，不能直接使用）。利用这个办法可以实现重载（一个方法对不同输入做出不同反应）。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Go" data-lang="Go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
