@@ -308,7 +308,7 @@ if (!doNotTrack) {
 <li>Leader（ServerLeader）模式，和其它Server不一样的一点是，它需要负责1.同步注册的信息给其它的Server，2.同时也要负责各个节点的健康监测。Leader是自动选举的，当Leader下线后会自动选举新的Leader</li>
 </ul>
 <p>工作流程：每个agent都可以注册一些RPC或者说是服务，从网络传给server类型的agent一些RPC，这些RPC会根据服务列表直接访问服务层或者分发给其他Client，那些client再调用服务层。其中LeaderServer由其他server投票选出，通过轮询记录其他agent的地址与注册在agent的服务，这也即服务列表，当然会同步给其他server。当Leader下线后，会触发重新投票选出LeaderServer。</p>
-<p><img src="https://yuyoung32.github.io/%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0.assets/consul-arch-988x1024.png" alt="img"></p>
+<p><img src="./%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0.assets/consul-arch-988x1024.png" alt="img"></p>
 <p>端口功能：</p>
 <ul>
 <li>8300：集群内数据的读写和复制</li>
