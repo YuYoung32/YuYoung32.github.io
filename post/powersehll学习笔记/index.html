@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    
+    <script type="application/ld+json">
+
+{  
+  "@context":"http://schema.org",
+  "@type":"Website",
+  "@id":"https:\/\/yuyoung32.github.io",
+  "author": {
+    "@type": "Person",
+    "name": "YuYoung",
+    
+    "image": "https://s1.ax1x.com/2022/04/09/LPwdFs.jpg"
+    
+  },
+  "name":"YuYoung的博客",
+  "description":"常用cmdlet 常用命令\n常识  很多命令都是和Linux是一样的。ps命令也有自己的别名，标注在命令下方，查看当前所有别名get-alias 文件目录支持通配符*，加上-Include``-Exclude可以用于筛选目录下的项目 -Confirm运行前确认，-WhatIf只显示即将运行的操作但不会真的运行 万物皆是文件，目录操作时，如果不加-Recurse就只是操作了空目录  文件 #添加内容到文件 add-content filename content  add-content test.txt \u0026#34;hello\u0026#34; #替换文件内容 set-content filename content set-content test.txt \u0026#34;hi\u0026#34; #查看文件内容 get-content filename get-content test.txt #清空文件内容 clear-content filename clear-content test.txt  #拷贝文件 copy-item src des copy-item test.txt test2.txt #移动文件 move-item src des move-item test.txt des  #新建文件 new-item filename new-item test.txt #删除文件 remove-item filename remove-item test.txt  #重命名 rename-item oldname newname rename-item test.txt test2.txt 位置 #显示当前位置 pwd get-location #切换当前位置 cd set-location 其他常用 #命令行输出重定向 out-file filename 等同于 \u0026gt; #若不指定append则覆写 get-childItem \u0026gt; test.",
+  "url":"https:\/\/yuyoung32.github.io\/post\/powersehll%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\/",
+  "keywords":"[]"
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.96.0 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="YuYoung">
+<meta name="keywords" content="">
+<meta name="description" content="常用cmdlet 常用命令
+常识  很多命令都是和Linux是一样的。ps命令也有自己的别名，标注在命令下方，查看当前所有别名get-alias 文件目录支持通配符*，加上-Include``-Exclude可以用于筛选目录下的项目 -Confirm运行前确认，-WhatIf只显示即将运行的操作但不会真的运行 万物皆是文件，目录操作时，如果不加-Recurse就只是操作了空目录  文件 #添加内容到文件 add-content filename content  add-content test.txt &#34;hello&#34; #替换文件内容 set-content filename content set-content test.txt &#34;hi&#34; #查看文件内容 get-content filename get-content test.txt #清空文件内容 clear-content filename clear-content test.txt  #拷贝文件 copy-item src des copy-item test.txt test2.txt #移动文件 move-item src des move-item test.txt des  #新建文件 new-item filename new-item test.txt #删除文件 remove-item filename remove-item test.txt  #重命名 rename-item oldname newname rename-item test.txt test2.txt 位置 #显示当前位置 pwd get-location #切换当前位置 cd set-location 其他常用 #命令行输出重定向 out-file filename 等同于 &gt; #若不指定append则覆写 get-childItem &gt; test.">
+
+
+<meta property="og:description" content="常用cmdlet 常用命令
+常识  很多命令都是和Linux是一样的。ps命令也有自己的别名，标注在命令下方，查看当前所有别名get-alias 文件目录支持通配符*，加上-Include``-Exclude可以用于筛选目录下的项目 -Confirm运行前确认，-WhatIf只显示即将运行的操作但不会真的运行 万物皆是文件，目录操作时，如果不加-Recurse就只是操作了空目录  文件 #添加内容到文件 add-content filename content  add-content test.txt &#34;hello&#34; #替换文件内容 set-content filename content set-content test.txt &#34;hi&#34; #查看文件内容 get-content filename get-content test.txt #清空文件内容 clear-content filename clear-content test.txt  #拷贝文件 copy-item src des copy-item test.txt test2.txt #移动文件 move-item src des move-item test.txt des  #新建文件 new-item filename new-item test.txt #删除文件 remove-item filename remove-item test.txt  #重命名 rename-item oldname newname rename-item test.txt test2.txt 位置 #显示当前位置 pwd get-location #切换当前位置 cd set-location 其他常用 #命令行输出重定向 out-file filename 等同于 &gt; #若不指定append则覆写 get-childItem &gt; test.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YuYoung的博客">
+<meta name="twitter:title" content="YuYoung的博客">
+<meta property="og:url" content="https://yuyoung32.github.io/post/powersehll%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+<meta property="twitter:url" content="https://yuyoung32.github.io/post/powersehll%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+<meta property="og:site_name" content="YuYoung的博客">
+<meta property="og:description" content="常用cmdlet 常用命令
+常识  很多命令都是和Linux是一样的。ps命令也有自己的别名，标注在命令下方，查看当前所有别名get-alias 文件目录支持通配符*，加上-Include``-Exclude可以用于筛选目录下的项目 -Confirm运行前确认，-WhatIf只显示即将运行的操作但不会真的运行 万物皆是文件，目录操作时，如果不加-Recurse就只是操作了空目录  文件 #添加内容到文件 add-content filename content  add-content test.txt &#34;hello&#34; #替换文件内容 set-content filename content set-content test.txt &#34;hi&#34; #查看文件内容 get-content filename get-content test.txt #清空文件内容 clear-content filename clear-content test.txt  #拷贝文件 copy-item src des copy-item test.txt test2.txt #移动文件 move-item src des move-item test.txt des  #新建文件 new-item filename new-item test.txt #删除文件 remove-item filename remove-item test.txt  #重命名 rename-item oldname newname rename-item test.txt test2.txt 位置 #显示当前位置 pwd get-location #切换当前位置 cd set-location 其他常用 #命令行输出重定向 out-file filename 等同于 &gt; #若不指定append则覆写 get-childItem &gt; test.">
+<meta name="twitter:description" content="常用cmdlet 常用命令
+常识  很多命令都是和Linux是一样的。ps命令也有自己的别名，标注在命令下方，查看当前所有别名get-alias 文件目录支持通配符*，加上-Include``-Exclude可以用于筛选目录下的项目 -Confirm运行前确认，-WhatIf只显示即将运行的操作但不会真的运行 万物皆是文件，目录操作时，如果不加-Recurse就只是操作了空目录  文件 #添加内容到文件 add-content filename content  add-content test.txt &#34;hello&#34; #替换文件内容 set-content filename content set-content test.txt &#34;hi&#34; #查看文件内容 get-content filename get-content test.txt #清空文件内容 clear-content filename clear-content test.txt  #拷贝文件 copy-item src des copy-item test.txt test2.txt #移动文件 move-item src des move-item test.txt des  #新建文件 new-item filename new-item test.txt #删除文件 remove-item filename remove-item test.txt  #重命名 rename-item oldname newname rename-item test.txt test2.txt 位置 #显示当前位置 pwd get-location #切换当前位置 cd set-location 其他常用 #命令行输出重定向 out-file filename 等同于 &gt; #若不指定append则覆写 get-childItem &gt; test.">
+<meta property="og:locale" content="zh-cn">
+
+  
+  
+  
+  
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg">
+  <meta property="twitter:image" content="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg">
+
+
+
+
+
+
+    <title>YuYoung的博客</title>
+
+    <link rel="icon" href="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg">
+    
+
+    
+
+    <link rel="canonical" href="https://yuyoung32.github.io/post/powersehll%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="https://yuyoung32.github.io/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6QCN1ZG6DB"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-6QCN1ZG6DB', { 'anonymize_ip': false });
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://yuyoung32.github.io/" aria-label="去首页">YuYoung的博客</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://yuyoung32.github.io/#about" aria-label="打开链接: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg" alt="作者的图片" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://yuyoung32.github.io/#about" aria-label="阅读有关作者的更多信息">
+          <img class="sidebar-profile-picture" src="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg" alt="作者的图片" />
+        </a>
+        <h4 class="sidebar-profile-name">YuYoung</h4>
+        
+          <h5 class="sidebar-profile-bio">每天多进步一点</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">首页</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">标签</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">归档</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">关于</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/yuyoung32" target="_blank" rel="noopener" title="GitHub">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="5"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="0001-01-01T00:00:00Z">
+        
+  
+  
+  
+  
+    0001年1月1日
+  
+
+      </time>
+    
+    
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h2 id="常用cmdlet">常用cmdlet</h2>
+<p><a href="https://www.yiibai.com/powershell/list-of-powershell-cmdlets.html#article-start">常用命令</a></p>
+<h3 id="常识">常识</h3>
+<ul>
+<li>很多命令都是和Linux是一样的。ps命令也有自己的别名，标注在命令下方，查看当前所有别名<code>get-alias</code></li>
+<li>文件目录支持通配符<code>*</code>，加上<code>-Include``-Exclude</code>可以用于筛选目录下的项目</li>
+<li><code>-Confirm</code>运行前确认，<code>-WhatIf</code>只显示即将运行的操作但不会真的运行</li>
+<li>万物皆是文件，目录操作时，如果不加<code>-Recurse</code>就只是操作了空目录</li>
+</ul>
+<h3 id="文件">文件</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e">#添加内容到文件 add-content filename content </span>
+</span></span><span style="display:flex;"><span>add-content test.txt <span style="color:#e6db74">&#34;hello&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#替换文件内容 set-content filename content</span>
+</span></span><span style="display:flex;"><span>set-content test.txt <span style="color:#e6db74">&#34;hi&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#查看文件内容 get-content filename</span>
+</span></span><span style="display:flex;"><span>get-content test.txt
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#清空文件内容 clear-content filename</span>
+</span></span><span style="display:flex;"><span>clear-content test.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#拷贝文件 copy-item src des</span>
+</span></span><span style="display:flex;"><span>copy-item test.txt test2.txt
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#移动文件 move-item src des</span>
+</span></span><span style="display:flex;"><span>move-item test.txt des
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#新建文件 new-item filename</span>
+</span></span><span style="display:flex;"><span>new-item test.txt
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#删除文件 remove-item filename</span>
+</span></span><span style="display:flex;"><span>remove-item test.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#重命名 rename-item oldname newname</span>
+</span></span><span style="display:flex;"><span>rename-item test.txt test2.txt
+</span></span></code></pre></div><h3 id="位置">位置</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e">#显示当前位置 pwd</span>
+</span></span><span style="display:flex;"><span>get-location
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#切换当前位置 cd</span>
+</span></span><span style="display:flex;"><span>set-location
+</span></span></code></pre></div><h3 id="其他常用">其他常用</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e">#命令行输出重定向 out-file filename 等同于 &gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#若不指定append则覆写</span>
+</span></span><span style="display:flex;"><span>get-childItem &gt; test.txt
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e">#测试文件是否存在，可加日期限定等 test-path</span>
+</span></span><span style="display:flex;"><span>test-path path
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e">#打印对象 write-host object</span>
+</span></span><span style="display:flex;"><span>write-host something
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e">#排序，可以按照指定属性排序 sort-object</span>
+</span></span><span style="display:flex;"><span>get-childitem | sort-object
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e">#查找 where-object 条件</span>
+</span></span><span style="display:flex;"><span>get-service | where-object {$_.Name <span style="color:#f92672">-Match</span> <span style="color:#e6db74">&#34;^Wp.*&#34;</span>}     
+</span></span></code></pre></div><h2 id="变量">变量</h2>
+<h3 id="基本操作">基本操作</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e">#创建</span>
+</span></span><span style="display:flex;"><span>$myvariable=1
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#修改</span>
+</span></span><span style="display:flex;"><span>$myvariable=2
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#删除</span>
+</span></span><span style="display:flex;"><span>$clear-variable myvariable
+</span></span></code></pre></div><h3 id="变量作用域">变量作用域</h3>
+<p>Powershell分为三种变量</p>
+<ul>
+<li>用户创建的变量 仅在当前窗口有效，关闭则消失</li>
+<li>自动变量 系统变量，不可更改，由PS维护</li>
+<li>首选项变量 默认值</li>
+</ul>
+<p><a href="https://www.yiibai.com/powershell/powershell-automatic-variables.html#article-start">自动变量列表</a></p>
+<h3 id="变量类型">变量类型</h3>
+<p>和python一样是弱类型的，变量间类型可以互换</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e">#创建数组</span>
+</span></span><span style="display:flex;"><span>$arr=1,2,3,4
+</span></span><span style="display:flex;"><span>$arr2=1..10
+</span></span><span style="display:flex;"><span>$arr=<span style="color:#e6db74">&#34;aa&#34;</span>,<span style="color:#e6db74">&#34;bb&#34;</span>
+</span></span><span style="display:flex;"><span>$arr=@()<span style="color:#75715e">#空数组</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#append数组</span>
+</span></span><span style="display:flex;"><span>$arr += 11
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#创建hash表</span>
+</span></span><span style="display:flex;"><span>$myhash=@{1=<span style="color:#e6db74">&#34;ok&#34;</span>;2=<span style="color:#e6db74">&#34;yes&#34;</span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#读取</span>
+</span></span><span style="display:flex;"><span>$myhash.1
+</span></span></code></pre></div><h3 id="运算符">运算符</h3>
+<p>同大多数编程语言一样</p>
+<p>特殊的是<a href="https://www.yiibai.com/powershell/powershell-comparison-operators.html#article-start">特殊运算符</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>$a=<span style="color:#e6db74">&#34;PowerShell&#34;</span>;$b=<span style="color:#e6db74">&#34;*Shell&#34;</span> 
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 比较运算符是-eq -nq</span>
+</span></span><span style="display:flex;"><span>$a <span style="color:#f92672">-eq</span> $b
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 匹配运算符-like+正则</span>
+</span></span><span style="display:flex;"><span>$a <span style="color:#f92672">-like</span> $b
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 包含运算符-contains+集合</span>
+</span></span><span style="display:flex;"><span>$c=<span style="color:#e6db74">&#34;PowerShell&#34;</span>,<span style="color:#e6db74">&#34;sh&#34;</span>
+</span></span><span style="display:flex;"><span>$c <span style="color:#f92672">-contains</span> $a
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#替换replace&lt;input&gt; &lt;operator&gt; &lt;original&gt; , &lt;substitute&gt;</span>
+</span></span><span style="display:flex;"><span>$c <span style="color:#f92672">-replace</span> <span style="color:#e6db74">&#34;sh&#34;</span>,<span style="color:#e6db74">&#34;zsh&#34;</span>
+</span></span></code></pre></div><h2 id="流程控制">流程控制</h2>
+<p>类似C语言</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e">#遍历对象，管道传输</span>
+</span></span><span style="display:flex;"><span>get-childitem  -Path <span style="color:#e6db74">&#39;D:&#39;</span> | foreach-object {write-host $_}
+</span></span></code></pre></div>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/c%E8%AF%AD%E8%A8%80%E5%86%99%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" data-tooltip="C语言写项目的注意事项" aria-label="下一篇: C语言写项目的注意事项">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="分享这个帖子">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+  
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="回到顶部">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2022 YuYoung. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/c%E8%AF%AD%E8%A8%80%E5%86%99%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" data-tooltip="C语言写项目的注意事项" aria-label="下一篇: C语言写项目的注意事项">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="分享这个帖子">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+  
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="回到顶部">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg" alt="作者的图片" />
+    
+    <h4 id="about-card-name">YuYoung</h4>
+    
+      <div id="about-card-bio">每天多进步一点</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        学生
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        杭州
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    <div id="cover" style="background-image:url('https://s1.ax1x.com/2022/04/09/LPwmee.jpg');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="https://yuyoung32.github.io/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+

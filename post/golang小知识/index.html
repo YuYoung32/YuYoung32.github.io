@@ -275,7 +275,9 @@ if (!doNotTrack) {
   <ul>
     <li><a href="#内建接口">内建接口</a>
       <ul>
-        <li></li>
+        <li><a href="#stringer">Stringer</a></li>
+        <li><a href="#error">error</a></li>
+        <li><a href="#read">Read</a></li>
       </ul>
     </li>
     <li><a href="#make和new的区别">Make和New的区别</a></li>
@@ -324,12 +326,18 @@ if (!doNotTrack) {
     <li><a href="#结构体嵌套">结构体嵌套</a></li>
     <li><a href="#运行时获取命令行参数">运行时获取命令行参数</a></li>
     <li><a href="#自动解引用">自动解引用</a></li>
+    <li><a href="#类型别名">类型别名</a>
+      <ul>
+        <li><a href="#基本介绍">基本介绍</a></li>
+        <li><a href="#使用区别">使用区别</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
 
 <h2 id="内建接口">内建接口</h2>
 <p>内建接口，builtin-interface，是go包内的接口，你可以实现它，这样go的官方库比如<code>fmt</code>在调用时就会使用你实现的方法。</p>
-<h4 id="stringer">Stringer</h4>
+<h3 id="stringer">Stringer</h3>
 <p>类似于Java的toString，打印自身信息，很多包如<code>fmt</code>通过这个打印信息。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Stringer</span> <span style="color:#66d9ef">interface</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">String</span>() <span style="color:#66d9ef">string</span>
@@ -353,7 +361,7 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 在pirint时会自动调用你自己实现的
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">z</span>)
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h4 id="error">error</h4>
+</span></span></code></pre></div><h3 id="error">error</h3>
 <p>error是一个接口类型，实现error接口的struct可以作为error返回，可以做到错误包含指定的信息。<code>fmt</code>在打印错误时也会调用这个。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#66d9ef">error</span> <span style="color:#66d9ef">interface</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Error</span>() <span style="color:#66d9ef">string</span>
@@ -390,7 +398,7 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// 输出
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 0 &lt;nil&gt;
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">// -1 my error
-</span></span></span></code></pre></div><h4 id="read">Read</h4>
+</span></span></span></code></pre></div><h3 id="read">Read</h3>
 <p><code>io.Reader</code> 接口有一个 <code>Read</code> 方法。<code>Read</code> 用数据填充给定的字节切片并返回填充的字节数和错误值。在遇到数据流的结尾时，它会返回一个 <code>io.EOF</code> 错误。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">T</span>) <span style="color:#a6e22e">Read</span>(<span style="color:#a6e22e">b</span> []<span style="color:#66d9ef">byte</span>) (<span style="color:#a6e22e">n</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>)
 </span></span></code></pre></div><p>以下例子展示了通过实现内建接口的Read方法，改变其他方法的实现形式。即改变了数据流。</p>
@@ -776,7 +784,7 @@ if (!doNotTrack) {
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#f92672">*</span><span style="color:#66d9ef">int</span> a;
 </span></span><span style="display:flex;"><span>a<span style="color:#f92672">=</span>(<span style="color:#f92672">*</span><span style="color:#66d9ef">int</span>)malloc(<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">int</span>))
 </span></span><span style="display:flex;"><span>printf(<span style="color:#e6db74">&#34;%d&#34;</span>,<span style="color:#f92672">*</span>a);
-</span></span></code></pre></div><p>而go对于使用type<strong>自定义的类型</strong>，可以做到自动取值，而<strong>内置类型不可以</strong></p>
+</span></span></code></pre></div><p>而go对于使用type<strong>自定义的类型</strong>，可以做到自动取值，而<strong>内置类型不可以</strong>，比如<code>*[]int</code>，切片指针就需要手动取值。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
 </span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">s</span> <span style="color:#66d9ef">struct</span> {
 </span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">a</span> <span style="color:#66d9ef">int</span>
@@ -808,6 +816,60 @@ if (!doNotTrack) {
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">	*/</span>
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>另外，函数的接收者作为自定义类型，也是能够实现自动解引用的，这时如果传入指针，则对接收者做出的修改将保存。</p>
+<h2 id="类型别名">类型别名</h2>
+<h3 id="基本介绍">基本介绍</h3>
+<p>Go定义类型别名有以下两种方式</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">//1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">MyType</span> = <span style="color:#a6e22e">Type</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//2
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">MyType</span> <span style="color:#a6e22e">Type</span>
+</span></span></code></pre></div><p>第一种方式是真正的起别名，第二种方式是定义了一个新的类型。</p>
+<p>第二种方式<code>MyType</code>本质上仍是<code>Type</code>，如下程序说明</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">MyType</span> = <span style="color:#a6e22e">Type</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">a</span> <span style="color:#a6e22e">MyType</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%T&#34;</span>, <span style="color:#a6e22e">a</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//输出Type
+</span></span></span></code></pre></div><p>而第二种方式则是创建了新的类型，如下程序说明</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">MyType</span> <span style="color:#a6e22e">Type</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">a</span> <span style="color:#a6e22e">MyType</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%T&#34;</span>, <span style="color:#a6e22e">a</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//输出MyType
+</span></span></span></code></pre></div><h3 id="使用区别">使用区别</h3>
+<p>只需记住以下几点</p>
+<ul>
+<li>
+<p>go具有包管理机制，所以不能在当前包定义其他包的类型的函数，因为别名本质上还是别的包的类型，不是新类型，所以需要在本包创建新的类型，将<code>type MyType = OtherPkg.Type</code>改为<code>type MyType OtherPkg.Type</code>即可。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;OtherPkg&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">MyType</span> = <span style="color:#a6e22e">OtherPkg</span>.<span style="color:#a6e22e">Type</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">m</span> <span style="color:#a6e22e">MyType</span>)<span style="color:#a6e22e">MyFunc</span>(){
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//无法在非局部类型 &#39;OtherPkg.Type&#39; 上定义新方法
+</span></span></span></code></pre></div></li>
+<li>
+<p>go具有强类型，所以两个包里即使相同的类型定义但是不能相等，需要类型转换或类型别名</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">///package other
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">other</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">ListNode</span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Val</span> 	 <span style="color:#66d9ef">int</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ListNode</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ListNode</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">///package main
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;other&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">ListNode</span> <span style="color:#a6e22e">other</span>.<span style="color:#a6e22e">ListNode</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">a</span> <span style="color:#a6e22e">ListNode</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">b</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ListNode</span> = <span style="color:#a6e22e">a</span>.<span style="color:#a6e22e">Next</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//出错，此ListNode是main.ListNode a.Next是other.ListNode
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>此时将<code>type ListNode other.ListNode</code>替换成<code>type ListNode = other.ListNode</code>，或者将<code> var b ListNode = a.Next</code>替换成<code> var b ListNode = (*other.ListNode)a.Next</code>。</p>
+</li>
+<li>
+<p>别名本质上还是原类型，所以在表现多态性质的时候不能是做两个类型</p>
+</li>
+</ul>
               
 
 

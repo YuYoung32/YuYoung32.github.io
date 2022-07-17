@@ -133,5 +133,15 @@
       <description></description>
     </item>
     
+    <item>
+      <title></title>
+      <link>https://yuyoung32.github.io/post/powersehll%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://yuyoung32.github.io/post/powersehll%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <description>常用cmdlet 常用命令
+常识  很多命令都是和Linux是一样的。ps命令也有自己的别名，标注在命令下方，查看当前所有别名get-alias 文件目录支持通配符*，加上-Include``-Exclude可以用于筛选目录下的项目 -Confirm运行前确认，-WhatIf只显示即将运行的操作但不会真的运行 万物皆是文件，目录操作时，如果不加-Recurse就只是操作了空目录  文件 #添加内容到文件 add-content filename content  add-content test.txt &amp;#34;hello&amp;#34; #替换文件内容 set-content filename content set-content test.txt &amp;#34;hi&amp;#34; #查看文件内容 get-content filename get-content test.txt #清空文件内容 clear-content filename clear-content test.txt  #拷贝文件 copy-item src des copy-item test.txt test2.txt #移动文件 move-item src des move-item test.txt des  #新建文件 new-item filename new-item test.txt #删除文件 remove-item filename remove-item test.txt  #重命名 rename-item oldname newname rename-item test.txt test2.txt 位置 #显示当前位置 pwd get-location #切换当前位置 cd set-location 其他常用 #命令行输出重定向 out-file filename 等同于 &amp;gt; #若不指定append则覆写 get-childItem &amp;gt; test.</description>
+    </item>
+    
   </channel>
 </rss>
