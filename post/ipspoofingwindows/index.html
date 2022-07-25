@@ -301,9 +301,9 @@ if (!doNotTrack) {
 <p>现在需要测试某软件网络包解析性能，需要模拟发出具有不同源IP和负载数据的UDP包，不同负载数据很容易做到，但是改变源IP则不简单。为了高性能以及方便的使用，需要这个程序使用C++编写并可以原生跑在Windows系统上。</p>
 <p>对于这种定制化需求，我们很容易想到使用socket编程，也就是使用raw socket。</p>
 <p>在通常情况下，创建socket和发送数据使用<code>Winsock2.h</code>里的这些函数：</p>
-<pre tabindex="0"><code>SOCKET sock = socket(AF_INET, type, protocol);
-sendto(sock, buff, sizeof(buff),flag, addr, sizeof(addr));
-</code></pre><p>其中type和protocol为对应关系如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>SOCKET sock <span style="color:#f92672">=</span> socket(AF_INET, type, protocol);
+</span></span><span style="display:flex;"><span>sendto(sock, buff, <span style="color:#66d9ef">sizeof</span>(buff),flag, addr, <span style="color:#66d9ef">sizeof</span>(addr));
+</span></span></code></pre></div><p>其中type和protocol为对应关系如下：</p>
 <table>
 <thead>
 <tr>
@@ -328,14 +328,14 @@ sendto(sock, buff, sizeof(buff),flag, addr, sizeof(addr));
 </table>
 <p>于是想到不指定socket类型和协议，即使用<code>raw socket</code>，这时type为<code>SOCK_RAW</code>对应的protocol为<code>IPPROTO_RAW</code>（当protocol为IPPROTO_RAW时，意味着系统将不自动添加IP头到数据段里），然后自己构造一个IP/UDP包放到buff里，再调用send函数发出。</p>
 <p>实现的关键函数如下：</p>
-<pre tabindex="0"><code>//创建raw socket
-SOCKET sock = WSASocket(AF_INET, SOCK_RAW, IPPROTO_RAW, NULL, 0, WSA_FLAG_OVERLAPPED);
-//设置IP_HDRINCL，拒绝系统自动添加IP头
-setsockopt(sock, IPPROTO_IP, IP_HDRINCL, (``char``*)&amp; flag, ``sizeof``(flag));
-//按照IP UDP填充buff，此处省略
-//发送
-sendto(sock, sendBuf, ``sizeof``(ipHeader) + ``sizeof``(tcpHeader));
-</code></pre><p>虽然以上代码可以在非server版的Windows上运行，且不会报任何错误，但是在任务管理器的网络一栏发送速率表现为0，并且Wireshark抓取不到任何包，只有高的CPU占用率。如果发送成功，应该会显示有较大的流量通过。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">//创建raw socket
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>SOCKET sock <span style="color:#f92672">=</span> WSASocket(AF_INET, SOCK_RAW, IPPROTO_RAW, NULL, <span style="color:#ae81ff">0</span>, WSA_FLAG_OVERLAPPED);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//设置IP_HDRINCL，拒绝系统自动添加IP头
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>setsockopt(sock, IPPROTO_IP, IP_HDRINCL, (<span style="color:#66d9ef">char</span><span style="color:#f92672">*</span>)<span style="color:#f92672">&amp;</span> flag, <span style="color:#66d9ef">sizeof</span>(flag));
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//按照IP UDP填充buff，此处省略
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//发送
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>sendto(sock, sendBuf, <span style="color:#66d9ef">sizeof</span>(ipHeader) <span style="color:#f92672">+</span> <span style="color:#66d9ef">sizeof</span>(tcpHeader));
+</span></span></code></pre></div><p>虽然以上代码可以在非server版的Windows上运行，且不会报任何错误，但是在任务管理器的网络一栏发送速率表现为0，并且Wireshark抓取不到任何包，只有高的CPU占用率。如果发送成功，应该会显示有较大的流量通过。</p>
 <p>原因微软为了安全原因进行了限制，具体见下图<a href="https://docs.microsoft.com/zh-cn/windows/win32/winsock/tcp-ip-raw-sockets-2">官网</a></p>
 <p><img src="https://yuyoung32.github.io/IPSpoofingWindows.assets/image2022-6-28_16-34-24.png" alt="原始套接字限制"></p>
 <p>表达的意思就是只有Windows Server可以使用raw发送自定义IP的包，<strong>普通版的Windows不能发自定义IP的包</strong>。可以看到Windows只有古早版本（Windows XP SP2之前)和server可以自由的使用raw socket。</p>
