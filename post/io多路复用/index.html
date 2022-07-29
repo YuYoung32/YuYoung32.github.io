@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    
+    <script type="application/ld+json">
+
+{  
+  "@context":"http://schema.org",
+  "@type":"Website",
+  "@id":"https:\/\/yuyoung32.github.io",
+  "author": {
+    "@type": "Person",
+    "name": "YuYoung",
+    
+    "image": "https://s1.ax1x.com/2022/04/09/LPwdFs.jpg"
+    
+  },
+  "name":"YuYoung的博客",
+  "description":"",
+  "url":"https:\/\/yuyoung32.github.io\/post\/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8\/",
+  "keywords":"[select, poll, epoll, libevent]"
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.96.0 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="YuYoung">
+<meta name="keywords" content="select, poll, epoll, libevent">
+<meta name="description" content="">
+
+
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SOCKET编程与复用">
+<meta name="twitter:title" content="SOCKET编程与复用">
+<meta property="og:url" content="https://yuyoung32.github.io/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/">
+<meta property="twitter:url" content="https://yuyoung32.github.io/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/">
+<meta property="og:site_name" content="YuYoung的博客">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:locale" content="zh-cn">
+
+  
+    <meta property="article:published_time" content="2022-07-20T10:47:56">
+  
+  
+    <meta property="article:modified_time" content="2022-07-20T10:47:56">
+  
+  
+  
+    
+      <meta property="article:section" content="网络编程">
+    
+  
+  
+    
+      <meta property="article:tag" content="epoll">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg">
+  <meta property="twitter:image" content="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg">
+
+
+
+
+
+  <meta property="og:image" content="https://s1.ax1x.com/2022/07/29/vPP4cn.png">
+  <meta property="twitter:image" content="https://s1.ax1x.com/2022/07/29/vPP4cn.png">
+
+
+    <title>SOCKET编程与复用</title>
+
+    <link rel="icon" href="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg">
+    
+
+    
+
+    <link rel="canonical" href="https://yuyoung32.github.io/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="https://yuyoung32.github.io/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6QCN1ZG6DB"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-6QCN1ZG6DB', { 'anonymize_ip': false });
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://yuyoung32.github.io/" aria-label="去首页">YuYoung的博客</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://yuyoung32.github.io/#about" aria-label="打开链接: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg" alt="作者的图片" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://yuyoung32.github.io/#about" aria-label="阅读有关作者的更多信息">
+          <img class="sidebar-profile-picture" src="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg" alt="作者的图片" />
+        </a>
+        <h4 class="sidebar-profile-name">YuYoung</h4>
+        
+          <h5 class="sidebar-profile-bio">每天多进步一点</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">首页</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">标签</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">归档</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">关于</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/yuyoung32" target="_blank" rel="noopener" title="GitHub">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="5"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      SOCKET编程与复用
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2022-07-20T10:47:56&#43;08:00">
+        
+  
+  
+  
+  
+    2022年7月20日
+  
+
+      </time>
+    
+    
+  
+  
+    <span>发布在</span>
+    
+      <a class="category-link" href="https://yuyoung32.github.io/categories/%e7%bd%91%e7%bb%9c%e7%bc%96%e7%a8%8b">网络编程</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h1 id="table-of-contents">目录</h1>
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#socket编程">SOCKET编程</a>
+      <ul>
+        <li><a href="#tcp">TCP</a></li>
+        <li><a href="#udp">UDP</a></li>
+      </ul>
+    </li>
+    <li><a href="#io复用">IO复用</a>
+      <ul>
+        <li><a href="#fork">fork</a></li>
+        <li><a href="#select">select</a></li>
+        <li><a href="#epoll">epoll</a></li>
+        <li><a href="#libevent">libevent</a></li>
+      </ul>
+    </li>
+    <li><a href="#对比">对比</a></li>
+  </ul>
+</nav>
+
+<h2 id="socket编程">SOCKET编程</h2>
+<h3 id="tcp">TCP</h3>
+<h4 id="流程图">流程图</h4>
+<p><img src="https://yuyoung32.github.io/IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8.assets/QQ%E5%9B%BE%E7%89%8720220726153211.png" alt="TCP通信过程"></p>
+<h4 id="关键函数">关键函数</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> fd <span style="color:#f92672">=</span> socket(AF_INET, SOCK_STREAM, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">setsockopt</span>(<span style="color:#66d9ef">int</span> sockfd, <span style="color:#66d9ef">int</span> level, <span style="color:#66d9ef">int</span> optname, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>optval, socklen_t optlen);
+</span></span><span style="display:flex;"><span>setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, <span style="color:#f92672">&amp;</span>flag, <span style="color:#66d9ef">sizeof</span>(flag));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>bind(fd, local_addr, <span style="color:#66d9ef">sizeof</span>(local_addr));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>conn_fd <span style="color:#f92672">=</span> accept(fd, backlog);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>recv(conn_fd, buff, <span style="color:#66d9ef">sizeof</span>(buff), <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>send(conn_fd, buff, <span style="color:#66d9ef">sizeof</span>(buff), <span style="color:#ae81ff">0</span>);
+</span></span></code></pre></div><h3 id="udp">UDP</h3>
+<h4 id="流程图-1">流程图</h4>
+<p><img src="https://yuyoung32.github.io/IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8.assets/udp.png" alt="IO多路复用"></p>
+<h4 id="关键函数-1">关键函数</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> fd <span style="color:#f92672">=</span> socket(AF_INET, SOCK_DGRAM, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>bind(fd, local_addr, <span style="color:#66d9ef">sizeof</span>(local_addr));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//和recv的区别是后两个参数是出参，能够获得IP地址，供sendto使用
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>recvfrom(fd, buff, <span style="color:#66d9ef">sizeof</span>(buff), <span style="color:#ae81ff">0</span>, client_addr, <span style="color:#66d9ef">sizeof</span>(client_addr));
+</span></span><span style="display:flex;"><span>sendto(fd, buff, <span style="color:#66d9ef">sizeof</span>(buff), <span style="color:#ae81ff">0</span>, client_addr, <span style="color:#66d9ef">sizeof</span>(client_addr));
+</span></span></code></pre></div><h2 id="io复用">IO复用</h2>
+<p>一般来说，一个进程只处理一个连接。但这样显然不合理，所以需要一个进程通过某种方式处理多个连接。就是说一个进程同时管控多个连接socket，同时处理多个连接的业务。Linux系统下可以通过以下几种方式实现。</p>
+<h3 id="fork">fork</h3>
+<h4 id="关键函数-2">关键函数</h4>
+<p>pid会在子进程中为0，父进程中不为0。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>pid_t pid <span style="color:#f92672">=</span> fork();
+</span></span></code></pre></div><h4 id="原理浅析">原理浅析</h4>
+<p>就是对每个连接新建子进程，相当于golang的go func{}()，每次accept后进行fork，让子进程处理连接。</p>
+<h4 id="代码示例">代码示例</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">//接收到连接...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>pid <span style="color:#f92672">=</span> fork();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span>(pid <span style="color:#f92672">!=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">continue</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//对accept_socket处理...
+</span></span></span></code></pre></div><h3 id="select">select</h3>
+<h4 id="关键函数-3">关键函数</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/select.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">select</span>(<span style="color:#66d9ef">int</span> nfds, fd_set <span style="color:#f92672">*</span><span style="color:#66d9ef">restrict</span> readfds,
+</span></span><span style="display:flex;"><span>           fd_set <span style="color:#f92672">*</span><span style="color:#66d9ef">restrict</span> writefds, fd_set <span style="color:#f92672">*</span><span style="color:#66d9ef">restrict</span> exceptfds,
+</span></span><span style="display:flex;"><span>           <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">timeval</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">restrict</span> timeout);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">FD_CLR</span>(<span style="color:#66d9ef">int</span> fd, fd_set <span style="color:#f92672">*</span>set);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span>  <span style="color:#a6e22e">FD_ISSET</span>(<span style="color:#66d9ef">int</span> fd, fd_set <span style="color:#f92672">*</span>set);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">FD_SET</span>(<span style="color:#66d9ef">int</span> fd, fd_set <span style="color:#f92672">*</span>set);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">FD_ZERO</span>(fd_set <span style="color:#f92672">*</span>set);
+</span></span></code></pre></div><h4 id="原理浅析-1">原理浅析</h4>
+<p>文档<a href="https://man7.org/linux/man-pages/man2/select.2.html">select(2) - Linux manual page (man7.org)</a>，函数原型：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">select</span>(<span style="color:#66d9ef">int</span> nfds, 				<span style="color:#75715e">//三个fd_set里最大的数量
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            fd_set <span style="color:#f92672">*</span>readfds, 		 <span style="color:#75715e">//判断读是否阻塞的fd
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            fd_set <span style="color:#f92672">*</span>writefds,		 <span style="color:#75715e">//判断写是否阻塞的fd
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            fd_set <span style="color:#f92672">*</span>exceptfds,  	 <span style="color:#75715e">//判断是否有异常的fd
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">timeval</span> <span style="color:#f92672">*</span>timeout	 <span style="color:#75715e">//阻塞超时
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>           );
+</span></span></code></pre></div><p>传入的socket应该是非阻塞的，可使用<code>fcntl</code>文件控制进行非阻塞处理。</p>
+<p>fd_set结构如下，是一个有32个ULONG（32bit）的数组，是一个连续的32<em>32位=1024位的空间，可以把它看作一个1024×1的超长向量。<strong>每一位</strong>都能与一打开的文件句柄(socket、文件、管道、设备等)建立联系（因此8</em>sizeof(fd_set)是最大支持的设备数），建立联系由<code>FD_SET</code>完成，当调用<code>select()</code>时，由内核根据IO状态修改fd_set的内容，程序员根据此变化来判断哪个句柄可读。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#define __FD_SETSIZE	1024
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> fds_bits[__FD_SETSIZE <span style="color:#f92672">/</span> (<span style="color:#ae81ff">8</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">long</span>))];
+</span></span><span style="display:flex;"><span>} __kernel_fd_set;
+</span></span></code></pre></div><p>为说明方便，取fd_set长度为1字节8bit，fd_set中的每一bit可以对应一个文件描述符fd。则1字节长的fd_set最大可以对应8个fd。</p>
+<ol>
+<li>执行fd_set set; FD_ZERO(&amp;set); 则set用位表示是0000,0000。</li>
+<li>若fd＝5，执行FD_SET(fd,&amp;set); 后set变为0001,0000(第5位置为1)</li>
+<li>若再加入fd＝2，fd=1，则set变为0001,0011</li>
+<li>执行 select(6,&amp;set,0,0,0) 阻塞等待</li>
+<li>若fd=1，fd=2上都发生可读事件，则select返回，此时set变为0000,0011。注意：没有事件发生的fd=5被清空。</li>
+</ol>
+<p>select会循环遍历它所监测的fd_set（一组文件描述符(fd)的集合）内的所有文件描述符对应的驱动程序的poll函数。驱动程序提供的<strong>poll函数</strong>首先会将调用select的用户进程插入到该设备驱动对应资源的等待队列(如读/写等待队列)，然后返回一个bitmask告诉select当前资源哪些可用。当select循环遍历完所有fd_set内指定的文件描述符对应的poll函数后，如果没有一个资源可用(即没有一个文件可供操作)，则select让该进程睡眠，一直等到有资源可用为止，进程被唤醒(或者timeout)继续往下执行。</p>
+<p>所谓<strong>poll函数</strong>就是把current（当前进程）挂到设备的等待队列，不同设备有不同等待队列，如tcp_poll的等待队列是sk-&gt;sk_sleep（把进程挂到等待队列中并不代表进程已睡眠）。在设备收到一条消息（网络设备）或填写完文件数据（磁盘设备）后，会唤醒设备等待队列上睡眠的进程，这时current便被唤醒。</p>
+<p>基于上面的讨论，可以得出select模型的特点：</p>
+<ol>
+<li>可监控的文件描述符个数取决与<code>sizeof(fd_set)</code>的值，Linux上是1024。</li>
+<li>将fd加入select监控集的同时，还要再使用一个数据结构array保存放到select监控集中的fd。因为select后没有事件发生的socket对应的bit会设为0，需要从array里拿之前存的socket的值 通过<code>FD_ISSET</code>判断是否有事件发生（那一位是否为1）。</li>
+<li>可见select模型必须在select前循环array（加fd，取maxfd），select返回后循环array（<code>FD_ISSET</code>判断是否有事件发生）。</li>
+</ol>
+<h4 id="代码示例-1">代码示例</h4>
+<p>一个使用select的TCP server简化部分代码后如下：</p>
+<p><img src="https://yuyoung32.github.io/IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8.assets/061f3e709b3aa81c786e1a762954ec73.png" alt="img"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//变量定义，部分省略
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">int</span> ret <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> accept_fd <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> socket_fd <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//用于保存所有fd
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">int</span> accept_fds[FD_SIZE] <span style="color:#f92672">=</span> { <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> curpos <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> maxpos <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> backlog <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> max_fd <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//用于select
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	fd_set fd_sets;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> events <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//创建socket
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	socket_fd <span style="color:#f92672">=</span> socket(AF_INET, SOCK_STREAM, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//设置NON_BLOCK和bind地址，省略...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//skip...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//listen
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	ret <span style="color:#f92672">=</span> listen(socket_fd, backlog);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	max_fd <span style="color:#f92672">=</span> socket_fd;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> FD_SIZE; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>		accept_fds[i] <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> (;;) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		FD_ZERO(<span style="color:#f92672">&amp;</span>fd_sets); <span style="color:#75715e">//清空sets
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		FD_SET(socket_fd, <span style="color:#f92672">&amp;</span>fd_sets); <span style="color:#75715e">//将socket_fd 添加到sets
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> k <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; k <span style="color:#f92672">&lt;</span> maxpos; k<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> (accept_fds[k] <span style="color:#f92672">!=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> (accept_fds[k] <span style="color:#f92672">&gt;</span> max_fd) {
+</span></span><span style="display:flex;"><span>					max_fd <span style="color:#f92672">=</span> accept_fds[k];
+</span></span><span style="display:flex;"><span>				}
+</span></span><span style="display:flex;"><span>				FD_SET(accept_fds[k], <span style="color:#f92672">&amp;</span>fd_sets); <span style="color:#75715e">//继续向sets添加fd
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			}
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">//通过select找到是否有可写的
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		events <span style="color:#f92672">=</span> select(max_fd <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, <span style="color:#f92672">&amp;</span>fd_sets, NULL, NULL, NULL);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//经过select，不满足监控条件（可读可写等）的socket对应的那个bit位设为0，否则不变为1（通过此操作与array里存的所有socket进行对比得到是否可用）
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> (events <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">//error
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (events <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">//timeout
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">continue</span>;
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (events) {
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> (FD_ISSET(socket_fd, <span style="color:#f92672">&amp;</span>fd_sets)) { <span style="color:#75715e">// 如果来的是新连接
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                 <span style="color:#75715e">//分配一个新的，并存入array结构
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				<span style="color:#66d9ef">int</span> a <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">for</span> (; a <span style="color:#f92672">&lt;</span> FD_SIZE; a<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">if</span> (accept_fds[a] <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {
+</span></span><span style="display:flex;"><span>						curpos <span style="color:#f92672">=</span> a;
+</span></span><span style="display:flex;"><span>						<span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>					}
+</span></span><span style="display:flex;"><span>				}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> (a <span style="color:#f92672">==</span> FD_SIZE) {
+</span></span><span style="display:flex;"><span>					printf(<span style="color:#e6db74">&#34;the connection is full!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">continue</span>;
+</span></span><span style="display:flex;"><span>				}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">int</span> addr_len <span style="color:#f92672">=</span> <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">sockaddr_in</span>);
+</span></span><span style="display:flex;"><span>				accept_fd <span style="color:#f92672">=</span> accept(socket_fd, (<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">sockaddr</span><span style="color:#f92672">*</span>)<span style="color:#f92672">&amp;</span>remote_addr, <span style="color:#f92672">&amp;</span>addr_len); <span style="color:#75715e">//创建一个新连接的fd
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">int</span> flags <span style="color:#f92672">=</span> fcntl(accept_fd, F_GETFL, <span style="color:#ae81ff">0</span>); <span style="color:#75715e">//取出新连接的 fd 的相关选项
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				fcntl(accept_fd, F_SETFL, flags <span style="color:#f92672">|</span> O_NONBLOCK); <span style="color:#75715e">//设置为非阻塞
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>                 <span style="color:#75715e">//存入array结构
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				accept_fds[curpos] <span style="color:#f92672">=</span> accept_fd;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">//修改maxpos和max_fd，省略...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> maxpos; j<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> ((accept_fds[j] <span style="color:#f92672">!=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">&amp;&amp;</span> FD_ISSET(accept_fds[j], <span style="color:#f92672">&amp;</span>fd_sets)) { <span style="color:#75715e">//有事件时
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					printf(<span style="color:#e6db74">&#34;accept event :%d, accept_fd: %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, j, accept_fds[j]);
+</span></span><span style="display:flex;"><span>                      <span style="color:#75715e">//逻辑处理部分，例如发送与接收，部分省略...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>					<span style="color:#66d9ef">char</span> in_buf[MESSAGE_SIZE];
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">int</span> ret <span style="color:#f92672">=</span> recv(accept_fds[j], <span style="color:#f92672">&amp;</span>in_buf, MESSAGE_SIZE, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>					send(accept_fds[j], (<span style="color:#66d9ef">void</span><span style="color:#f92672">*</span>)in_buf, MESSAGE_SIZE, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>				}
+</span></span><span style="display:flex;"><span>			}<span style="color:#75715e">//end for
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		}<span style="color:#75715e">//end if events != 0
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	}<span style="color:#75715e">//end for
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//关闭socket，省略...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="epoll">epoll</h3>
+<h4 id="关键函数-4">关键函数</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/epoll.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">epoll_create</span>(<span style="color:#66d9ef">int</span> size);
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">epoll_wait</span>(<span style="color:#66d9ef">int</span> epfd, <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">epoll_event</span> <span style="color:#f92672">*</span>events,
+</span></span><span style="display:flex;"><span>                      <span style="color:#66d9ef">int</span> maxevents, <span style="color:#66d9ef">int</span> timeout);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">epoll_ctl</span>(<span style="color:#66d9ef">int</span> epfd, <span style="color:#66d9ef">int</span> op, <span style="color:#66d9ef">int</span> fd, <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">epoll_event</span> <span style="color:#f92672">*</span>event);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//op 操作模式
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>EPOLL_CTL_ADD
+</span></span><span style="display:flex;"><span>EPOLL_CTL_MOD
+</span></span><span style="display:flex;"><span>EPOLL_CTL_DEL
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//epoll_event 事件
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">union</span> <span style="color:#a6e22e">epoll_data</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span>        <span style="color:#f92672">*</span>ptr;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span>          fd;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">uint32_t</span>     u32;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">uint64_t</span>     u64;
+</span></span><span style="display:flex;"><span>} epoll_data_t;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">epoll_event</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">uint32_t</span>     events;      <span style="color:#75715e">/* Epoll events */</span>
+</span></span><span style="display:flex;"><span>    epoll_data_t data;        <span style="color:#75715e">/* User data variable */</span>
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//Epoll events
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>EPOLLIN     <span style="color:#75715e">//read
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>EPOLLOUT    <span style="color:#75715e">//write
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>EPOLLRDHUP  
+</span></span><span style="display:flex;"><span>EPOLLPRI
+</span></span><span style="display:flex;"><span>EPOLLERR
+</span></span><span style="display:flex;"><span>EPOLLHUP
+</span></span><span style="display:flex;"><span>EPOLLET
+</span></span><span style="display:flex;"><span>EPOLLONESHOT
+</span></span><span style="display:flex;"><span>EPOLLWAKEUP
+</span></span><span style="display:flex;"><span>EPOLLEXCLUSIVE 
+</span></span></code></pre></div><h4 id="原理浅析-2">原理浅析</h4>
+<h5 id="两个重要成员">两个重要成员</h5>
+<p>当某一进程调用epoll_create方法时，Linux内核会创建一个eventpoll结构体，这个结构体中有两个成员与epoll的使用密切相关：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">eventpoll</span> {
+</span></span><span style="display:flex;"><span>　　...
+</span></span><span style="display:flex;"><span>　　<span style="color:#75715e">/*红黑树的根节点，这棵树中存储着所有添加到epoll中的事件，
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">　　也就是这个epoll监控的事件*/</span>
+</span></span><span style="display:flex;"><span>　　<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">rb_root_cached</span> rbr;
+</span></span><span style="display:flex;"><span>　　<span style="color:#75715e">/*双向链表rdllist保存着将要通过epoll_wait返回给用户的、满足条件的事件*/</span>
+</span></span><span style="display:flex;"><span>　　<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">list_head</span> rdllist;
+</span></span><span style="display:flex;"><span>　　...
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>在调用<code>epoll_create</code>时，内核除了帮我们在epoll文件系统里建了个file结点，在内核cache里建了个红黑树用于存储以后epoll_ctl传来的socket外，还会再建立一个rdllist双向链表，用于存储准备就绪的事件。当epoll_wait调用时，仅仅观察这个rdllist双向链表里有没有数据即可。有数据就返回，没有数据就sleep，等到timeout时间到后即使链表没数据也返回。这是<code>epoll_wait</code>高效的原因。</p>
+<p>所有添加到epoll中的事件都会与设备(如网卡)驱动程序建立回调关系，也就是说相应事件的发生时会调用这里的回调方法。这个回调方法在内核中叫做<code>ep_poll_callback</code>，它会把这样的事件放到上面的rdllist双向链表中。</p>
+<p>当调用<code>epoll_wait</code>检查是否有发生事件的连接时，只是检查eventpoll对象中的rdllist双向链表是否有epitem元素而已，如果rdllist链表不为空，则这里的事件复制到用户态内存（使用共享内存mmap提高效率）中，同时将事件数量返回给用户。因此<code>epoll_wait</code>效率非常高。<code>epoll_ctl</code>在向epoll对象中添加、修改、删除事件时，从rbr红黑树中查找事件也非常快，也就是说epoll是非常高效的。</p>
+<p><img src="https://yuyoung32.github.io/IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8.assets/687474703a2f2f7374617469632e6f70656e2d6f70656e2e636f6d2f6c69622f75706c6f6164496d672f32303134303931312f32303134303931313130333833345f3133332e6a7067.jpeg" alt="epoll原理"></p>
+<p>过程总结</p>
+<ul>
+<li>epoll主要使用<strong>一个红黑树</strong>，<strong>一个准备就绪句柄的链表</strong>，就帮我们解决了大并发下的socket处理问题。</li>
+<li>执行<code>epoll_create()</code>时，创建了红黑树和就绪链表；</li>
+<li>执行<code>epoll_ctl()</code>时，如果增加socket句柄，则检查在红黑树中是否存在，存在立即返回，不存在则添加到树干上，然后向内核注册回调函数，用于当中断事件来临时向准备就绪链表中插入数据；</li>
+<li>执行<code>epoll_wait()</code>时立刻返回准备就绪链表里的数据即可。</li>
+</ul>
+<p><img src="https://yuyoung32.github.io/IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8.assets/image-20220727105451658.png" alt="过程"></p>
+<h5 id="触发模式">触发模式</h5>
+<ul>
+<li>ET模式（边缘触发）只有数据到来才触发，不管缓存区中是否还有数据，缓冲区剩余未读尽的数据不会导致epoll_wait返回，相当于是select的加强版</li>
+<li>LT 模式（水平触发，默认）只要有数据都会触发，缓冲区剩余未读尽的数据会再次导致epoll_wait返回</li>
+</ul>
+<p>EPOLLET触发模式的好处</p>
+<p>  如果采用EPOLLLT模式的话，系统中一旦有大量的不需要读写的就绪文件描述符，它们每次调用epoll_wait都会返回，这样会大大降低处理程序检索自己关心的就绪文件描述符的效率.。而采用EPOLLET这种边缘触发模式的话，当被监控的文件描述符上有可读写事件发生时，epoll_wait()会通知处理程序去读写。如果这次没有把数据全部读写完(如读写缓冲区太小)，那么下次调用epoll_wait()时，它不会通知你，也就是<strong>它只会通知一次</strong>，直到该文件描述符上出现第二次可读写事件才会通知。这种模式比水平触发效率高，系统不会充斥大量的不关心的就绪文件描述符。</p>
+<h4 id="代码示例-2">代码示例</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> ret <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> socket_fd <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> accept_fd <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> curpos <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> backlog <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> flag <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> flags;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">char</span> in_buf[MESSAGE_SIZE] <span style="color:#f92672">=</span> { <span style="color:#ae81ff">0</span>, };
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">sockaddr_in</span> local_addr, remote_addr;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> epoll_fd;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">epoll_event</span> ev, events[MAX_EVENTS];
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> event_number;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//创建socket，设置NON_BLOCK，设置opt，bind IP, 开启listen 已省略
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	epoll_fd <span style="color:#f92672">=</span> epoll_create(<span style="color:#ae81ff">256</span>);
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//添加侦听socket，水平触发确保能接收到
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	ev.events <span style="color:#f92672">=</span> EPOLLIN;
+</span></span><span style="display:flex;"><span>	ev.data.fd <span style="color:#f92672">=</span> socket_fd;
+</span></span><span style="display:flex;"><span>	epoll_ctl(epoll_fd, EPOLL_CTL_ADD, socket_fd, <span style="color:#f92672">&amp;</span>ev);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//loop
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> (;;) {
+</span></span><span style="display:flex;"><span>		event_number <span style="color:#f92672">=</span> epoll_wait(epoll_fd, events, MAX_EVENTS, TIMEOUT);
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> event_number; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">//该空闲socket是侦听socket
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">if</span> (events[i].data.fd <span style="color:#f92672">==</span> socket_fd) {
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">//侦听socket空闲，连接新的
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				socklen_t addr_len <span style="color:#f92672">=</span> <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">sockaddr_in</span>);
+</span></span><span style="display:flex;"><span>				accept_fd <span style="color:#f92672">=</span> accept(socket_fd, (<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">sockaddr</span><span style="color:#f92672">*</span>)<span style="color:#f92672">&amp;</span>remote_addr, <span style="color:#f92672">&amp;</span>addr_len);
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">//设置非阻塞
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				flags <span style="color:#f92672">=</span> fcntl(accept_fd, F_GETFL, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>				fcntl(accept_fd, F_SETLK, flags <span style="color:#f92672">|</span> O_NONBLOCK);
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">//添加新的socket到epoll里
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				ev.events <span style="color:#f92672">=</span> EPOLLIN <span style="color:#f92672">|</span> EPOLLET;
+</span></span><span style="display:flex;"><span>				ev.data.fd <span style="color:#f92672">=</span> accept_fd;
+</span></span><span style="display:flex;"><span>				epoll_ctl(epoll_fd, EPOLL_CTL_ADD, accept_fd, <span style="color:#f92672">&amp;</span>ev);
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>             <span style="color:#75715e">//判断事件类型
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (events[i].events <span style="color:#f92672">&amp;</span> EPOLLIN) {
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">//该空闲socket是侦听socket
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                  <span style="color:#75715e">//逻辑处理
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                  ret <span style="color:#f92672">=</span> recv(events[i].data.fd, (<span style="color:#66d9ef">void</span><span style="color:#f92672">*</span>)in_buf, MESSAGE_SIZE, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	printf(<span style="color:#e6db74">&#34;quit server...</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>	close(socket_fd);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="libevent">libevent</h3>
+<p>是一个跨平台的异步事件处理库。对于Linux，其底层仍使用的是select、poll、epoll。</p>
+<h2 id="对比">对比</h2>
+<ol>
+<li>select需要把bitmask从用户态和内核态之间来回拷贝，耗费资源多。epoll使用mmap避免了这一过程，</li>
+<li>select无差别遍历所有文件描述符，而epoll使用回调函数让文件描述符主动通知。</li>
+</ol>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-tooltip="webRTC学习笔记" aria-label="下一篇: webRTC学习笔记">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/ipspoofingwindows/" data-tooltip="IP spoofing 在Windows上的实践" aria-label="上一篇: IP spoofing 在Windows上的实践">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="分享这个帖子">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+  
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="回到顶部">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2022 YuYoung. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-tooltip="webRTC学习笔记" aria-label="下一篇: webRTC学习笔记">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/ipspoofingwindows/" data-tooltip="IP spoofing 在Windows上的实践" aria-label="上一篇: IP spoofing 在Windows上的实践">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="分享这个帖子">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+  
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="回到顶部">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg" alt="作者的图片" />
+    
+    <h4 id="about-card-name">YuYoung</h4>
+    
+      <div id="about-card-bio">每天多进步一点</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        学生
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        杭州
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    <div id="cover" style="background-image:url('https://s1.ax1x.com/2022/04/09/LPwmee.jpg');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="https://yuyoung32.github.io/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+

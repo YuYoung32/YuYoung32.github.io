@@ -6,7 +6,25 @@
     <description>Recent content on YuYoung的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 25 Jun 2022 13:31:10 +0800</lastBuildDate><atom:link href="https://yuyoung32.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 29 Jul 2022 12:51:14 +0800</lastBuildDate><atom:link href="https://yuyoung32.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>webRTC学习笔记</title>
+      <link>https://yuyoung32.github.io/post/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Fri, 29 Jul 2022 12:51:14 +0800</pubDate>
+      
+      <guid>https://yuyoung32.github.io/post/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SOCKET编程与复用</title>
+      <link>https://yuyoung32.github.io/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</link>
+      <pubDate>Wed, 20 Jul 2022 10:47:56 +0800</pubDate>
+      
+      <guid>https://yuyoung32.github.io/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>IP spoofing 在Windows上的实践</title>
       <link>https://yuyoung32.github.io/post/ipspoofingwindows/</link>
