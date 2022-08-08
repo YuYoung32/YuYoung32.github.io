@@ -286,8 +286,8 @@ if (!doNotTrack) {
 <h3 id="原理">原理</h3>
 <p><a href="https://segmentfault.com/a/1190000019722037">go-micro原理</a></p>
 <p><a href="https://segmentfault.com/a/1190000019768975">broker原理</a></p>
-<p><img src="./Go-micro%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/bVbuULu.png" alt="整体关系"></p>
-<p><img src="./Go-micro%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/bVbvBcY.png" alt="相互关系"></p>
+<p><img src="https://yuyoung32.github.io/Go-micro%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/bVbuULu.png" alt="整体关系"></p>
+<p><img src="https://yuyoung32.github.io/Go-micro%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/bVbvBcY.png" alt="相互关系"></p>
 <p>Service通过register注册到服务中心，Client通过Selector模块选择Service并进行负载均衡，从注册中心拿到服务节点然后通过节点信息通过Transport定义的通信协议来进行通信。</p>
 <p><strong>详细介绍</strong></p>
 <p>整个Go Micro 都是有这8个interface构成的。</p>
