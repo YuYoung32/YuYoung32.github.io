@@ -51,7 +51,9 @@
   
   
     
-      <meta property="article:section" content="语言学习">
+      <meta property="article:section" content="Golang">
+    
+      <meta property="article:section" content="语言律师">
     
   
   
@@ -260,7 +262,9 @@ if (!doNotTrack) {
   
     <span>发布在</span>
     
-      <a class="category-link" href="https://yuyoung32.github.io/categories/%e8%af%ad%e8%a8%80%e5%ad%a6%e4%b9%a0">语言学习</a>
+      <a class="category-link" href="https://yuyoung32.github.io/categories/golang">Golang</a>, 
+    
+      <a class="category-link" href="https://yuyoung32.github.io/categories/%e8%af%ad%e8%a8%80%e5%be%8b%e5%b8%88">语言律师</a>
     
   
 
@@ -461,7 +465,7 @@ if (!doNotTrack) {
 <p>**重要：**make分配和初始化类型，返回的是类型本身（他们本身就是指针）；new分配这种类型的0值的空间，并返回一个指针指向这块区域，返回的是指针</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">a</span><span style="color:#f92672">:=</span>new([]<span style="color:#66d9ef">int</span>)
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">b</span><span style="color:#f92672">:=</span>make([]<span style="color:#66d9ef">int</span>,<span style="color:#ae81ff">0</span>)
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%d %d&#34;</span>,len(<span style="color:#a6e22e">a</span>),len(<span style="color:#f92672">*</span><span style="color:#a6e22e">b</span>)) <span style="color:#75715e">//b需要取值
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%d %d&#34;</span>,len(<span style="color:#f92672">*</span><span style="color:#a6e22e">a</span>),len(<span style="color:#a6e22e">b</span>)) <span style="color:#75715e">//a需要取值
 </span></span></span></code></pre></div></li>
 </ul>
 </li>
@@ -650,6 +654,7 @@ if (!doNotTrack) {
 <p>首先需要make，var出来的不可以使用</p>
 <p>添加直接<code>m[k]=v</code>即可，不存在则创建，存在则修改</p>
 <p>删除<code>delete(m,k)</code>，不存在则不报错，存在则删除</p>
+<p>查找<code>value, ok = m[k]</code>，若不存在则ok为false，value为默认值</p>
 <h3 id="原理">原理</h3>
 <p>大致流程：传入key经过hash后得到值，根据值找map里的buckets（bmap切片）会找到里面的一个bmap，再根据hash值的高8位寻找这个bmap里的topbits获得索引后匹配keys和elems</p>
 <p><img src="Golang%E5%B0%8F%E7%9F%A5%E8%AF%86.assets/1460000039101407.png" alt="http://cdn.tigerb.cn/20201217165551.png"></p>

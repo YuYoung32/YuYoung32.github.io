@@ -6,7 +6,16 @@
     <description>Recent content in Tags on YuYoung的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 29 Jul 2022 12:51:14 +0800</lastBuildDate><atom:link href="https://yuyoung32.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 09 Aug 2022 23:25:36 +0800</lastBuildDate><atom:link href="https://yuyoung32.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>c&#43;&#43;</title>
+      <link>https://yuyoung32.github.io/tags/c&#43;&#43;/</link>
+      <pubDate>Tue, 09 Aug 2022 23:25:36 +0800</pubDate>
+      
+      <guid>https://yuyoung32.github.io/tags/c&#43;&#43;/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>RTC</title>
       <link>https://yuyoung32.github.io/tags/rtc/</link>
@@ -22,15 +31,6 @@
       <pubDate>Wed, 20 Jul 2022 10:47:56 +0800</pubDate>
       
       <guid>https://yuyoung32.github.io/tags/epoll/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>C&#43;&#43;</title>
-      <link>https://yuyoung32.github.io/tags/c&#43;&#43;/</link>
-      <pubDate>Sat, 25 Jun 2022 13:31:10 +0800</pubDate>
-      
-      <guid>https://yuyoung32.github.io/tags/c&#43;&#43;/</guid>
       <description></description>
     </item>
     

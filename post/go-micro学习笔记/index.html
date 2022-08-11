@@ -288,7 +288,7 @@ if (!doNotTrack) {
 <p><a href="https://segmentfault.com/a/1190000019768975">broker原理</a></p>
 <p><img src="https://yuyoung32.github.io/Go-micro%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/bVbuULu.png" alt="整体关系"></p>
 <p><img src="https://yuyoung32.github.io/Go-micro%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/bVbvBcY.png" alt="相互关系"></p>
-<p>Service通过register注册到服务中心，Client通过Selector模块选择Service并进行负载均衡，从注册中心拿到服务节点然后通过节点信息通过Transport定义的通信协议来进行通信。</p>
+<p><code>Service</code>通过<code>Register</code>注册到服务中心，<code>Client</code>通过<code>Selector</code>模块选择<code>Service</code>并进行负载均衡，从注册中心拿到服务节点然后通过节点信息通过<code>Transport</code>定义的通信协议来进行通信。</p>
 <p><strong>详细介绍</strong></p>
 <p>整个Go Micro 都是有这8个interface构成的。</p>
 <ul>
@@ -303,7 +303,7 @@ if (!doNotTrack) {
 </ul>
 <h3 id="操作">操作</h3>
 <p>使用<code>micro new</code>创建项目</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span> new命令：
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>new命令：
 </span></span><span style="display:flex;"><span>   --namespace <span style="color:#e6db74">&#34;go.micro&#34;</span>          命名空间（首部）e.g com.example
 </span></span><span style="display:flex;"><span>   --type <span style="color:#e6db74">&#34;srv&#34;</span>                    服务类型 e.g api, fnc, srv, web
 </span></span><span style="display:flex;"><span>   --fqdn   					   全限定域名 服务的全名称包括命名空间和别名 e.g com.example.srv.service <span style="color:#f92672">(</span>defaults to namespace.type.alias<span style="color:#f92672">)</span>
