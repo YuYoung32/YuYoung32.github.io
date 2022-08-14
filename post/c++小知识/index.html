@@ -277,9 +277,13 @@ if (!doNotTrack) {
               <h1 id="table-of-contents">目录</h1>
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#左值右值和左值右值引用">左值右值和左值右值引用</a></li>
+    <li><a href="#左右值和左右值引用">左右值和左右值引用</a></li>
     <li><a href="#构造函数初始化列表">构造函数初始化列表</a></li>
-    <li><a href="#函数重载与默认参数">函数重载与默认参数</a></li>
+    <li><a href="#c多态">C++多态</a>
+      <ul>
+        <li><a href="#函数重载与默认参数">函数重载与默认参数</a></li>
+      </ul>
+    </li>
     <li><a href="#函数名称修饰">函数名称修饰</a></li>
     <li><a href="#模板函数类-通用编程-参数化编程-泛型">模板函数/类 通用编程 参数化编程 泛型</a>
       <ul>
@@ -290,40 +294,75 @@ if (!doNotTrack) {
         <li><a href="#decltype-和-auto">decltype 和 auto</a></li>
       </ul>
     </li>
+    <li><a href="#函数指针">函数指针</a></li>
+    <li><a href="#变量函数在不同文件中使用存储持续性和链接性">变量/函数在不同文件中使用：存储持续性和链接性</a></li>
   </ul>
 </nav>
 
-<h2 id="左值右值和左值右值引用">左值右值和左值右值引用</h2>
+<h2 id="左右值和左右值引用">左右值和左右值引用</h2>
 <p><strong>左值：</strong> 可以取地址，有名字的，非临时的就是左值。</p>
 <p><strong>右值：</strong> 不能取地址，没有名字的，临时的就是右值。</p>
-<p><strong>左值引用：</strong> 相当于指针指向某个左值，取了左值的地址。就是说左值引用要求右边的值可以取地址，否则使用const创建临时变量。</p>
-<p><strong>右值引用：</strong> 相当于指针指向某个右值，右值没有地址意味着创建了临时变量来存储。类似于左值引用但是左值时使用了const无法修改，这里可以修改。</p>
-<p>为何会有左右值？为了精确控制内存生命周期，避免没必要的内存拷贝。</p>
+<p><strong>左值引用：</strong> 相当于指针指向某个左值，取了左值的地址。就是说左值引用要求右边的值可以取地址，若不能取地址可以，像这样<code>const int&amp; a = 1;</code>，实际是创建临时变量。</p>
+<p><strong>右值引用：</strong> 相当于指针指向某个右值，右值没有地址意味着创建了临时变你量来存储。类似于左值引用使用const，但是使用了const无法修改，这里可以修改。</p>
+<p>为何会有左右值？引用实际上就是简化了指针，或者说内存标识符。为了精确控制内存生命周期，避免没必要的内存拷贝。</p>
+<p>例如：在深拷贝时，直接将传入的右值内存拿过来，因为右值是临时创建的，不可能再用。可移动对象在<strong>需要拷贝且被拷贝者之后不再被需要</strong>的场景，可以使用 <code>std::move</code> 将左值转换成右值，提升性能。但如果像将右值转换成左值怎么办？<code>std::forward&lt;T&gt;(rlValue)</code>，会左转右或右转左。</p>
 <h2 id="构造函数初始化列表">构造函数初始化列表</h2>
 <p>在函数下面直接冒号对成员变量赋值。</p>
-<p>注意：</p>
-<ul>
-<li>真实赋值顺序按照类内声明顺序来的</li>
-<li>对于用户自定义类型避免了调用拷贝构造函数</li>
-</ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CExample</span>
+<p>为什么要使用这个？</p>
+<ol>
+<li>不是所有成员都可以通过形参赋值的，比如引用类型，const类型。</li>
+<li>为了一些性能原因，对于类里面有声明类的话，编译器会先把里面声明的类构建一下，然后再进入构造函数类型，再调用赋值拷贝函数，然后再析构最初初始化的类。使用初始化列表后，就会在外面的类初始化的适合就直接把传入的参数给它了，就不会再初始化了。省去了3步：最初的构建函数，最初的构建好的类的析构函数，赋值拷贝函数。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> cnt <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyClassB</span>
 </span></span><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> a;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">float</span> b;
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//构造函数初始化列表
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    CExample() <span style="color:#f92672">:</span> a(<span style="color:#ae81ff">0</span>), b(<span style="color:#ae81ff">8.8</span>)
-</span></span><span style="display:flex;"><span>    {}
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//构造函数内部赋值
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    CExample()
+</span></span><span style="display:flex;"><span>    MyClassB(){std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;constructorB called&#34;</span> <span style="color:#f92672">&lt;&lt;</span> cnt<span style="color:#f92672">++</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;}
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">~</span>MyClassB(){std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;destructorB called&#34;</span> <span style="color:#f92672">&lt;&lt;</span> cnt<span style="color:#f92672">++</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;}
+</span></span><span style="display:flex;"><span>    MyClassB <span style="color:#f92672">&amp;</span><span style="color:#66d9ef">operator</span><span style="color:#f92672">=</span>(MyClassB b)
 </span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        a <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-</span></span><span style="display:flex;"><span>        b <span style="color:#f92672">=</span> <span style="color:#ae81ff">8.8</span>;
+</span></span><span style="display:flex;"><span>        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;operator= called&#34;</span> <span style="color:#f92672">&lt;&lt;</span> cnt<span style="color:#f92672">++</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">this</span>;
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>};
-</span></span></code></pre></div><h2 id="函数重载与默认参数">函数重载与默认参数</h2>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyClassA</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    MyClassA(MyClassB b)
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//或初始化列表 :bina(b)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    {
+</span></span><span style="display:flex;"><span>        bina<span style="color:#f92672">=</span>b;
+</span></span><span style="display:flex;"><span>        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;constructorA called&#34;</span> <span style="color:#f92672">&lt;&lt;</span> cnt<span style="color:#f92672">++</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">~</span>MyClassA(){std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;destructorA called&#34;</span> <span style="color:#f92672">&lt;&lt;</span> cnt<span style="color:#f92672">++</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;}
+</span></span><span style="display:flex;"><span>    MyClassB bina;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    MyClassB b;
+</span></span><span style="display:flex;"><span>    MyClassA a(b);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>初始化列表输出：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>constructorB called0 main.B构建
+</span></span><span style="display:flex;"><span>constructorA called1 main.A构建
+</span></span><span style="display:flex;"><span>destructorB called2  析构形参B
+</span></span><span style="display:flex;"><span>destructorA called3  析构main.A 对应1
+</span></span><span style="display:flex;"><span>destructorB called4  A.B 析构自己
+</span></span><span style="display:flex;"><span>destructorB called5  析构main.B 对应0
+</span></span></code></pre></div><p>=赋值输出：标有*的是多的。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>constructorB called0 main.B构建
+</span></span><span style="display:flex;"><span>* constructorB called1 A.B初始化构建
+</span></span><span style="display:flex;"><span>* operator= called2    A.B赋值
+</span></span><span style="display:flex;"><span>* destructorB called3  A.B初始化时的类析构 对应1
+</span></span><span style="display:flex;"><span>constructorA called4 main.A构建
+</span></span><span style="display:flex;"><span>destructorB called5  析构形参B
+</span></span><span style="display:flex;"><span>destructorA called6  main.A析构 对应4
+</span></span><span style="display:flex;"><span>destructorB called7  A.B析构
+</span></span><span style="display:flex;"><span>destructorB called8  main.B析构 对应0
+</span></span></code></pre></div><h2 id="c多态">C++多态</h2>
+<h3 id="函数重载与默认参数">函数重载与默认参数</h3>
 <p>函数重载的函数签名要求：不同个数形参，形参类型不同，返回值不要求（因为在入口时需要知道使用哪个函数而不是结束时知道）。</p>
 <p>注意：</p>
 <ul>
@@ -404,7 +443,141 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> a <span style="color:#f92672">+</span> b;
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div>
+</span></span></code></pre></div><h2 id="函数指针">函数指针</h2>
+<p>如何声明一个函数指针？</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">//通用格式：
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>ReturnType (<span style="color:#f92672">*</span>NickName)(PramType1, PramType2);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//实例
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> (<span style="color:#f92672">*</span>func)(<span style="color:#66d9ef">int</span> a, <span style="color:#66d9ef">int</span> b);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//或者迷惑人一下
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> (<span style="color:#f92672">*</span>f)();
+</span></span></code></pre></div><p>如上，<code>NickName</code>是调用时使用的，很明显把<code>NickName</code>当作了一个地址。类似的还有<code>int *a;</code>，把<code>*a</code>当作<code>int</code>，那么<code>a</code>就是地址咯。</p>
+<p>那么，嵌套一下？</p>
+<p><strong>例子1</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> (<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>pf())())();
+</span></span></code></pre></div><p>可以这样分析：</p>
+<ol>
+<li>
+<p><code>pf()</code>是一个普普通通的函数声明（暂且忽略掉返回值），那么他返回的是剩下的一坨，姑且可以拆分成这样：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>T <span style="color:#a6e22e">pf</span>();
+</span></span></code></pre></div></li>
+<li>
+<p>那么T是什么类型呢，可以看到除去<code>pf()</code>这4个字符后剩下的实际上是有<code>(*)()</code>这样的结构，这是函数指针。所以可以这样声明：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#a6e22e">int</span> (<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>T)())();
+</span></span></code></pre></div><p>此时可以看到T是一个函数指针！，所以最原始的pf函数返回了一个函数指针。</p>
+</li>
+<li>
+<p>T是函数指针，那么*T就是函数咯，此时可以把<code>(*T)()</code>这几个字符拿掉（他们代表了执行<code>*T</code>这个函数），那么可以这样声明：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#a6e22e">int</span> (<span style="color:#f92672">*</span>T2)();
+</span></span></code></pre></div><p>此刻就明白了。</p>
+</li>
+</ol>
+<p>最终可以这样简化：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#a6e22e">int</span> (<span style="color:#f92672">*</span>T2)();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#a6e22e">T2</span> (<span style="color:#f92672">*</span>T)();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> T <span style="color:#a6e22e">pf</span>();
+</span></span></code></pre></div><p>也可以使用后置类型简化：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">auto</span> <span style="color:#a6e22e">pf</span>() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">auto</span> (<span style="color:#f92672">*</span>)() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">int</span> (<span style="color:#f92672">*</span>)();
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//进行一个实现
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">auto</span> <span style="color:#a6e22e">pf</span>() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">auto</span> (<span style="color:#f92672">*</span>)() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">int</span> (<span style="color:#f92672">*</span>)()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> []() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">int</span> (<span style="color:#f92672">*</span>)()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> []() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>        };
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>例子2</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> (<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>fn())(<span style="color:#66d9ef">int</span>))())())();
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#a6e22e">int</span> (<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>T)(<span style="color:#66d9ef">int</span>))())())();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#a6e22e">int</span> (<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>T2)())())();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#a6e22e">int</span> (<span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>T3)())();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#a6e22e">int</span> (<span style="color:#f92672">*</span>T4)();
+</span></span><span style="display:flex;"><span>T <span style="color:#a6e22e">fn</span>();
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//或者
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">auto</span> <span style="color:#a6e22e">fn</span>() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">auto</span> (<span style="color:#f92672">*</span>)(<span style="color:#66d9ef">int</span>) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">auto</span> (<span style="color:#f92672">*</span>)() <span style="color:#f92672">-&gt;</span><span style="color:#66d9ef">auto</span> (<span style="color:#f92672">*</span>)() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">int</span> (<span style="color:#f92672">*</span>)();
+</span></span></code></pre></div><h2 id="变量函数在不同文件中使用存储持续性和链接性">变量/函数在不同文件中使用：存储持续性和链接性</h2>
+<p>链接性决定了编译器在编译时到可不可以到其他文件里找，静态性决定当前作用域的变量是否共享内存区。</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>在当前文件定义声明格式</th>
+<th>在其他文件中使用时的引用声明格式</th>
+<th>链接性</th>
+<th>静态性</th>
+<th>作用域</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>全局变量</td>
+<td>int a;</td>
+<td>extern int a;</td>
+<td>外部</td>
+<td>是</td>
+<td>全局</td>
+</tr>
+<tr>
+<td>全局变量</td>
+<td>static int a;</td>
+<td>不可使用</td>
+<td>内部</td>
+<td>是</td>
+<td>当前文件</td>
+</tr>
+<tr>
+<td>函数</td>
+<td>void foo();</td>
+<td>void foo();</td>
+<td>外部</td>
+<td>是</td>
+<td>全局</td>
+</tr>
+<tr>
+<td>函数</td>
+<td>static void foo();</td>
+<td>不可使用</td>
+<td>内部</td>
+<td>是</td>
+<td>当前文件</td>
+</tr>
+<tr>
+<td>局部变量</td>
+<td>int a;</td>
+<td>不可使用</td>
+<td>无</td>
+<td>否</td>
+<td>当前代码块</td>
+</tr>
+<tr>
+<td>局部变量</td>
+<td>static int a;</td>
+<td>不可使用</td>
+<td>无</td>
+<td>是</td>
+<td>当前代码块</td>
+</tr>
+</tbody>
+</table>
+<p><strong>实例：</strong></p>
+<p>test1.cpp</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> globalA <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> staticGlobalA <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Fn</span>() {}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span>  <span style="color:#a6e22e">StaticFn</span>() {}
+</span></span></code></pre></div><p>test2.cpp</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">extern</span> <span style="color:#66d9ef">int</span> globalA;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//extern int staticGlobalA;  can not use
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Fn</span>(); 
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//或 extern void Fn()
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//extern void StaticFn();   can not use
+</span></span></span></code></pre></div><p>以上都是不用命名空间时整的花活，在使用命名空间后，严格遵循“声明在header，定义在cpp”的规则，使用时引入命名空间就好了，相当于直接把整个东西都拿过来，不管是否是内部还是外部链接性，这时只有静态非静态之分。</p>
               
 
 
