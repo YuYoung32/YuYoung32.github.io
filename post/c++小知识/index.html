@@ -294,8 +294,16 @@ if (!doNotTrack) {
         <li><a href="#decltype-和-auto">decltype 和 auto</a></li>
       </ul>
     </li>
-    <li><a href="#函数指针">函数指针</a></li>
+    <li><a href="#复杂指针分析函数指针">复杂指针分析：函数指针</a></li>
+    <li><a href="#仿函数">仿函数</a></li>
     <li><a href="#变量函数在不同文件中使用存储持续性和链接性">变量/函数在不同文件中使用：存储持续性和链接性</a></li>
+    <li><a href="#mmap">mmap</a></li>
+    <li><a href="#虚函数和纯虚函数">虚函数和纯虚函数</a></li>
+    <li><a href="#存储区">存储区</a></li>
+    <li><a href="#成员函数const和mutable">成员函数const和mutable</a></li>
+    <li><a href="#友元函数">友元函数</a></li>
+    <li><a href="#多继承">多继承</a></li>
+    <li><a href="#内存对齐">内存对齐</a></li>
   </ul>
 </nav>
 
@@ -443,7 +451,7 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> a <span style="color:#f92672">+</span> b;
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="函数指针">函数指针</h2>
+</span></span></code></pre></div><h2 id="复杂指针分析函数指针">复杂指针分析：函数指针</h2>
 <p>如何声明一个函数指针？</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">//通用格式：
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>ReturnType (<span style="color:#f92672">*</span>NickName)(PramType1, PramType2);
@@ -498,6 +506,28 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>T <span style="color:#a6e22e">fn</span>();
 </span></span><span style="display:flex;"><span><span style="color:#75715e">//或者
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">auto</span> <span style="color:#a6e22e">fn</span>() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">auto</span> (<span style="color:#f92672">*</span>)(<span style="color:#66d9ef">int</span>) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">auto</span> (<span style="color:#f92672">*</span>)() <span style="color:#f92672">-&gt;</span><span style="color:#66d9ef">auto</span> (<span style="color:#f92672">*</span>)() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">int</span> (<span style="color:#f92672">*</span>)();
+</span></span></code></pre></div><h2 id="仿函数">仿函数</h2>
+<p>一种避免使用函数指针的方式是使用仿函数。如下面传入了一个less函数来构建大顶堆。</p>
+<p>仿函数实际上是重载了<code>operator()</code>。这样可以灵活的改变函数内部的参数。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;bits/stdc++.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//仿函数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">MyLess</span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">operator</span>()(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">&amp;</span> a, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">&amp;</span> b) <span style="color:#66d9ef">const</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> a <span style="color:#f92672">&lt;</span> b;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> v {<span style="color:#ae81ff">8</span>,<span style="color:#ae81ff">9</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">7</span>,<span style="color:#ae81ff">4</span>,<span style="color:#ae81ff">5</span>,<span style="color:#ae81ff">6</span>,<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">1</span>};
+</span></span><span style="display:flex;"><span>    priority_queue<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span>,MyLess<span style="color:#f92672">&gt;</span> pq(v.begin(), v.end());
+</span></span><span style="display:flex;"><span>    pq.push(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> (<span style="color:#f92672">!</span>pq.empty()){
+</span></span><span style="display:flex;"><span>        cout <span style="color:#f92672">&lt;&lt;</span> pq.top() <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>        pq.pop();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h2 id="变量函数在不同文件中使用存储持续性和链接性">变量/函数在不同文件中使用：存储持续性和链接性</h2>
 <p>链接性决定了编译器在编译时到可不可以到其他文件里找，静态性决定当前作用域的变量是否共享内存区。</p>
 <table>
@@ -578,6 +608,226 @@ if (!doNotTrack) {
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">//extern void StaticFn();   can not use
 </span></span></span></code></pre></div><p>以上都是不用命名空间时整的花活，在使用命名空间后，严格遵循“声明在header，定义在cpp”的规则，使用时引入命名空间就好了，相当于直接把整个东西都拿过来，不管是否是内部还是外部链接性，这时只有静态非静态之分。</p>
+<h2 id="mmap">mmap</h2>
+<p>mmap+write简单来说就是使用<code>mmap</code>替换了read+write中的read操作，减少了一次CPU的拷贝。</p>
+<p><code>mmap</code>主要实现方式是将读缓冲区的地址和用户缓冲区的地址进行映射，<strong>内核缓冲区和应用缓冲区共享</strong>，从而减少了从读缓冲区到用户缓冲区的一次CPU拷贝。</p>
+<p><a href="https://zhuanlan.zhihu.com/p/357820303">阿里二面：什么是mmap？ - 知乎 (zhihu.com)</a></p>
+<h2 id="虚函数和纯虚函数">虚函数和纯虚函数</h2>
+<ol>
+<li>
+<p>只要某类重写了父类的方法A（virtual），那么子类作为父类类型<strong>指针/引用</strong>传入时，调用方法A，就可以直接使用子类已经重写的方法，而不是父类的方法。若父类的方法不定义为virtual，则还是使用父类的方法。如果还是按照<strong>对象</strong>调用则virtual相当于没有，对象是谁就用谁的。</p>
+<p>为什么只有指针才可以？使用对象调用方法属于静态联编，不会考虑对象实际是什么，只用到了对象的类型。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Base</span> {
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> foo() {
+</span></span><span style="display:flex;"><span>        cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Base::foo()&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Derived</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> Base {
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> foo() {
+</span></span><span style="display:flex;"><span>        cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Derived::foo()&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    Derived <span style="color:#f92672">*</span>d <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Derived();
+</span></span><span style="display:flex;"><span>    d<span style="color:#f92672">-&gt;</span>foo();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">dynamic_cast</span><span style="color:#f92672">&lt;</span>Base <span style="color:#f92672">*&gt;</span>(d)<span style="color:#f92672">-&gt;</span>foo(); <span style="color:#75715e">//向上类型转换，没有丢失数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    Derived dd;
+</span></span><span style="display:flex;"><span>    dd.foo();
+</span></span><span style="display:flex;"><span>    Base bb <span style="color:#f92672">=</span> dd; <span style="color:#75715e">//进行了赋值拷贝，只将Derived里的Base部分传过来
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    bb.foo();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">Derived::foo()
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">Derived::foo()
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">Derived::foo()
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">Base::foo()
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span>
+</span></span></code></pre></div><p>在Java里，一个类实现一个Interface，然后就可以作为Interface传入，就可以调用这个类自己实现的方法，C++这里实现机制完全和Java一致了，只不过C++没有interface关键字，强行用class去模拟interface。</p>
+<p>在Go里，struct实现了interface后，就可以传入该struct，然后使用该struct实现的interface的方法。其实就是实现了真正意义上的“接口”。</p>
+</li>
+<li>
+<p>override与final</p>
+<p>要想明确子类实现的<strong>是</strong>父类的方法，加override关键字在子类实现方法签名里，避免写错。</p>
+<p>要想确定子类实现的<strong>不是</strong>父类的方法，加final关键字在子类实现方法签名里，避免写错。</p>
+<p>实现父类方法时，子类方法要满足：函数名、入参、返回值完全一致，但是当返回类的this指针时，返回值可以不一样。</p>
+</li>
+</ol>
+<p>​	3.虚函数的实现原理</p>
+<p>​		虚函数使用<strong>虚函数表</strong>实现，它是编译期的<strong>静态数组</strong>，类有一个隐藏成员指向它。每个类实现时，都会创建一个虚表，虚表记录了各个虚函数的入口地址，若自己的类有实现，就指向自己的函数，否则指向基类的虚函数。若派生类继续虚下去，则更新地址，不会记录路径上的虚函数。使用<strong>第一个</strong>虚函数就是使用数组的<strong>第一个</strong>元素。</p>
+<ol start="4">
+<li>纯虚函数和抽象类</li>
+</ol>
+<p>​		在虚函数后=0即为纯虚函数。含有纯虚函数的类成为抽象类，无法实现。子类继承抽象类时应当实现里面的		纯虚方法。此处概念和Java的接口-抽象类几乎完全一致。</p>
+<ol start="5">
+<li>
+<p>在继承中为什么一般<strong>虚析构函数</strong>，而不是<strong>虚构造函数</strong>？</p>
+<p>从类的生命周期谈起，子类需要继承父类的相关数据，所以从父类开始构造，父类构造完子类构造，父类构造函数不能为虚函数，否则父类数据没有。而在析构时，因为是以父类指针调用的子类，从父类指针调用父类的析构方法，如果父类析构函数不设为虚的，那么子类的析构函数将无法调用。</p>
+</li>
+</ol>
+<h2 id="存储区">存储区</h2>
+<ul>
+<li>
+<p><strong>全局/静态存储区域</strong>：存全局变量，静态变量。程序编译时内存已分配好，并存在于程序整个运行期间，程序结束后由系统统一释放</p>
+<p>全局变量和静态变量被分配到同一块内存中。
+C 语言中，全局变量又分为初始化的和未初始化的。初始化的全局变量和静态变量在一块区域，未初始化的全局变量与静态变量在相邻的另一块区域。同时未被初始化的对象存储区可以通过 void* 来访问和操纵，程序结束后由系统自行释放。</p>
+<p>在 C++ 里面没有区分，他们共同占用同一块内存区。</p>
+</li>
+<li>
+<p><strong>栈</strong>：存放函数的参数值，局部变量，函数执行结束时会被自动释放。栈内存分配运算内置于处理器的指令集中，效率高，但是容量有限。</p>
+</li>
+<li>
+<p><strong>堆</strong>（动态内存分配）：通过new和malloc由低到高分配，由delete或free手动释放或者程序结束自动释放。动态内存的生存期人为决定，使用灵活。缺点是容易分配/释放不当容易造成内存泄漏，频繁分配/释放会产生大量内存碎片。 若程序员不释放，程序结束时可能由操作系统回收</p>
+</li>
+<li>
+<p><strong>常量区</strong>： 存放常量字符串，程序结束时由系统释放</p>
+</li>
+<li>
+<p><strong>程序代码区</strong>： 存放函数体的二进制代码</p>
+</li>
+</ul>
+<h2 id="成员函数const和mutable">成员函数const和mutable</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">C</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">change</span>() <span style="color:#66d9ef">const</span>
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        a <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;<span style="color:#75715e">//错误
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        b <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;<span style="color:#75715e">//正确
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> a;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">mutable</span> <span style="color:#66d9ef">int</span> b;
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>const放在成员函数后面可以让函数不改变类的变量，若又想改变，需要在成员变量前加mutable。</p>
+<h2 id="友元函数">友元函数</h2>
+<p><strong>解决了什么问题？</strong></p>
+<p>非类成员函数可以访问类私有变量</p>
+<p>友元函数定义在类内，但不是类的成员函数。</p>
+<p><strong>使用场景举例</strong></p>
+<p>二元运算符重载，常规<code>C operator+(int a)</code>，使用时必须按照顺序<code>c + 1</code>或<code>c.operator+(1)</code>，而不能<code>1 + c</code>。</p>
+<p>此时可以使用类外运算符重载，但是类外访问不到类内变量怎么办？使用友元函数就可以。</p>
+<p>此外，像一元运算符<code>&lt;&lt;</code>，必须使用<code>&lt;&lt;</code></p>
+<p><strong>遇到问题</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">C</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> <span style="color:#66d9ef">operator</span><span style="color:#f92672">+</span>(<span style="color:#66d9ef">int</span> a) <span style="color:#66d9ef">const</span>
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> num <span style="color:#f92672">+</span> a;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> num;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    C c;
+</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> c <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;<span style="color:#75715e">//可以
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//cout &lt;&lt; 1 + c;//不可以
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p><strong>解决方案</strong> 友元函数</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">C</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> <span style="color:#66d9ef">operator</span><span style="color:#f92672">+</span>(<span style="color:#66d9ef">int</span> a) <span style="color:#66d9ef">const</span>
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> num <span style="color:#f92672">+</span> a;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">friend</span> <span style="color:#66d9ef">int</span> <span style="color:#66d9ef">operator</span><span style="color:#f92672">+</span>(<span style="color:#66d9ef">int</span> a, C c);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> num;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#66d9ef">operator</span><span style="color:#f92672">+</span>(<span style="color:#66d9ef">int</span> a, C c)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> a <span style="color:#f92672">+</span> c.num;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/*更优雅的实现
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">int operator+(int a, C c)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">{
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    return c + a;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    C c;
+</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> c <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;<span style="color:#75715e">//可以
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> c;<span style="color:#75715e">//可以了
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><h2 id="多继承">多继承</h2>
+<p>c++ 支持多继承，使用了一些操作让基类们不会冲突。</p>
+<ol>
+<li>
+<p>基类函数/变量冲突？</p>
+<p>使用类作用域解析<code>::</code></p>
+</li>
+<li>
+<p>菱形继承创建多个类如何解决？</p>
+<p>使用虚基类，可以保证只创建一个基类。否则以下将创建两个。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span>{};
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">B</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">virtual</span> A{};
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">C</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">virtual</span> A{};
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">D</span> <span style="color:#f92672">:</span> B, C {};
+</span></span></code></pre></div></li>
+<li>
+<p>菱形继承，若D对B，C传不同数据，而BC用这些数据对A的初始化不同怎么办【自动传递信息】？</p>
+<p>在虚基类的情况下，这样是不允许的，只能使用默认构造，或者直接在D中显式调用A构造函数。</p>
+<p>而在普通基类的情况下，由于各自创建了一个基类，当然可以这样做，而在D中显式调用A构造函数是不可以的。</p>
+</li>
+</ol>
+<h2 id="内存对齐">内存对齐</h2>
+<p>首先找到<code>block = min(max(sizeof(member)), pack_pram)</code>，然后从头填充，每一次都分配block大小，下一个如果不能塞进上一个，则另起一个新的block，如果仍有结构体则拆开。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#pragma pack(8)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">A</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> a;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> b;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> c;
+</span></span><span style="display:flex;"><span>};<span style="color:#75715e">//16
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">B</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> a;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> c;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> b;
+</span></span><span style="display:flex;"><span>};<span style="color:#75715e">//24
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">C</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> a;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> b;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> c;
+</span></span><span style="display:flex;"><span>};<span style="color:#75715e">//16
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">D</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> b;
+</span></span><span style="display:flex;"><span>};<span style="color:#75715e">//1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">E</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> b;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> a;
+</span></span><span style="display:flex;"><span>};<span style="color:#75715e">//4+4=8
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#pragma pack(1)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">E2</span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> b;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> c;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> a;
+</span></span><span style="display:flex;"><span>};<span style="color:#75715e">//3
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#pragma pack(4)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">F</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> a;
+</span></span><span style="display:flex;"><span>    E2 e;
+</span></span><span style="display:flex;"><span>};<span style="color:#75715e">//4 //将E2拆开，重新计算pack
+</span></span></span></code></pre></div>
               
 
 
