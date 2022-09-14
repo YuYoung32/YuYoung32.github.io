@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    
+    <script type="application/ld+json">
+
+{  
+  "@context":"http://schema.org",
+  "@type":"Website",
+  "@id":"https:\/\/yuyoung32.github.io",
+  "author": {
+    "@type": "Person",
+    "name": "YuYoung",
+    
+    "image": "https://s1.ax1x.com/2022/04/09/LPwdFs.jpg"
+    
+  },
+  "name":"YuYoung的博客",
+  "description":"",
+  "url":"https:\/\/yuyoung32.github.io\/post\/stl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\/",
+  "keywords":"[]"
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.96.0 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="YuYoung">
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STL学习笔记">
+<meta name="twitter:title" content="STL学习笔记">
+<meta property="og:url" content="https://yuyoung32.github.io/post/stl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+<meta property="twitter:url" content="https://yuyoung32.github.io/post/stl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+<meta property="og:site_name" content="YuYoung的博客">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:locale" content="zh-cn">
+
+  
+    <meta property="article:published_time" content="2022-09-14T22:55:15">
+  
+  
+    <meta property="article:modified_time" content="2022-09-14T22:55:15">
+  
+  
+  
+    
+      <meta property="article:section" content="c&#43;&#43;">
+    
+  
+  
+    
+      <meta property="article:tag" content="c&#43;&#43;">
+    
+      <meta property="article:tag" content="STL">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg">
+  <meta property="twitter:image" content="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg">
+
+
+
+
+
+  <meta property="og:image" content="https://i.imgur.com/ryvDU5j.png">
+  <meta property="twitter:image" content="https://i.imgur.com/ryvDU5j.png">
+
+
+    <title>STL学习笔记</title>
+
+    <link rel="icon" href="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg">
+    
+
+    
+
+    <link rel="canonical" href="https://yuyoung32.github.io/post/stl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="https://yuyoung32.github.io/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6QCN1ZG6DB"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-6QCN1ZG6DB', { 'anonymize_ip': false });
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://yuyoung32.github.io/" aria-label="去首页">YuYoung的博客</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://yuyoung32.github.io/#about" aria-label="打开链接: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg" alt="作者的图片" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://yuyoung32.github.io/#about" aria-label="阅读有关作者的更多信息">
+          <img class="sidebar-profile-picture" src="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg" alt="作者的图片" />
+        </a>
+        <h4 class="sidebar-profile-name">YuYoung</h4>
+        
+          <h5 class="sidebar-profile-bio">每天多进步一点</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">首页</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">标签</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">归档</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">关于</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/yuyoung32" target="_blank" rel="noopener" title="GitHub">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://yuyoung32.github.io/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="5"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      STL学习笔记
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2022-09-14T22:55:15&#43;08:00">
+        
+  
+  
+  
+  
+    2022年9月14日
+  
+
+      </time>
+    
+    
+  
+  
+    <span>发布在</span>
+    
+      <a class="category-link" href="https://yuyoung32.github.io/categories/c&#43;&#43;">c&#43;&#43;</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h1 id="table-of-contents">目录</h1>
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#list">list</a></li>
+    <li><a href="#类型萃取-iterator_traits">类型萃取 iterator_traits</a>
+      <ul>
+        <li><a href="#一个错误的想法">一个错误的想法</a></li>
+        <li><a href="#stl是这样实现的">STL是这样实现的</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+<h2 id="list">list</h2>
+<p>内部实现：有头节点的 双向 循环 链表。</p>
+<h2 id="类型萃取-iterator_traits">类型萃取 iterator_traits</h2>
+<p>一个算法需要得知容器的属性时，具体来说，是需要知道某些指标，比如：</p>
+<pre tabindex="0"><code>iterator_category 是什么类型的,比如说双向遍历类型
+value_type		容器内装的值是什么类型的,比如说int
+difference_type	容器内距离的类型,比如说long int
+pointer			指针类型是什么,比如说int*
+reference		引用类型是什么,比如说int&amp;
+</code></pre><p>怎么实现呢？</p>
+<p>具体而言，如何知道根据模板传入的<strong>类型参数</strong>做出判断。</p>
+<h3 id="一个错误的想法">一个错误的想法</h3>
+<p>c++11提供了<code>decltype()</code>做类型推断，可以用<code>decltype(_Ty)==decltype(int*)</code>做判断然后具体赋值吗？显然不可能，c++不提供类型间的操作。不能比较int==int，必须要实例化比如int()==int()，而==的前提是左右对象类型相同，不相同的情况下会编译报错。</p>
+<p>这里要和golang的类型推断语法比较一下，golang的类型推断 switch val.type，然后就可以判断类型是否符合了。</p>
+<p>还有一种方法，c++为了能够根据传入类型做操作，天然支持了<strong>重载</strong>，自动根据类型调用不同的函数。难道说要在容器里定义函数，然后让外部调用函数获取属性吗？好像也可以，但是这样还需要调用函数，会降低性能。并且，不符合泛型编程数据和方法分开的准则。接下来看看STL是怎样实现的。</p>
+<h3 id="stl是这样实现的">STL是这样实现的</h3>
+<ol>
+<li>每个容器自己有一个<code>_xx_iterator</code>模板类，使用<code>typedef</code>，把自己的属性写死，比如下面是stl_list的源码，把自己的<code>iterator_category</code>写死为<code>bidirectional_iterator_tag</code>。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> _Tp<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">_List_iterator</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	...
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">typedef</span> ptrdiff_t                          difference_type;  <span style="color:#75715e">//ptrdiff_t 到最后就是long int
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">typedef</span> std<span style="color:#f92672">::</span>bidirectional_iterator_tag    iterator_category; 
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//std::bidirectional_iterator_tag到最后就是  struct input_iterator_tag { };
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">typedef</span> _Tp                                value_type;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">typedef</span> _Tp<span style="color:#f92672">*</span>                               pointer;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">typedef</span> _Tp<span style="color:#f92672">&amp;</span>                               reference;
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>这样外部就可以直接像这样获取到类型属性，获得这个属性的对象。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">//获取到属性对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>list<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;::</span>iterator<span style="color:#f92672">::</span>iterator_category listCat;
+</span></span><span style="display:flex;"><span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;::</span>iterator<span style="color:#f92672">::</span>iterator_category vectorCat;
+</span></span></code></pre></div><p>至此，完成了属性类型typename到一个属性对象object的转换。</p>
+<ol start="2">
+<li>
+<p>还有一个问题，不是所有iterator都是模板，比如指针，引用。这时候也想获得他们的属性，怎么办呢。很自然的想到使用适配器模式。若传入的是指针或者引用，则进行一个partial specialization。若是普通类型，则读取他内置的属性，否则适配器直接返回属性。</p>
+<p>这个适配器是<code>std::traits&lt;iterator _It&gt;</code>，看看他是怎样进行偏特化的。</p>
+<p><strong>传入普通类型</strong></p>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>  <span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> _Iterator<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">__iterator_traits</span><span style="color:#f92672">&lt;</span>_Iterator,
+</span></span><span style="display:flex;"><span>			     __void_t<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> _Iterator<span style="color:#f92672">::</span>iterator_category,
+</span></span><span style="display:flex;"><span>				      <span style="color:#66d9ef">typename</span> _Iterator<span style="color:#f92672">::</span>value_type,
+</span></span><span style="display:flex;"><span>				      <span style="color:#66d9ef">typename</span> _Iterator<span style="color:#f92672">::</span>difference_type,
+</span></span><span style="display:flex;"><span>				      <span style="color:#66d9ef">typename</span> _Iterator<span style="color:#f92672">::</span>pointer,
+</span></span><span style="display:flex;"><span>				      <span style="color:#66d9ef">typename</span> _Iterator<span style="color:#f92672">::</span>reference<span style="color:#f92672">&gt;&gt;</span>
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">typename</span> _Iterator<span style="color:#f92672">::</span>iterator_category iterator_category;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">typename</span> _Iterator<span style="color:#f92672">::</span>value_type        value_type;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">typename</span> _Iterator<span style="color:#f92672">::</span>difference_type   difference_type;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">typename</span> _Iterator<span style="color:#f92672">::</span>pointer           pointer;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">typename</span> _Iterator<span style="color:#f92672">::</span>reference         reference;
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> _Iterator<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">iterator_traits</span> <span style="color:#75715e">//从这里实例化，父类接到并读取传入iterator内置的
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> __iterator_traits<span style="color:#f92672">&lt;</span>_Iterator<span style="color:#f92672">&gt;</span> { };
+</span></span></code></pre></div><p><strong>传入指针/引用类型</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> _Tp<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">iterator_traits</span><span style="color:#f92672">&lt;</span>_Tp<span style="color:#f92672">*&gt;</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">typedef</span> random_access_iterator_tag iterator_category;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">typedef</span> _Tp                         value_type;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">typedef</span> ptrdiff_t                   difference_type;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">typedef</span> _Tp<span style="color:#f92672">*</span>                        pointer;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">typedef</span> _Tp<span style="color:#f92672">&amp;</span>                        reference;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/// Partial specialization for const pointer types.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> _Tp<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">iterator_traits</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> _Tp<span style="color:#f92672">*&gt;</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">typedef</span> random_access_iterator_tag iterator_category;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">typedef</span> _Tp                         value_type;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">typedef</span> ptrdiff_t                   difference_type;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">const</span> _Tp<span style="color:#f92672">*</span>                  pointer;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">const</span> _Tp<span style="color:#f92672">&amp;</span>                  reference;
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>外部怎样通过适配器获得属性的对象呢?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">//使用适配器
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>iterator_traits<span style="color:#f92672">&lt;</span>list<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;::</span>iterator<span style="color:#f92672">&gt;::</span>iterator_category listItAdapter;
+</span></span><span style="display:flex;"><span>iterator_traits<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">*&gt;::</span>iterator_category intItAdapter;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//不使用适配器
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>list<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;::</span>iterator<span style="color:#f92672">::</span>iterator_category listIt; <span style="color:#75715e">//和前者都是std::bidirectional_iterator_tag对象
+</span></span></span></code></pre></div>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/c&#43;&#43;%E5%B0%8F%E7%9F%A5%E8%AF%86/" data-tooltip="C&#43;&#43;小知识" aria-label="上一篇: C&#43;&#43;小知识">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="分享这个帖子">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+  
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="回到顶部">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2022 YuYoung. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/c&#43;&#43;%E5%B0%8F%E7%9F%A5%E8%AF%86/" data-tooltip="C&#43;&#43;小知识" aria-label="上一篇: C&#43;&#43;小知识">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="分享这个帖子">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+  
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="回到顶部">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg" alt="作者的图片" />
+    
+    <h4 id="about-card-name">YuYoung</h4>
+    
+      <div id="about-card-bio">每天多进步一点</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        学生
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        杭州
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    <div id="cover" style="background-image:url('https://s1.ax1x.com/2022/04/09/LPwmee.jpg');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="https://yuyoung32.github.io/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+
