@@ -276,19 +276,30 @@ if (!doNotTrack) {
 <nav id="TableOfContents">
   <ul>
     <li><a href="#list">list</a></li>
-    <li><a href="#类型萃取-iterator_traits">类型萃取 iterator_traits</a>
+    <li><a href="#迭代器类型萃取器-iterator_traits">迭代器类型萃取器 iterator_traits</a>
       <ul>
-        <li><a href="#一个错误的想法">一个错误的想法</a></li>
-        <li><a href="#stl是这样实现的">STL是这样实现的</a></li>
+        <li><a href="#什么是类型萃取">什么是类型萃取</a></li>
+        <li><a href="#为什么需要类型萃取">为什么需要类型萃取</a></li>
+        <li><a href="#为什么需要迭代器类型萃取">为什么需要迭代器类型萃取</a></li>
+        <li><a href="#一个错误的想法使用运行期程序判断">一个错误的想法：使用运行期程序判断</a></li>
+        <li><a href="#stl是这样实现的使用编译期的类型萃取">STL是这样实现的：使用编译期的类型萃取</a></li>
       </ul>
     </li>
   </ul>
 </nav>
 
+<p>STL是GP编程的典范，使用容器涉及六大模块：</p>
+<p>容器，分配器，算法，迭代器，适配器，仿函数</p>
+<p>分配器为容器分配内存，迭代器用来访问容器数据，算法通过迭代器操作容器内的数据，算法使用仿函数改变算法过程。适配器是各部分的粘合剂。</p>
 <h2 id="list">list</h2>
 <p>内部实现：有头节点的 双向 循环 链表。</p>
-<h2 id="类型萃取-iterator_traits">类型萃取 iterator_traits</h2>
-<p>一个算法需要得知容器的属性时，具体来说，是需要知道某些指标，比如：</p>
+<h2 id="迭代器类型萃取器-iterator_traits">迭代器类型萃取器 iterator_traits</h2>
+<h3 id="什么是类型萃取">什么是类型萃取</h3>
+<p>在编译器就知道一个变量/类的类型，比如重载就可以看作类型萃取的一个应用。</p>
+<h3 id="为什么需要类型萃取">为什么需要类型萃取</h3>
+<p>在编译期知道类型，就可以根据类型做出一些事情咯，比如类型萃取知道这个变量是指针还是引用，然后定义typedef isPointer OK，之后程序运行期就可以直接知道isPointer()==OK()，就设置不改变这个变量的内容。</p>
+<h3 id="为什么需要迭代器类型萃取">为什么需要迭代器类型萃取</h3>
+<p>算法需要通过iterator操作容器内数据，一个算法需要得知iterator的属性（需要知道这些属性做最佳的算法处理），具体来说，是需要知道某些指标，比如：</p>
 <pre tabindex="0"><code>iterator_category 是什么类型的,比如说双向遍历类型
 value_type		容器内装的值是什么类型的,比如说int
 difference_type	容器内距离的类型,比如说long int
@@ -296,11 +307,11 @@ pointer			指针类型是什么,比如说int*
 reference		引用类型是什么,比如说int&amp;
 </code></pre><p>怎么实现呢？</p>
 <p>具体而言，如何知道根据模板传入的<strong>类型参数</strong>做出判断。</p>
-<h3 id="一个错误的想法">一个错误的想法</h3>
+<h3 id="一个错误的想法使用运行期程序判断">一个错误的想法：使用运行期程序判断</h3>
 <p>c++11提供了<code>decltype()</code>做类型推断，可以用<code>decltype(_Ty)==decltype(int*)</code>做判断然后具体赋值吗？显然不可能，c++不提供类型间的操作。不能比较int==int，必须要实例化比如int()==int()，而==的前提是左右对象类型相同，不相同的情况下会编译报错。</p>
 <p>这里要和golang的类型推断语法比较一下，golang的类型推断 switch val.type，然后就可以判断类型是否符合了。</p>
-<p>还有一种方法，c++为了能够根据传入类型做操作，天然支持了<strong>重载</strong>，自动根据类型调用不同的函数。难道说要在容器里定义函数，然后让外部调用函数获取属性吗？好像也可以，但是这样还需要调用函数，会降低性能。并且，不符合泛型编程数据和方法分开的准则。接下来看看STL是怎样实现的。</p>
-<h3 id="stl是这样实现的">STL是这样实现的</h3>
+<p>还有一种方法，c++为了能够根据传入类型做操作，天然支持了<strong>重载</strong>，自动根据类型调用不同的函数。难道说要在容器里定义重载函数，然后让外部调用函数获取属性吗？好像也可以，但是一方面这样还需要调用函数，会降低性能。另一方面，不符合泛型编程数据和方法分开的准则。接下来看看STL是怎样实现的。</p>
+<h3 id="stl是这样实现的使用编译期的类型萃取">STL是这样实现的：使用编译期的类型萃取</h3>
 <ol>
 <li>每个容器自己有一个<code>_xx_iterator</code>模板类，使用<code>typedef</code>，把自己的属性写死，比如下面是stl_list的源码，把自己的<code>iterator_category</code>写死为<code>bidirectional_iterator_tag</code>。</li>
 </ol>
@@ -316,14 +327,14 @@ reference		引用类型是什么,比如说int&amp;
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">typedef</span> _Tp<span style="color:#f92672">&amp;</span>                               reference;
 </span></span><span style="display:flex;"><span>    ...
 </span></span><span style="display:flex;"><span>};
-</span></span></code></pre></div><p>这样外部就可以直接像这样获取到类型属性，获得这个属性的对象。</p>
+</span></span></code></pre></div><p>这样外部就可以直接从容器里获取到属性，获得这个属性的对象。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">//获取到属性对象
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>list<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;::</span>iterator<span style="color:#f92672">::</span>iterator_category listCat;
 </span></span><span style="display:flex;"><span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;::</span>iterator<span style="color:#f92672">::</span>iterator_category vectorCat;
 </span></span></code></pre></div><p>至此，完成了属性类型typename到一个属性对象object的转换。</p>
 <ol start="2">
 <li>
-<p>还有一个问题，不是所有iterator都是模板，比如指针，引用。这时候也想获得他们的属性，怎么办呢。很自然的想到使用适配器模式。若传入的是指针或者引用，则进行一个partial specialization。若是普通类型，则读取他内置的属性，否则适配器直接返回属性。</p>
+<p>还有一个问题，不是所有iterator都是模板，比如指针，引用。这时候也想获得他们的属性，他们没有模板类，怎么办呢。很自然的想到使用适配器模式。若传入的是指针或者引用，则进行一个partial specialization。若是普通类型，则读取他内置的属性。</p>
 <p>这个适配器是<code>std::traits&lt;iterator _It&gt;</code>，看看他是怎样进行偏特化的。</p>
 <p><strong>传入普通类型</strong></p>
 </li>
