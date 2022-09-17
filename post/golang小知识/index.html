@@ -306,7 +306,6 @@ if (!doNotTrack) {
     <li><a href="#goroutine">Goroutine</a>
       <ul>
         <li><a href="#mpg模型">MPG模型</a></li>
-        <li><a href="#死锁">死锁</a></li>
       </ul>
     </li>
     <li><a href="#channel">channel</a></li>
@@ -336,6 +335,7 @@ if (!doNotTrack) {
         <li><a href="#使用区别">使用区别</a></li>
       </ul>
     </li>
+    <li><a href="#垃圾回收">垃圾回收</a></li>
   </ul>
 </nav>
 
@@ -514,7 +514,7 @@ if (!doNotTrack) {
 <li>init()函数是用于程序执行前做包的初始化的函数，比如初始化包里的变量等；</li>
 <li>一个包可以出现多个init()函数，一个源文件也可以包含多个init()函数；</li>
 <li>同一个包中多个init()函数的执行顺序没有明确的定义，但是不同包的init函数是根据包导入的依赖关系决定的；</li>
-<li>init函数在代码中不能被显示调用、不能被引用（赋值给函数变量），否则出现编译失败；</li>
+<li>init函数在代码中<strong>不能被显式调用</strong>、不能被引用（赋值给函数变量），否则出现编译失败；</li>
 <li>一个包被引用多次，如A import B，C import B，A import C，B被引用多次，但B包只会初始化一次；</li>
 <li>引入包，不可出现死循环。即A import B，B import A，这种情况下编译失败；</li>
 </ol>
@@ -545,7 +545,7 @@ if (!doNotTrack) {
 <p>panic：</p>
 <ol>
 <li>内建函数</li>
-<li>假如函数F中书写了panic语句，会终止其后要执行的代码，在panic所在函数F内如果存在要执行的defer函数列表，按照defer的逆序执行</li>
+<li>假如函数F中书写了panic语句，<strong>会终止其后要执行的代码</strong>，在panic所在函数F内如果存在要执行的defer函数列表，按照defer的逆序执行</li>
 <li>返回函数F的调用者G，在G中，调用函数F语句之后的代码不会执行，假如函数G中存在要执行的defer函数列表，按照defer的逆序执行</li>
 <li>直到goroutine整个退出，并报告错误</li>
 </ol>
@@ -555,7 +555,7 @@ if (!doNotTrack) {
 <li>用来控制一个goroutine的panicking行为，捕获panic，从而影响应用的行为</li>
 <li>一般的调用建议
 <ol>
-<li>在defer函数中，通过recever来终止一个goroutine的panicking过程，从而恢复正常代码的执行</li>
+<li>在defer函数中，通过recover来终止一个goroutine的panicking过程，从而恢复正常代码的执行</li>
 <li>可以获取通过panic传递的error</li>
 </ol>
 </li>
@@ -623,14 +623,6 @@ if (!doNotTrack) {
 <li>G: <strong>G</strong>oroutine，即我们在 Go 程序中使用 <code>go</code> 关键字创建的执行体；</li>
 <li>M: <strong>M</strong>achine，或 worker thread，即传统意义上进程的<strong>线程</strong>；</li>
 <li>P: <strong>P</strong>rocessor，即一种人为抽象的、用于执行 Go 代码的<strong>局部资源</strong>。只有当 M 与一个 P 关联后才能执行 Go 代码。除非 M 发生阻塞或在进行系统调用时间过长时，没有与之关联的 P。</li>
-</ul>
-<h3 id="死锁">死锁</h3>
-<p>产生死锁的四个条件</p>
-<ul>
-<li>互斥资源</li>
-<li>进程不可剥夺</li>
-<li>占有且等待</li>
-<li>循环等待</li>
 </ul>
 <h2 id="channel">channel</h2>
 <p><a href="https://segmentfault.com/a/1190000017958702">https://segmentfault.com/a/1190000017958702</a></p>
@@ -875,6 +867,35 @@ if (!doNotTrack) {
 <p>别名本质上还是原类型，所以在表现多态性质的时候不能是做两个类型</p>
 </li>
 </ul>
+<h2 id="垃圾回收">垃圾回收</h2>
+<p><a href="https://jishuin.proginn.com/p/763bfbd624fa">聊聊Go的三色标记法</a></p>
+<p>垃圾回收器的工作流程大体如下：</p>
+<ol>
+<li>标记出哪些对象是存活的，哪些是可回收的。
+<ol>
+<li>标记 GC ROOT 能关联到的对象。这里会 STW。</li>
+<li>从 GCRoots 的直接关联对象开始遍历整个对象图。这里不会STW。</li>
+</ol>
+</li>
+<li>进行回收（清除/复制/整理）。如果在回收期间有移动过的对象（复制/整理），还需要更新引用。</li>
+</ol>
+<p>垃圾回收算法主要做的就是1.2，三色标记法也不例外，它将从GC Roots 开始遍历的对象标记为以下三种颜色：</p>
+<ul>
+<li>白色，初始值。本次回收没被扫描过的对象默认都是白色的。而确认不可达的对象也是白色，但是会被标记「不可达」。</li>
+<li>灰色，中间状态。本对象有被外部引用，但是<strong>本对象引用的其它对象尚未全部检测完</strong>。</li>
+<li>黑色，本对象有被其它对象引用，且已检测完本对象引用的其它对象。</li>
+</ul>
+<p><strong>问题：多标白色，回收掉不该回收的</strong></p>
+<p>A-B C，C没有标记到，然后清除时A又连上了C</p>
+<p><strong>问题：漏标白色，少回收了</strong></p>
+<p>A-B，然后清除时A和B断开了，B没有被清理</p>
+<p><strong>Go解决问题：</strong></p>
+<ol>
+<li>将对象分为堆上的对象和栈上的对象。</li>
+<li>GC 开始将栈上的对象全部扫描并标记为黑色，无需 STW。并且之后不再进行第二次重复扫描</li>
+<li>在 GC 期间，任何在栈上创建的新对象，均为黑色。</li>
+<li>在 GC 期间，在堆上被删除或者添加的对象都标记为灰色。后续继续扫描。</li>
+</ol>
               
 
 

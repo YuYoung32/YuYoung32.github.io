@@ -304,7 +304,21 @@ if (!doNotTrack) {
     <li><a href="#友元函数">友元函数</a></li>
     <li><a href="#多继承">多继承</a></li>
     <li><a href="#内存对齐">内存对齐</a></li>
-    <li><a href="#类型转换">类型转换</a></li>
+    <li><a href="#类型转换">类型转换</a>
+      <ul>
+        <li><a href="#dynamic_cast">dynamic_cast</a></li>
+        <li><a href="#static_cast">static_cast</a></li>
+        <li><a href="#reinterpret_cast">reinterpret_cast</a></li>
+        <li><a href="#const_cast">const_cast</a></li>
+        <li><a href="#例子类之间的转换">例子：类之间的转换</a></li>
+      </ul>
+    </li>
+    <li><a href="#黑科技">黑科技</a>
+      <ul>
+        <li><a href="#模板里的typename">模板里的typename</a></li>
+        <li><a href="#typeid-打印类型名称">typeid 打印类型名称</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
 
@@ -379,9 +393,10 @@ if (!doNotTrack) {
 <li>引用和非引用不可作为区分点</li>
 </ul>
 <h2 id="函数名称修饰">函数名称修饰</h2>
-<p>函数的名字修饰（Decorated Name）就是编译器在编译期间创建的一个字符串，用来指明函数的定义或原型。LINK程序或其他工具有时需要指定函数的名字修饰来定位函数的正确位置。 多数情况下程序员并不需要知道函数的名字修饰，LINK程序或其他工具会自动区分他们。</p>
+<p>函数的名字修饰（Decorated Name）就是编译器在编译期间创建的一个字符串，用来<strong>指明函数的定义或原型</strong>。</p>
+<p>LINK程序或其他工具有时需要指定函数的名字修饰来定位函数的正确位置。 多数情况下程序员并不需要知道函数的名字修饰，LINK程序或其他工具会自动区分他们。</p>
 <p>当然，在某些情况下需要指定函数的名字修饰，例如在C++程序中， 为了让LINK程序或其他工具能够匹配到正确的函数名字，就必须为<strong>重载函数和一些特殊的函数</strong>（如构造函数和析构函数）指定名字装饰。</p>
-<p>另一种需要指定函数的名字修饰的情况是在汇编程序中调用C或C++的函数。如果函数名字，调用约定，返回值类型或函数参数有任何改变，原来的名字修饰就不再有效，必须指定新的名字修饰。C和C++程序的函数在内部使用不同的名字修饰方式，所以需要在C编译的库里额外声明<code>extern C</code>。</p>
+<p>另一种需要指定函数的名字修饰的情况是在<strong>汇编程序</strong>中调用C或C++的函数。如果函数名字，调用约定，返回值类型或函数参数有任何改变，原来的名字修饰就不再有效，必须指定新的名字修饰。C和C++程序的函数在内部使用不同的名字修饰方式，所以需要在C编译的库里额外声明<code>extern C</code>。</p>
 <p><a href="https://www.cnblogs.com/eyeszjwang/articles/2303686.html">C++ 编译器的函数名修饰规则</a></p>
 <h2 id="模板函数类-通用编程-参数化编程-泛型">模板函数/类 通用编程 参数化编程 泛型</h2>
 <p>有了重载为什么需要模板？仅仅参数类型不同的情况下，重载还需要一个一个写。而模板传入类型，直接就可以用一个函数补齐所有类型了，这个过程叫做具体化。而且任何类型都可以，哪怕未知的类型。模板不会减少执行代码量，他会生成不同的代码。</p>
@@ -530,7 +545,7 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h2 id="变量函数在不同文件中使用存储持续性和链接性">变量/函数在不同文件中使用：存储持续性和链接性</h2>
-<p>链接性决定了编译器在编译时到可不可以到其他文件里找，静态性决定当前作用域的变量是否共享内存区。</p>
+<p>链接性决定了<strong>编译器在编译时到可不可以到其他文件里找</strong>，静态性决定<strong>当前作用域的变量是否共享内存区</strong>。可以看到全局变量和函数一旦加了static就不能在其他文件使用了哦。</p>
 <table>
 <thead>
 <tr>
@@ -544,7 +559,7 @@ if (!doNotTrack) {
 </thead>
 <tbody>
 <tr>
-<td>全局变量</td>
+<td><strong>全局</strong>变量</td>
 <td>int a;</td>
 <td>extern int a;</td>
 <td>外部</td>
@@ -552,7 +567,7 @@ if (!doNotTrack) {
 <td>全局</td>
 </tr>
 <tr>
-<td>全局变量</td>
+<td><strong>全局</strong>变量</td>
 <td>static int a;</td>
 <td>不可使用</td>
 <td>内部</td>
@@ -610,8 +625,8 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span><span style="color:#75715e">//extern void StaticFn();   can not use
 </span></span></span></code></pre></div><p>以上都是不用命名空间时整的花活，在使用命名空间后，严格遵循“声明在header，定义在cpp”的规则，使用时引入命名空间就好了，相当于直接把整个东西都拿过来，不管是否是内部还是外部链接性，这时只有静态非静态之分。</p>
 <h2 id="mmap">mmap</h2>
-<p>mmap+write简单来说就是使用<code>mmap</code>替换了read+write中的read操作，减少了一次CPU的拷贝。</p>
-<p><code>mmap</code>主要实现方式是将读缓冲区的地址和用户缓冲区的地址进行映射，<strong>内核缓冲区和应用缓冲区共享</strong>，从而减少了从读缓冲区到用户缓冲区的一次CPU拷贝。</p>
+<p>mmap+write简单来说就是使用<code>mmap</code>替换了read+write中的read操作，直接从内核缓冲区拿数据，减少了一次拷贝。</p>
+<p><code>mmap</code>主要实现方式是<strong>将</strong>读缓冲区的地址和用户缓冲区的地址进行映射，<strong>内核缓冲区和应用缓冲区共享</strong>，从而减少了从读缓冲区到用户缓冲区的一次CPU拷贝。</p>
 <p><a href="https://zhuanlan.zhihu.com/p/357820303">阿里二面：什么是mmap？ - 知乎 (zhihu.com)</a></p>
 <h2 id="虚函数和纯虚函数">虚函数和纯虚函数</h2>
 <ol>
@@ -664,11 +679,11 @@ if (!doNotTrack) {
 <ol start="4">
 <li>纯虚函数和抽象类</li>
 </ol>
-<p>​		在虚函数后=0即为纯虚函数。含有纯虚函数的类成为抽象类，无法实现。子类继承抽象类时应当实现里面的		纯虚方法。此处概念和Java的接口-抽象类几乎完全一致。</p>
+<p>​		在虚函数后=0即为纯虚函数。含有纯虚函数的类成为抽象类，无法实现。子类继承抽象类时应当实现里面的纯虚方法。此处概念和Java的接口-抽象类几乎完全一致。</p>
 <ol start="5">
 <li>
 <p>在继承中为什么一般<strong>虚析构函数</strong>，而不是<strong>虚构造函数</strong>？</p>
-<p>从类的生命周期谈起，子类需要继承父类的相关数据，所以从父类开始构造，父类构造完子类构造，父类构造函数不能为虚函数，否则父类数据没有。而在析构时，因为是以父类指针调用的子类，从父类指针调用父类的析构方法，如果父类析构函数不设为虚的，那么子类的析构函数将无法调用。</p>
+<p>从类的生命周期谈起，子类需要继承父类的相关数据，所以从父类开始构造，父类构造完子类构造，父类构造函数不能为虚函数，否则父类数据没有。而在析构时，因为是以父类指针调用的子类，从父类指针调用父类的析构方法，如果父类析构函数不设为虚的，那么子类的析构函数将无法调用，可能会引起<strong>内存泄漏</strong>。</p>
 </li>
 </ol>
 <h2 id="存储区">存储区</h2>
@@ -832,7 +847,7 @@ C 语言中，全局变量又分为初始化的和未初始化的。初始化的
 <p><strong>C语言暴力版 (type) var 相当于staic_cast</strong></p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> a;
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> b <span style="color:#f92672">=</span> (<span style="color:#66d9ef">int</span>)a;
-</span></span></code></pre></div><p><strong>dynamic_cast</strong></p>
+</span></span></code></pre></div><h3 id="dynamic_cast">dynamic_cast</h3>
 <p>用于不同层次类间的类型转化，带有安全检查，子类指针不能指向父类对象</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Base</span>{};
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Derived</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> Base{};
@@ -844,15 +859,15 @@ C 语言中，全局变量又分为初始化的和未初始化的。初始化的
 </span></span><span style="display:flex;"><span><span style="color:#75715e">//    Base bb;
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">//    Derived *dd=dynamic_cast&lt;Derived*&gt;(&amp;bb); //出错
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
-</span></span></code></pre></div><p><strong>static_cast</strong></p>
+</span></span></code></pre></div><h3 id="static_cast">static_cast</h3>
 <p>类型间转换，当然也可以用作dynamic_cast</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> a;
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> b <span style="color:#f92672">=</span> <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">float</span><span style="color:#f92672">&gt;</span>(a);
-</span></span></code></pre></div><p><strong>reinterpret_cast</strong></p>
+</span></span></code></pre></div><h3 id="reinterpret_cast">reinterpret_cast</h3>
 <p>重新解释指针，指针间转换，可以用作dynamic_cast，参数必须是指针，否则出错。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">int</span><span style="color:#f92672">*</span> a;
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span><span style="color:#f92672">*</span> b <span style="color:#f92672">=</span> <span style="color:#66d9ef">reinterpret_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">float</span><span style="color:#f92672">*&gt;</span>(a);
-</span></span></code></pre></div><p><strong>const_cast</strong></p>
+</span></span></code></pre></div><h3 id="const_cast">const_cast</h3>
 <p>如果不用const_cast，通过a改变b内存的值根本不可能。        ·</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> b<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>;
@@ -863,7 +878,54 @@ C 语言中，全局变量又分为初始化的和未初始化的。初始化的
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//Cannot initialize a variable of type &#39;int *&#39; with an rvalue of type &#39;const int *&#39;
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#f92672">*</span>a <span style="color:#f92672">&lt;&lt;</span> endl; <span style="color:#75715e">// 2
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
-</span></span></code></pre></div>
+</span></span></code></pre></div><h3 id="例子类之间的转换">例子：类之间的转换</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span>{
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> PrintA(){}
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">B</span><span style="color:#f92672">:</span><span style="color:#66d9ef">public</span> A{
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> PrintB(){}
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    A a, <span style="color:#f92672">*</span>pa;
+</span></span><span style="display:flex;"><span>    B b,<span style="color:#f92672">*</span>pb;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//子类使用父类方法 天经地义
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//直接使用
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    b.PrintA();
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//dynamic cast
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">dynamic_cast</span><span style="color:#f92672">&lt;</span>A<span style="color:#f92672">*&gt;</span>(<span style="color:#f92672">&amp;</span>b)<span style="color:#f92672">-&gt;</span>PrintA();
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//static cast
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span>A<span style="color:#f92672">*&gt;</span>(<span style="color:#f92672">&amp;</span>b)<span style="color:#f92672">-&gt;</span>PrintA();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//父类使用子类方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//直接使用，当然不行
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//a.PrintB();
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//隐式类型转换 不可以
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//pa = &amp;b;pa-&gt;PrintB();
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//dynamic_cast 不可以，只能子类转父类
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//dynamic_cast&lt;B*&gt;(&amp;a);pb-&gt;PrintB();
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//强制类型转换 不可以
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//((A*)b)-&gt;PrintA();
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//static_cast 可以，奇迹出现了，有风险：a中没有B的数据，若B的方法使用数据则UB
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span>B<span style="color:#f92672">*&gt;</span>(<span style="color:#f92672">&amp;</span>a)<span style="color:#f92672">-&gt;</span>PrintB();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="黑科技">黑科技</h2>
+<h3 id="模板里的typename">模板里的typename</h3>
+<p>在模板函数里可以用来区分static成员和类型。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">T</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>Class MyClass
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">typename</span> T<span style="color:#f92672">::</span>SubType <span style="color:#f92672">*</span> ptr;
+</span></span><span style="display:flex;"><span>  ...
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p><a href="https://stackoverflow.com/questions/1600936/officially-what-is-typename-for">c++ - Officially, what is typename for? - Stack Overflow</a></p>
+<h3 id="typeid-打印类型名称">typeid 打印类型名称</h3>
+<p>需包含<!-- raw HTML omitted --></p>
+<p>输入RTTI（run-time type information）的一部分。</p>
               
 
 

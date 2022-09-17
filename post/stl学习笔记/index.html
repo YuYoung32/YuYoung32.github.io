@@ -275,43 +275,208 @@ if (!doNotTrack) {
               <h1 id="table-of-contents">目录</h1>
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#list">list</a></li>
-    <li><a href="#迭代器类型萃取器-iterator_traits">迭代器类型萃取器 iterator_traits</a>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#容器">容器</a>
       <ul>
-        <li><a href="#什么是类型萃取">什么是类型萃取</a></li>
-        <li><a href="#为什么需要类型萃取">为什么需要类型萃取</a></li>
-        <li><a href="#为什么需要迭代器类型萃取">为什么需要迭代器类型萃取</a></li>
-        <li><a href="#一个错误的想法使用运行期程序判断">一个错误的想法：使用运行期程序判断</a></li>
-        <li><a href="#stl是这样实现的使用编译期的类型萃取">STL是这样实现的：使用编译期的类型萃取</a></li>
+        <li><a href="#list实现">list实现</a></li>
+        <li><a href="#deque实现">deque实现</a></li>
+        <li><a href="#array和vector实现">array和vector实现</a></li>
+        <li><a href="#_rb_tree-容器">_Rb_tree 容器</a></li>
+        <li><a href="#_hashtable-容器">_HashTable 容器</a></li>
+      </ul>
+    </li>
+    <li><a href="#迭代器">迭代器</a>
+      <ul>
+        <li><a href="#迭代器类型">迭代器类型</a></li>
+        <li><a href="#迭代器类型萃取器-iterator_traits">迭代器类型萃取器 iterator_traits</a></li>
+      </ul>
+    </li>
+    <li><a href="#算法">算法</a>
+      <ul>
+        <li><a href="#迭代器类型对算法的影响">迭代器类型对算法的影响</a></li>
       </ul>
     </li>
   </ul>
 </nav>
 
+<h2 id="前言">前言</h2>
 <p>STL是GP编程的典范，使用容器涉及六大模块：</p>
-<p>容器，分配器，算法，迭代器，适配器，仿函数</p>
+<ul>
+<li>容器 template class</li>
+<li>分配器 template class</li>
+<li>算法 <strong>template function</strong></li>
+<li>迭代器 template class</li>
+<li>适配器 template class</li>
+<li>仿函数 template class</li>
+</ul>
 <p>分配器为容器分配内存，迭代器用来访问容器数据，算法通过迭代器操作容器内的数据，算法使用仿函数改变算法过程。适配器是各部分的粘合剂。</p>
-<h2 id="list">list</h2>
-<p>内部实现：有头节点的 双向 循环 链表。</p>
-<h2 id="迭代器类型萃取器-iterator_traits">迭代器类型萃取器 iterator_traits</h2>
-<h3 id="什么是类型萃取">什么是类型萃取</h3>
-<p>在编译器就知道一个变量/类的类型，比如重载就可以看作类型萃取的一个应用。</p>
-<h3 id="为什么需要类型萃取">为什么需要类型萃取</h3>
-<p>在编译期知道类型，就可以根据类型做出一些事情咯，比如类型萃取知道这个变量是指针还是引用，然后定义typedef isPointer OK，之后程序运行期就可以直接知道isPointer()==OK()，就设置不改变这个变量的内容。</p>
-<h3 id="为什么需要迭代器类型萃取">为什么需要迭代器类型萃取</h3>
-<p>算法需要通过iterator操作容器内数据，一个算法需要得知iterator的属性（需要知道这些属性做最佳的算法处理），具体来说，是需要知道某些指标，比如：</p>
+<h2 id="容器">容器</h2>
+<h3 id="list实现">list实现</h3>
+<p><code>Sequence Container</code></p>
+<p>有头节点的 双向 循环 链表。</p>
+<h3 id="deque实现">deque实现</h3>
+<p><code>Sequence Container</code></p>
+<p>deque分段连续，数组存放数组指针，每个数组指针指向buffer。通过iterator模拟连续。</p>
+<h4 id="容器适配器stack-queue">容器适配器：stack queue</h4>
+<p>stack和queue默认的Seqence是deque，stack和queue可以默认是deque的适配器。 二者还可以选用<strong>list</strong>作为底层容器。</p>
+<h3 id="array和vector实现">array和vector实现</h3>
+<p><code>Sequence Container</code></p>
+<p>vector动态连续数组，空间不足时会两倍扩充。</p>
+<p>array，底层数组直接封装。</p>
+<h3 id="_rb_tree-容器">_Rb_tree 容器</h3>
+<p><code>Associative Container</code></p>
+<p>如名，红黑树，节点是双向链表形式的树。模板参数提供至少前四个，分别是Key，Value（Key和Data的结合体），GetKey（仿函数，如何从Value里拿到Key），Compare（仿函数，如何比较Key）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;bits/stl_tree.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">MyS</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> a;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> b;
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">GetKey</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> <span style="color:#66d9ef">operator</span>()(<span style="color:#66d9ef">const</span> MyS <span style="color:#f92672">&amp;</span>s) <span style="color:#66d9ef">const</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> s.a;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//key, key and data = value, how to get key from value, compare, allocator(default)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    std<span style="color:#f92672">::</span>_Rb_tree<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, MyS, GetKey, std<span style="color:#f92672">::</span>less<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;&gt;</span> rbTree;
+</span></span><span style="display:flex;"><span>    rbTree._M_insert_unique(MyS{<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>});
+</span></span><span style="display:flex;"><span>    rbTree._M_insert_unique(MyS{<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>});
+</span></span><span style="display:flex;"><span>    rbTree._M_insert_equal(MyS{<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">6</span>});
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h4 id="容器适配器map-set-multimap-multiset">容器适配器：map set multimap multiset</h4>
+<ul>
+<li>map</li>
+<li>set</li>
+<li>multimap</li>
+<li>multiset</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;map&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;set&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//key type, data type, compare function, allocator
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    std<span style="color:#f92672">::</span>map<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, <span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> m;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//key type, data type, compare function, allocator
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    std<span style="color:#f92672">::</span>multimap<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, <span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> mm;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//key type, compare function, allocator
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    std<span style="color:#f92672">::</span>set<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> s;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//key type, compare function, allocator
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    std<span style="color:#f92672">::</span>multiset<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> ms;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="_hashtable-容器">_HashTable 容器</h3>
+<p><code>Associative Container</code></p>
+<p>哈希表，内部是vector，每个vector元素称作bucket，每个vector元素是一个节点的指针，这个节点是一个链表的首个节点，这个链表用来解决hash冲突。</p>
+<p>vector的size为质数，每次扩容扩容到容量最接近2倍的质数，扩容后重新分配所有bucket。</p>
+<p>注意哦，直接使用hash table的话，要写全模板参数，尤其是它没有默认构造函数，要手动指定至少<code>bucket大小</code>、<code>hash函数</code>、<code>key比较函数</code>这三个参数。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;hashtable.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cstring&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">StrCmp</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">bool</span> <span style="color:#66d9ef">operator</span>()(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>a, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>b) <span style="color:#66d9ef">const</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> strcmp(a, b) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    __gnu_cxx<span style="color:#f92672">::</span>hashtable<span style="color:#f92672">&lt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>,               <span style="color:#75715e">//value(data+key),
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>,               <span style="color:#75715e">//key
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            std<span style="color:#f92672">::</span>hash<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*&gt;</span>,    <span style="color:#75715e">//hash function,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            std<span style="color:#f92672">::</span>_Identity<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*&gt;</span>, <span style="color:#75715e">//how to get key
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            StrCmp,                 	<span style="color:#75715e">//key equal function
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            std<span style="color:#f92672">::</span>allocator<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*&gt;&gt;</span>      <span style="color:#75715e">//allocator
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    myHashTable(<span style="color:#ae81ff">100</span>, std<span style="color:#f92672">::</span>hash<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*&gt;</span>(), StrCmp());
+</span></span><span style="display:flex;"><span>    myHashTable.insert_equal(<span style="color:#e6db74">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>    myHashTable.insert_equal(<span style="color:#e6db74">&#34;world&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">auto</span> it <span style="color:#f92672">=</span> myHashTable.find(<span style="color:#e6db74">&#34;hello&#34;</span>);
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#f92672">*</span>it; <span style="color:#75715e">//输出hello
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><h4 id="gnu-c的内置的hash函数">GNU C++的内置的hash函数</h4>
+<p>对于两种类型，STL使用模板偏特化做了特殊处理：</p>
+<ul>
+<li>
+<p>对于无符号数值类型比如unsigned int, unsigned char，把数值同统一转为size_t后返回。</p>
+</li>
+<li>
+<p>对于指针类型*T，则是使用reinterpret_cast重新解释为size_t。</p>
+</li>
+</ul>
+<p>实际放到bucket时要对存放bucket的vector大小取模的。</p>
+<p>以下代码是指针类型偏特化 和 数值类型偏特化。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>  <span style="color:#75715e">/// Partial specializations for pointer types.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> _Tp<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">hash</span><span style="color:#f92672">&lt;</span>_Tp<span style="color:#f92672">*&gt;</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> __hash_base<span style="color:#f92672">&lt;</span>size_t, _Tp<span style="color:#f92672">*&gt;</span>
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      size_t
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">operator</span>()(_Tp<span style="color:#f92672">*</span> __p) <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">noexcept</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#75715e">//指针类型，重新解释为size_t
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      { <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">reinterpret_cast</span><span style="color:#f92672">&lt;</span>size_t<span style="color:#f92672">&gt;</span>(__p); }
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Explicit specializations for integer types.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define _Cxx_hashtable_define_trivial_hash(_Tp)    \
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  template&lt;&gt;                  \
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    struct hash&lt;_Tp&gt; : public __hash_base&lt;size_t, _Tp&gt;  \
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    {                                                   \
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">      size_t                                            \
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">      operator()(_Tp __val) const noexcept              \
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">      </span><span style="color:#75715e">// 数值类型直接转化
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      { <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span>size_t<span style="color:#f92672">&gt;</span>(__val); }            \
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">/// Explicit specialization for bool.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  _Cxx_hashtable_define_trivial_hash(<span style="color:#66d9ef">bool</span>)
+</span></span></code></pre></div><h4 id="适配器unordered_-容器">适配器：unordered_ 容器</h4>
+<ul>
+<li>unordered_map</li>
+<li>unordered_set</li>
+<li>unordered_multimap</li>
+<li>unordered_multiset</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unordered_map&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unordered_set&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//key type, data type, hash function, compare function, allocator
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    std<span style="color:#f92672">::</span>unordered_map<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, <span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> m;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//key type, data type, hash function, compare function, allocator
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>unordered_multimap<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>,<span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> mm;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//key type, hash function, compare function, allocator
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    std<span style="color:#f92672">::</span>unordered_set<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> s;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//key type, compare function, compare function, allocator
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    std<span style="color:#f92672">::</span>unordered_multiset<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> ms;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="迭代器">迭代器</h2>
+<h3 id="迭代器类型">迭代器类型</h3>
+<p>迭代器是用来访问容器的。容器对外提供迭代器。</p>
+<p>访问容器是有规则的：是否能随机访问？是否能双向访问？那么迭代器应该有自己的属性，以便让外部调用时注意到。</p>
+<p>这个规则在迭代器里是怎样的表现形式？首先想到使用enum指定标签，实际上STL使用struct xx_tag{}，使用一个类作为一个属性。</p>
+<p>具体有这5种属性</p>
 <pre tabindex="0"><code>iterator_category 是什么类型的,比如说双向遍历类型
 value_type		容器内装的值是什么类型的,比如说int
 difference_type	容器内距离的类型,比如说long int
 pointer			指针类型是什么,比如说int*
 reference		引用类型是什么,比如说int&amp;
-</code></pre><p>怎么实现呢？</p>
+</code></pre><p>不同的属性组合成迭代器不同的<strong>类型</strong>。</p>
+<h3 id="迭代器类型萃取器-iterator_traits">迭代器类型萃取器 iterator_traits</h3>
+<h4 id="什么是类型萃取">什么是类型萃取</h4>
+<p>在编译期就知道一个变量/类的类型，比如重载就可以看作类型萃取的一个应用。</p>
+<h4 id="为什么需要类型萃取">为什么需要类型萃取</h4>
+<p>在编译期知道类型，就可以根据类型做出一些事情咯，比如类型萃取知道这个变量是指针还是引用，然后定义typedef isPointer OK，之后程序运行期就可以直接知道isPointer()==OK()，就设置不改变这个变量的内容。</p>
+<h4 id="为什么需要迭代器类型萃取">为什么需要迭代器类型萃取</h4>
+<p>算法需要通过iterator操作容器内数据，一个算法需要得知iterator的属性（需要知道这些属性来做最佳的算法处理），具体来说，是需要上一节提到的五种属性。</p>
+<p>怎么实现呢？</p>
 <p>具体而言，如何知道根据模板传入的<strong>类型参数</strong>做出判断。</p>
-<h3 id="一个错误的想法使用运行期程序判断">一个错误的想法：使用运行期程序判断</h3>
+<h4 id="一个错误的想法使用运行期程序判断">一个错误的想法：使用运行期程序判断</h4>
 <p>c++11提供了<code>decltype()</code>做类型推断，可以用<code>decltype(_Ty)==decltype(int*)</code>做判断然后具体赋值吗？显然不可能，c++不提供类型间的操作。不能比较int==int，必须要实例化比如int()==int()，而==的前提是左右对象类型相同，不相同的情况下会编译报错。</p>
 <p>这里要和golang的类型推断语法比较一下，golang的类型推断 switch val.type，然后就可以判断类型是否符合了。</p>
 <p>还有一种方法，c++为了能够根据传入类型做操作，天然支持了<strong>重载</strong>，自动根据类型调用不同的函数。难道说要在容器里定义重载函数，然后让外部调用函数获取属性吗？好像也可以，但是一方面这样还需要调用函数，会降低性能。另一方面，不符合泛型编程数据和方法分开的准则。接下来看看STL是怎样实现的。</p>
-<h3 id="stl是这样实现的使用编译期的类型萃取">STL是这样实现的：使用编译期的类型萃取</h3>
+<h4 id="stl是这样实现的使用编译期的类型萃取">STL是这样实现的：使用编译期的类型萃取</h4>
 <ol>
 <li>每个容器自己有一个<code>_xx_iterator</code>模板类，使用<code>typedef</code>，把自己的属性写死，比如下面是stl_list的源码，把自己的<code>iterator_category</code>写死为<code>bidirectional_iterator_tag</code>。</li>
 </ol>
@@ -357,7 +522,7 @@ reference		引用类型是什么,比如说int&amp;
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> _Iterator<span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">iterator_traits</span> <span style="color:#75715e">//从这里实例化，父类接到并读取传入iterator内置的
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> __iterator_traits<span style="color:#f92672">&lt;</span>_Iterator<span style="color:#f92672">&gt;</span> { };
-</span></span></code></pre></div><p><strong>传入指针/引用类型</strong></p>
+</span></span></code></pre></div><p>​	<strong>传入指针/引用类型</strong></p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> _Tp<span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">iterator_traits</span><span style="color:#f92672">&lt;</span>_Tp<span style="color:#f92672">*&gt;</span>
 </span></span><span style="display:flex;"><span>{
@@ -384,7 +549,26 @@ reference		引用类型是什么,比如说int&amp;
 </span></span><span style="display:flex;"><span>iterator_traits<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">*&gt;::</span>iterator_category intItAdapter;
 </span></span><span style="display:flex;"><span><span style="color:#75715e">//不使用适配器
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>list<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;::</span>iterator<span style="color:#f92672">::</span>iterator_category listIt; <span style="color:#75715e">//和前者都是std::bidirectional_iterator_tag对象
-</span></span></span></code></pre></div>
+</span></span></span></code></pre></div><h2 id="算法">算法</h2>
+<h3 id="迭代器类型对算法的影响">迭代器类型对算法的影响</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span> <span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> _InputIterator<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//使用迭代器类型萃取 获得长度类型 difference_type,不能随意返回int哦
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">typename</span> iterator_traits<span style="color:#f92672">&lt;</span>_InputIterator<span style="color:#f92672">&gt;::</span>difference_type
+</span></span><span style="display:flex;"><span>   __distance(_InputIterator __first, _InputIterator __last,
+</span></span><span style="display:flex;"><span>              input_iterator_tag)<span style="color:#75715e">//广泛型
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   {
+</span></span><span style="display:flex;"><span>		...
+</span></span><span style="display:flex;"><span>   }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//使用重载根据random_access_iterator_tag定位到函数 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span> <span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> _RandomAccessIterator<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">typename</span> iterator_traits<span style="color:#f92672">&lt;</span>_RandomAccessIterator<span style="color:#f92672">&gt;::</span>difference_type
+</span></span><span style="display:flex;"><span>   __distance(_RandomAccessIterator __first, _RandomAccessIterator __last,
+</span></span><span style="display:flex;"><span>              random_access_iterator_tag)<span style="color:#75715e">//随机访问型
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   {
+</span></span><span style="display:flex;"><span>		...
+</span></span><span style="display:flex;"><span>   }
+</span></span></code></pre></div>
               
 
 
