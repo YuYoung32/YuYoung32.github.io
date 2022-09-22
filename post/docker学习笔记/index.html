@@ -273,7 +273,15 @@ if (!doNotTrack) {
               <h1 id="table-of-contents">目录</h1>
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#原理">原理</a></li>
+    <li><a href="#为什么使用docker">为什么使用Docker</a></li>
+    <li><a href="#原理">原理</a>
+      <ul>
+        <li><a href="#三个基本概念">三个基本概念</a></li>
+        <li><a href="#容器隔离原理">容器隔离原理</a></li>
+        <li><a href="#docker-image分层">Docker Image分层</a></li>
+        <li><a href="#docker和虚拟机">Docker和虚拟机</a></li>
+      </ul>
+    </li>
     <li><a href="#命令">命令</a>
       <ul>
         <li><a href="#镜像相关">镜像相关</a></li>
@@ -297,8 +305,53 @@ if (!doNotTrack) {
   </ul>
 </nav>
 
+<h2 id="为什么使用docker">为什么使用Docker</h2>
+<p>环境方便移植组装，应用可以把包和依赖发布到镜像，这样任何docker即可直接拉下来，构建环境，运行软件。</p>
 <h2 id="原理">原理</h2>
-<p>待补充</p>
+<h3 id="三个基本概念">三个基本概念</h3>
+<ul>
+<li>镜像（Image）：Docker 镜像（Image），就相当于是一个 root 文件系统。</li>
+<li>容器（Container）：镜像和容器的关系，镜像是静态的定义，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等。</li>
+<li>仓库（Repository）：仓库可看成一个代码控制中心，用来保存<strong>镜像</strong>。</li>
+</ul>
+<h3 id="容器隔离原理">容器隔离原理</h3>
+<p><a href="https://www.cnblogs.com/michael9/p/13039700.html">Docker 原理</a></p>
+<ul>
+<li>
+<p>PID Namespace进行进程可见性限制：创建进程时设置参数CLONE_NEWPID参数，可以让这个进程有自己的命名空间和<strong>进程根目录</strong>，结合操作系统的rootfs和联合文件系统就基本实现了docker的隔离问题。</p>
+<p>rootfs中包含了一个操作系统所需要的文件，配置和目录，<strong>但并不包含系统内核。</strong> 因为在 Linux 中，文件和内核是分开存放的，操作系统只有在开启启动时才会加载指定的内核。这也就意味着，所有的容器都会<strong>共享宿主机上操作系统的内核</strong>。</p>
+<p>联合文件系统用于复用docker的镜像层。镜像层由创建容器时构建，镜像层是只读的，只有最上层的容器层才是可写的。具体过程使用了写时拷贝技术 见下一节。</p>
+</li>
+<li>
+<p>Linux Control Group进行资源的限制：主要的作用就是限制进程组使用的资源上限，包括 CPU，内存，磁盘。</p>
+</li>
+</ul>
+<h3 id="docker-image分层">Docker Image分层</h3>
+<p>Docker镜像是由一系列层来构建的，由Dockerfile控制各层，最顶层是可修改的容器层，下面都是镜像层，最下面是。注意：容器层记录对镜像的修改，所有镜像层都是只读的，不会被容器修改，所以<strong>镜像可以被多个容器共享</strong>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Container RW
+</span></span><span style="display:flex;"><span>---------
+</span></span><span style="display:flex;"><span>Image Vim R
+</span></span><span style="display:flex;"><span>Image Emacs R
+</span></span><span style="display:flex;"><span>Image Apache R
+</span></span><span style="display:flex;"><span>Baseimage ubuntu R
+</span></span><span style="display:flex;"><span>--------- 
+</span></span><span style="display:flex;"><span>Kernel R
+</span></span></code></pre></div><p>对镜像中数据的访问使用了写时拷贝技术：</p>
+<ul>
+<li>添加文件
+在容器中创建文件时，新文件被添加到容器层中。</li>
+<li>读取文件
+在容器中读取某个文件时，Docker 会<strong>从上往下</strong>依次在各镜像层中查找此文件。一旦找到，<strong>打开并读入内存</strong>。</li>
+<li>修改文件
+在容器中修改已存在的文件时，Docker 会从上往下依次在各镜像层中查找此文件。一旦找到，<strong>立即将其复制到容器层，然后修改之</strong>。</li>
+<li>删除文件
+在容器中删除文件时，Docker 也是从上往下依次在镜像层中查找此文件。找到后，会在容器层中记录下此删除操作。</li>
+</ul>
+<h3 id="docker和虚拟机">Docker和虚拟机</h3>
+<ul>
+<li>传统 VM： 需要基于 Hypervisor 的硬件虚拟化技术，模拟出 CPU，内存等硬件。然后在其上搭建一套完整的操作系统，自然在性能上会有很大的损失。迁移自然更不用说，传统的 ova 导出后就是一个完整的操作系统。</li>
+<li>Docker：Docker 将 Hypervisor 的位置换成自己的 Docekr Engine。然后运行的容器仅仅是一个特殊的进程，自然性能不会有太大的损失。并且可以应用和其所需要的系统文件打包成镜像，无论在哪读可以正常运行，而且相对于 ova 来说体积也小了更多。（需要内核支持）</li>
+</ul>
 <h2 id="命令">命令</h2>
 <h3 id="镜像相关">镜像相关</h3>
 <h4 id="镜像搜索与安装">镜像搜索与安装</h4>

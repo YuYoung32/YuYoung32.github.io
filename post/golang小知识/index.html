@@ -308,7 +308,12 @@ if (!doNotTrack) {
         <li><a href="#mpg模型">MPG模型</a></li>
       </ul>
     </li>
-    <li><a href="#channel">channel</a></li>
+    <li><a href="#channel">channel</a>
+      <ul>
+        <li><a href="#channel各种情况下的操作情况">channel各种情况下的操作情况</a></li>
+        <li><a href="#channel-死锁">channel 死锁</a></li>
+      </ul>
+    </li>
     <li><a href="#map">map</a>
       <ul>
         <li><a href="#用法">用法</a></li>
@@ -536,7 +541,7 @@ if (!doNotTrack) {
 <h2 id="defer的用法">defer的用法</h2>
 <ul>
 <li>defer需要先注册才能生效，即运行到位置</li>
-<li>defer会缓存当前状态到函数参数或值，若是函数参数地址类型，这个地址的内容变了，函数的传入参数也会变，若是形参则缓存下来就不会变</li>
+<li>defer会缓存当前状态到函数参数或值，若是函数参数地址类型，这个地址的内容变了，函数的传入参数也会变，若是形参则<strong>缓存下来</strong>就不会变</li>
 <li>即使defer函数参数里有函数运算，这个函数也会因为先算出参数值而运行</li>
 </ul>
 <h2 id="panic和error">panic和error</h2>
@@ -625,8 +630,24 @@ if (!doNotTrack) {
 <li>P: <strong>P</strong>rocessor，即一种人为抽象的、用于执行 Go 代码的<strong>局部资源</strong>。只有当 M 与一个 P 关联后才能执行 Go 代码。除非 M 发生阻塞或在进行系统调用时间过长时，没有与之关联的 P。</li>
 </ul>
 <h2 id="channel">channel</h2>
-<p><a href="https://segmentfault.com/a/1190000017958702">https://segmentfault.com/a/1190000017958702</a></p>
-<p>是进程间的通信方式</p>
+<p><a href="https://segmentfault.com/a/1190000017958702">channel的使用</a></p>
+<h3 id="channel各种情况下的操作情况">channel各种情况下的操作情况</h3>
+<ul>
+<li>nil channel
+<ul>
+<li>读写 阻塞</li>
+<li>close panic 非法操作内存</li>
+</ul>
+</li>
+<li>closed channel
+<ul>
+<li>读 零值，或者是其中残存的数据</li>
+<li>写 panic 非法操作内存</li>
+<li>关闭 panic 非法操作内存</li>
+</ul>
+</li>
+</ul>
+<p>用于在数据流动方向。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
 </span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">c</span> <span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">int</span>
 </span></span><span style="display:flex;"><span>	<span style="color:#75715e">//如果去掉下面的make，会死锁。此时相当于c是一个没有缓冲的channel
@@ -641,6 +662,8 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>select默认是阻塞的，只有当监听的channel中有<strong>发送或接收</strong>可以进行时才会运行，当多个channel都准备好的时候，select是<strong>随机的</strong>选择一个执行的。</p>
 <p>使用必须make，可以声明为<strong>只读或只写</strong></p>
+<h3 id="channel-死锁">channel 死锁</h3>
+<p><a href="https://juejin.cn/post/6844903881843933197">channel的死锁其实没那么复杂 </a></p>
 <h2 id="map">map</h2>
 <h3 id="用法">用法</h3>
 <p>首先需要make，var出来的不可以使用</p>
@@ -869,6 +892,11 @@ if (!doNotTrack) {
 </ul>
 <h2 id="垃圾回收">垃圾回收</h2>
 <p><a href="https://jishuin.proginn.com/p/763bfbd624fa">聊聊Go的三色标记法</a></p>
+<p>垃圾回收器有两种思路</p>
+<ul>
+<li>引用计数：引用计数无法解决循环引用问题</li>
+<li>可达性分析：主流垃圾回收器都使用这种，Golang使用可达性分析</li>
+</ul>
 <p>垃圾回收器的工作流程大体如下：</p>
 <ol>
 <li>标记出哪些对象是存活的，哪些是可回收的。
