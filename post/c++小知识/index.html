@@ -279,25 +279,26 @@ if (!doNotTrack) {
   <ul>
     <li><a href="#左右值和左右值引用">左右值和左右值引用</a></li>
     <li><a href="#构造函数初始化列表">构造函数初始化列表</a></li>
-    <li><a href="#c多态">C++多态</a>
+    <li><a href="#重载">重载</a>
       <ul>
         <li><a href="#函数重载与默认参数">函数重载与默认参数</a></li>
       </ul>
     </li>
     <li><a href="#函数名称修饰">函数名称修饰</a></li>
-    <li><a href="#模板函数类-通用编程-参数化编程-泛型">模板函数/类 通用编程 参数化编程 泛型</a>
+    <li><a href="#模板">模板</a>
       <ul>
         <li><a href="#模板函数">模板函数</a></li>
         <li><a href="#显式具体化">显式具体化</a></li>
-        <li><a href="#显式实例化-explicit--instantiation">显式实例化 	explicit  instantiation</a></li>
-        <li><a href="#重载解析overloading-resolution">重载解析	overloading resolution</a></li>
+        <li><a href="#显式实例化">显式实例化</a></li>
+        <li><a href="#重载解析">重载解析</a></li>
         <li><a href="#decltype-和-auto">decltype 和 auto</a></li>
+        <li><a href="#模板类">模板类</a></li>
+        <li><a href="#模板参数">模板参数</a></li>
       </ul>
     </li>
-    <li><a href="#复杂指针分析函数指针">复杂指针分析：函数指针</a></li>
+    <li><a href="#函数指针分析">函数指针分析</a></li>
     <li><a href="#仿函数">仿函数</a></li>
-    <li><a href="#变量函数在不同文件中使用存储持续性和链接性">变量/函数在不同文件中使用：存储持续性和链接性</a></li>
-    <li><a href="#mmap">mmap</a></li>
+    <li><a href="#存储持续性和链接性">存储持续性和链接性</a></li>
     <li><a href="#虚函数和纯虚函数">虚函数和纯虚函数</a></li>
     <li><a href="#存储区">存储区</a></li>
     <li><a href="#成员函数const和mutable">成员函数const和mutable</a></li>
@@ -318,6 +319,19 @@ if (!doNotTrack) {
         <li><a href="#模板里的typename">模板里的typename</a></li>
         <li><a href="#typeid-打印类型名称">typeid 打印类型名称</a></li>
         <li><a href="#std算法库">std::算法库</a></li>
+        <li><a href="#sfinae">SFINAE</a></li>
+        <li><a href="#tuple">tuple</a></li>
+        <li><a href="#bind">bind</a></li>
+        <li><a href="#type-traits">type traits</a></li>
+        <li><a href="#设置entry_point">设置entry_point</a></li>
+        <li><a href="#embedded-pointer">embedded pointer</a></li>
+      </ul>
+    </li>
+    <li><a href="#内存管理">内存管理</a>
+      <ul>
+        <li><a href="#内存分配过程">内存分配过程</a></li>
+        <li><a href="#重载内存分配函数">重载内存分配函数</a></li>
+        <li><a href="#内存分配器">内存分配器</a></li>
       </ul>
     </li>
   </ul>
@@ -326,8 +340,8 @@ if (!doNotTrack) {
 <h2 id="左右值和左右值引用">左右值和左右值引用</h2>
 <p><strong>左值：</strong> 可以取地址，有名字的，非临时的就是左值。</p>
 <p><strong>右值：</strong> 不能取地址，没有名字的，临时的就是右值。</p>
-<p><strong>左值引用：</strong> 相当于指针指向某个左值，取了左值的地址。就是说左值引用要求右边的值可以取地址，若不能取地址可以，像这样<code>const int&amp; a = 1;</code>，实际是创建临时变量。</p>
-<p><strong>右值引用：</strong> 相当于指针指向某个右值，右值没有地址意味着创建了临时变你量来存储。类似于左值引用使用const，但是使用了const无法修改，这里可以修改。</p>
+<p><strong>左值引用：</strong> 相当于指针指向某个左值，取了左值的地址。就是说左值引用要求右边的值可以取地址，若不能取地址可以，像这样<code>const int&amp; a = 1;</code>实际是创建临时变量。</p>
+<p><strong>右值引用：</strong> 相当于指针指向某个右值，右值没有地址意味着创建了临时变量来存储。类似于左值引用使用const，但是使用了const无法修改，这里可以修改。</p>
 <p>为何会有左右值？引用实际上就是简化了指针，或者说内存标识符。为了精确控制内存生命周期，避免没必要的内存拷贝。</p>
 <p>例如：在深拷贝时，直接将传入的右值内存拿过来，因为右值是临时创建的，不可能再用。可移动对象在<strong>需要拷贝且被拷贝者之后不再被需要</strong>的场景，可以使用 <code>std::move</code> 将左值转换成右值，提升性能。但如果像将右值转换成左值怎么办？<code>std::forward&lt;T&gt;(rlValue)</code>，会左转右或右转左。</p>
 <h2 id="构造函数初始化列表">构造函数初始化列表</h2>
@@ -385,7 +399,7 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>destructorA called6  main.A析构 对应4
 </span></span><span style="display:flex;"><span>destructorB called7  A.B析构
 </span></span><span style="display:flex;"><span>destructorB called8  main.B析构 对应0
-</span></span></code></pre></div><h2 id="c多态">C++多态</h2>
+</span></span></code></pre></div><h2 id="重载">重载</h2>
 <h3 id="函数重载与默认参数">函数重载与默认参数</h3>
 <p>函数重载的函数签名要求：不同个数形参，形参类型不同，返回值不要求（因为在入口时需要知道使用哪个函数而不是结束时知道）。</p>
 <p>注意：</p>
@@ -399,7 +413,7 @@ if (!doNotTrack) {
 <p>当然，在某些情况下需要指定函数的名字修饰，例如在C++程序中， 为了让LINK程序或其他工具能够匹配到正确的函数名字，就必须为<strong>重载函数和一些特殊的函数</strong>（如构造函数和析构函数）指定名字装饰。</p>
 <p>另一种需要指定函数的名字修饰的情况是在<strong>汇编程序</strong>中调用C或C++的函数。如果函数名字，调用约定，返回值类型或函数参数有任何改变，原来的名字修饰就不再有效，必须指定新的名字修饰。C和C++程序的函数在内部使用不同的名字修饰方式，所以需要在C编译的库里额外声明<code>extern C</code>。</p>
 <p><a href="https://www.cnblogs.com/eyeszjwang/articles/2303686.html">C++ 编译器的函数名修饰规则</a></p>
-<h2 id="模板函数类-通用编程-参数化编程-泛型">模板函数/类 通用编程 参数化编程 泛型</h2>
+<h2 id="模板">模板</h2>
 <p>有了重载为什么需要模板？仅仅参数类型不同的情况下，重载还需要一个一个写。而模板传入类型，直接就可以用一个函数补齐所有类型了，这个过程叫做具体化。而且任何类型都可以，哪怕未知的类型。模板不会减少执行代码量，他会生成不同的代码。</p>
 <h3 id="模板函数">模板函数</h3>
 <p>用法：</p>
@@ -422,14 +436,14 @@ if (!doNotTrack) {
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;&gt;</span> <span style="color:#66d9ef">void</span> func(<span style="color:#66d9ef">int</span> a){}
 </span></span><span style="display:flex;"><span><span style="color:#75715e">//或
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;&gt;</span> <span style="color:#66d9ef">void</span> func<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span>(<span style="color:#66d9ef">int</span> a){}
-</span></span></code></pre></div><h3 id="显式实例化-explicit--instantiation">显式实例化 	explicit  instantiation</h3>
+</span></span></code></pre></div><h3 id="显式实例化">显式实例化</h3>
 <p><strong>实例化和具体化的区别？</strong></p>
 <p>实例化从模板是真正生成代码了（在用时运作），具体化是确定模板函数的实现（还在声明那一层）。所以显式具体化在声明后必须<strong>给出实现</strong>，而实例化就是根据类型生成代码。</p>
 <p>如果直接使用就是隐式实例化，但是可以自己手动实例化一个叫做显式实例化，不需要写实现！</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#66d9ef">void</span> func<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span>(<span style="color:#66d9ef">int</span> a);<span style="color:#75715e">//template后面没有&lt;&gt;
 </span></span></span></code></pre></div><p><strong>为什么需要显式实例化</strong></p>
 <p>避免隐式实例化时生成多份。</p>
-<h3 id="重载解析overloading-resolution">重载解析	overloading resolution</h3>
+<h3 id="重载解析">重载解析</h3>
 <p>调用函数时，选择哪个函数？</p>
 <p>执行顺序：</p>
 <ol>
@@ -468,7 +482,51 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> a <span style="color:#f92672">+</span> b;
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="复杂指针分析函数指针">复杂指针分析：函数指针</h2>
+</span></span></code></pre></div><h3 id="模板类">模板类</h3>
+<p>大部分和模板函数一致，但是要注意模板类实例化时必须显式通过&lt;&gt;指定类型！不像模板函数可加可不加。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyClass</span>{};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> my_func(T t);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//必须&lt;&gt;指明类型
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>MyClass<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> mc;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>my_func<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span>(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//或者
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>my_func(<span style="color:#ae81ff">1</span>);
+</span></span></code></pre></div><h3 id="模板参数">模板参数</h3>
+<p><a href="https://en.cppreference.com/w/cpp/language/template_parameters">Template parameters and template arguments - cppreference.com</a></p>
+<p>模板参数不只是类型。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>有名字</th>
+<th>无名字</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>无默认值</td>
+<td><code>template&lt;typename T&gt;</code></td>
+<td><code>template&lt;typename&gt;</code></td>
+</tr>
+<tr>
+<td>有默认值</td>
+<td><code>template&lt;typename T = int&gt;</code></td>
+<td><code>template&lt;typename = int&gt;</code></td>
+</tr>
+<tr>
+<td>无默认值的可变数量</td>
+<td><code>template&lt;typename... T&gt;</code></td>
+<td><code>template&lt;typename...&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>当一个参数没有名字的时候，多半是为了SFINAE。</p>
+<h2 id="函数指针分析">函数指针分析</h2>
 <p>如何声明一个函数指针？</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">//通用格式：
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>ReturnType (<span style="color:#f92672">*</span>NickName)(PramType1, PramType2);
@@ -545,7 +603,7 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>        pq.pop();
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="变量函数在不同文件中使用存储持续性和链接性">变量/函数在不同文件中使用：存储持续性和链接性</h2>
+</span></span></code></pre></div><h2 id="存储持续性和链接性">存储持续性和链接性</h2>
 <p>链接性决定了<strong>编译器在编译时到可不可以到其他文件里找</strong>，静态性决定<strong>当前作用域的变量是否共享内存区</strong>。可以看到全局变量和函数一旦加了static就不能在其他文件使用了哦。</p>
 <table>
 <thead>
@@ -625,10 +683,6 @@ if (!doNotTrack) {
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">//extern void StaticFn();   can not use
 </span></span></span></code></pre></div><p>以上都是不用命名空间时整的花活，在使用命名空间后，严格遵循“声明在header，定义在cpp”的规则，使用时引入命名空间就好了，相当于直接把整个东西都拿过来，不管是否是内部还是外部链接性，这时只有静态非静态之分。</p>
-<h2 id="mmap">mmap</h2>
-<p>mmap+write简单来说就是使用<code>mmap</code>替换了read+write中的read操作，直接从内核缓冲区拿数据，减少了一次拷贝。</p>
-<p><code>mmap</code>主要实现方式是<strong>将</strong>读缓冲区的地址和用户缓冲区的地址进行映射，<strong>内核缓冲区和应用缓冲区共享</strong>，从而减少了从读缓冲区到用户缓冲区的一次CPU拷贝。</p>
-<p><a href="https://zhuanlan.zhihu.com/p/357820303">阿里二面：什么是mmap？ - 知乎 (zhihu.com)</a></p>
 <h2 id="虚函数和纯虚函数">虚函数和纯虚函数</h2>
 <ol>
 <li>
@@ -916,7 +970,7 @@ C 语言中，全局变量又分为初始化的和未初始化的。初始化的
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h2 id="黑科技">黑科技</h2>
 <h3 id="模板里的typename">模板里的typename</h3>
-<p>在模板函数里可以用来区分static成员和类型。</p>
+<p>在模板函数里可以帮助编译器区分static成员和类型。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">T</span><span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span>Class MyClass
 </span></span><span style="display:flex;"><span>{
@@ -936,6 +990,189 @@ C 语言中，全局变量又分为初始化的和未初始化的。初始化的
 <li>find_if 循序查找</li>
 <li>binary_search 二分查找</li>
 </ul>
+<h3 id="sfinae">SFINAE</h3>
+<p>Subsituation failure is not an error。实例化失败不是错误。</p>
+<p>目的是模板实例化时，如果我们选择重载的话，会提供多个实例化选择。这时当编译器遇到第一个无法实例化的模板的时候继续<strong>查看其他模板能否匹配</strong>，而不是直接error结束编译。</p>
+<p>相当于实现了<strong>模板实例化时的重载</strong>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;type_traits&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span>... Ts<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> void_t <span style="color:#f92672">=</span> <span style="color:#66d9ef">void</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//#1 否则就实例化这个
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//typename=void 就是一个开关，如果第二选项存在就不使用这个
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T, <span style="color:#66d9ef">typename</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">void</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">has_typedef_foobar</span> <span style="color:#f92672">:</span> std<span style="color:#f92672">::</span>false_type {};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//#2 T::foobar获取成功，那么自然就选择这个进行实例化
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">has_typedef_foobar</span><span style="color:#f92672">&lt;</span>T, void_t<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">::</span>foobar<span style="color:#f92672">&gt;&gt;</span> <span style="color:#f92672">:</span> std<span style="color:#f92672">::</span>true_type {};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">foo</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">using</span> foobar <span style="color:#f92672">=</span> <span style="color:#66d9ef">float</span>;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>boolalpha;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> has_typedef_foobar<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;::</span>value <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;<span style="color:#75715e">//int::foobar失败 进入#1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> has_typedef_foobar<span style="color:#f92672">&lt;</span>foo<span style="color:#f92672">&gt;::</span>value <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;<span style="color:#75715e">//foo::foobar成功 进入#2
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><h3 id="tuple">tuple</h3>
+<p>元组，融合任意类型和任意个数个元素。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>tuple<span style="color:#f92672">&lt;</span>Ty1,Ty2<span style="color:#f92672">&gt;</span> t1(e1,e2);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">auto</span> t2 <span style="color:#f92672">=</span> make_tuple(e1,e2);
+</span></span><span style="display:flex;"><span>get<span style="color:#f92672">&lt;</span><span style="color:#ae81ff">0</span><span style="color:#f92672">&gt;</span>(t1);
+</span></span><span style="display:flex;"><span>get<span style="color:#f92672">&lt;</span><span style="color:#ae81ff">0</span><span style="color:#f92672">&gt;</span>(t2) <span style="color:#f92672">=</span> get<span style="color:#f92672">&lt;</span><span style="color:#ae81ff">0</span><span style="color:#f92672">&gt;</span>(t1);
+</span></span><span style="display:flex;"><span>tuple_size<span style="color:#f92672">&lt;</span>tuple<span style="color:#f92672">&lt;</span>Ty1,Ty2<span style="color:#f92672">&gt;&gt;::</span>value;
+</span></span><span style="display:flex;"><span>tuple_element<span style="color:#f92672">&lt;</span><span style="color:#ae81ff">0</span>, tuple<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>,<span style="color:#66d9ef">float</span><span style="color:#f92672">&gt;&gt;::</span>type(<span style="color:#ae81ff">2.0</span>);<span style="color:#75715e">//类型强转
+</span></span></span></code></pre></div><p>内部实现是利用模板可变参数递归解开的特点实例化一个继承类的链条。每个类仅有一个成员。</p>
+<h3 id="bind">bind</h3>
+<p>绑定参数到某个位置。见链接 实现stdbind</p>
+<h3 id="type-traits">type traits</h3>
+<p>类型萃取，在编译期就得到某个变量的属性：是否是const，是否是class，是否是function等等。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">M</span> {
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>    is_floating_point<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;::</span>value;
+</span></span><span style="display:flex;"><span>    has_virtual_destructor<span style="color:#f92672">&lt;</span>M<span style="color:#f92672">&gt;::</span>value;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>原理是<strong>静态多态加上typedef</strong> 或者是 编译器提供的<strong>内置的</strong>函数。</p>
+<p><a href="https://gcc.gnu.org/onlinedocs/gcc/Type-Traits.html">GCC内置函数Type Traits (Using the GNU Compiler Collection (GCC))</a></p>
+<h3 id="设置entry_point">设置entry_point</h3>
+<p>C程序允许设定一个entry_point作为启动函数，而不是main。</p>
+<p>linux + gcc 下的一个简单的C程序设置入口函数。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cstdio&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">my_main</span>(){
+</span></span><span style="display:flex;"><span>    printf(<span style="color:#e6db74">&#34;my_main&#34;</span>);
+</span></span><span style="display:flex;"><span>    exit(<span style="color:#ae81ff">0</span>);<span style="color:#75715e">//此处必须有此代码，否则会segment fault，因为之后要进行堆空间分配
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>	printf(<span style="color:#e6db74">&#34;main&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gcc -e my_main test.c
+</span></span></code></pre></div><h3 id="embedded-pointer">embedded pointer</h3>
+<p>嵌入式指针，指在构建链表的时候可以使用union，将数据和指针共用内存。节省了一个指针的空间。概念图如下。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>---------------------
+</span></span><span style="display:flex;"><span>|next  | data       |
+</span></span><span style="display:flex;"><span>---------------------
+</span></span><span style="display:flex;"><span>---------------------
+</span></span><span style="display:flex;"><span>|next  | data       |
+</span></span><span style="display:flex;"><span>---------------------
+</span></span><span style="display:flex;"><span>---------------------
+</span></span><span style="display:flex;"><span>|      data         |
+</span></span><span style="display:flex;"><span>---------------------
+</span></span></code></pre></div><h2 id="内存管理">内存管理</h2>
+<h3 id="内存分配过程">内存分配过程</h3>
+<p>分配内存</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>Foo<span style="color:#f92672">*</span> p <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Foo(x);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//等同于
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Foo<span style="color:#f92672">*</span> p <span style="color:#f92672">=</span> (Foo<span style="color:#f92672">*</span>)<span style="color:#66d9ef">operator</span> <span style="color:#66d9ef">new</span>(<span style="color:#66d9ef">sizeof</span>(Foo)); <span style="color:#75715e">//分配空间 此处可重载,使之不调用全局的::operator new
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">new</span>(p) Foo(x); <span style="color:#75715e">//placement new 创建对象(初始化内存)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//等同于
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">::</span><span style="color:#66d9ef">operator</span> <span style="color:#66d9ef">new</span>(size_t);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//等同于
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>malloc(size_t);
+</span></span></code></pre></div><p>释放内存</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">delete</span> p;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//等同于
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>p<span style="color:#f92672">-&gt;~</span>Foo();<span style="color:#75715e">//析构函数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">operator</span> <span style="color:#a6e22e">delete</span>(p); <span style="color:#75715e">//此处可重载,使之不调用全局的::operator delete 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//等同于
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">::</span><span style="color:#66d9ef">operator</span> <span style="color:#66d9ef">delete</span>(<span style="color:#66d9ef">void</span><span style="color:#f92672">*</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//等同于
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>free(<span style="color:#66d9ef">void</span><span style="color:#f92672">*</span>);
+</span></span></code></pre></div><h3 id="重载内存分配函数">重载内存分配函数</h3>
+<p>注意：</p>
+<p>在重载operator new，第一个参数必须是size_t形式</p>
+<p>在重载operator delete时，第一个参数必须是void*形式</p>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyClass</span> {
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//operator new(int a)//出错，第一个参数必须是size_t
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">operator</span> <span style="color:#66d9ef">new</span>(size_t size) {
+</span></span><span style="display:flex;"><span>        cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;MyClass new&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">malloc</span>(size);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">operator</span> <span style="color:#a6e22e">new</span>(size_t size, <span style="color:#66d9ef">void</span><span style="color:#f92672">*</span> ptr) {
+</span></span><span style="display:flex;"><span>        cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;MyClass new&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> malloc(size);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#66d9ef">operator</span> <span style="color:#a6e22e">delete</span>(<span style="color:#66d9ef">void</span><span style="color:#f92672">*</span> p) {
+</span></span><span style="display:flex;"><span>        cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;MyClass delete&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>        free(p);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><h3 id="内存分配器">内存分配器</h3>
+<p><strong>编译器在最终使用malloc时，分配的内存会在最终需求的上下有多余块</strong>，一方面是为了内存对齐，另一方面是为了调试时追踪。如下图，只有<code>user use</code>才是用户申请的空间。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>----------
+</span></span><span style="display:flex;"><span>| cookie |
+</span></span><span style="display:flex;"><span>----------
+</span></span><span style="display:flex;"><span>| debug  |
+</span></span><span style="display:flex;"><span>| header |
+</span></span><span style="display:flex;"><span>----------
+</span></span><span style="display:flex;"><span>| user   |
+</span></span><span style="display:flex;"><span>| use    |
+</span></span><span style="display:flex;"><span>----------
+</span></span><span style="display:flex;"><span>| debug  |
+</span></span><span style="display:flex;"><span>| tail   |
+</span></span><span style="display:flex;"><span>----------
+</span></span><span style="display:flex;"><span>| padding|
+</span></span><span style="display:flex;"><span>----------
+</span></span><span style="display:flex;"><span>| cookie |
+</span></span><span style="display:flex;"><span>----------
+</span></span></code></pre></div><p>内存分配器就要做到尽量减少多余空间的占用（减少cookie），<strong>减少调用malloc的次数</strong>。</p>
+<p>思想就是内存池，实现就是预先分配大空间，大空间分成多个对象，对象间用链表相连（为了模拟离散空间）。此外，可以把每个池子面向的大小固定下来，比如8 16 24 32 40这样固定的值，超过最大固定值后交给malloc直接分配带cookie的块。概念图如下。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>    8     ----    16     ----    24    ----    32    ----    MAX
+</span></span><span style="display:flex;"><span>    |
+</span></span><span style="display:flex;"><span>----------    ----------
+</span></span><span style="display:flex;"><span>| cookie |    | cookie |    
+</span></span><span style="display:flex;"><span>----------    ----------
+</span></span><span style="display:flex;"><span>| debug  |    | debug  |
+</span></span><span style="display:flex;"><span>| header |    | header |
+</span></span><span style="display:flex;"><span>----------    ----------
+</span></span><span style="display:flex;"><span>| user   |    | user   |
+</span></span><span style="display:flex;"><span>| use    |    | use    |    
+</span></span><span style="display:flex;"><span>----------    ----------    
+</span></span><span style="display:flex;"><span>| debug  |    | debug  |    
+</span></span><span style="display:flex;"><span>| tail   |    | tail   |    
+</span></span><span style="display:flex;"><span>----------    ----------    
+</span></span><span style="display:flex;"><span>| padding|    | padding|    
+</span></span><span style="display:flex;"><span>----------    ----------    
+</span></span><span style="display:flex;"><span>| cookie |    | cookie |    
+</span></span><span style="display:flex;"><span>----------    ----------    
+</span></span><span style="display:flex;"><span>    |        
+</span></span><span style="display:flex;"><span>----------
+</span></span><span style="display:flex;"><span>| cookie |
+</span></span><span style="display:flex;"><span>----------
+</span></span><span style="display:flex;"><span>| debug  |
+</span></span><span style="display:flex;"><span>| header |
+</span></span><span style="display:flex;"><span>----------
+</span></span><span style="display:flex;"><span>| user   |
+</span></span><span style="display:flex;"><span>| use    |
+</span></span><span style="display:flex;"><span>----------
+</span></span><span style="display:flex;"><span>| debug  |
+</span></span><span style="display:flex;"><span>| tail   |
+</span></span><span style="display:flex;"><span>----------
+</span></span><span style="display:flex;"><span>| padding|
+</span></span><span style="display:flex;"><span>----------
+</span></span><span style="display:flex;"><span>| cookie |
+</span></span><span style="display:flex;"><span>----------
+</span></span></code></pre></div><p>此外，因为是使用连续空间切割，然后模拟链表之间可以使用embedded pointer节省一个指针，概念图如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>---------------------
+</span></span><span style="display:flex;"><span>|next  | data       |
+</span></span><span style="display:flex;"><span>---------------------
+</span></span><span style="display:flex;"><span>---------------------
+</span></span><span style="display:flex;"><span>|next  | data       |
+</span></span><span style="display:flex;"><span>---------------------
+</span></span><span style="display:flex;"><span>---------------------
+</span></span><span style="display:flex;"><span>|      data         |
+</span></span><span style="display:flex;"><span>---------------------
+</span></span></code></pre></div><p>这样每次分配出去后，当前指针指向下一个可用的块。回收时，直接将回收块的embedded pointer指向当前的，然后当前指针指向回收的就好了。不必专门清除。</p>
               
 
 

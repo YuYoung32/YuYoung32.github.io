@@ -508,12 +508,13 @@ if (!doNotTrack) {
 <p>变量仅仅是绑定到一个指定内存块的名字；</p>
 <p>Go 从语言层面对程序员做了承诺，变量定义分配的内存一定是<strong>置 0 分配</strong>的，不像C；</p>
 <p>并不是所有的类型能够赋值 <code>nil</code>，并且和 <code>nil</code> 进行对比判断。<strong>只有 <code>slice</code>、<code>map</code>、<code>channel</code>、<code>interface</code>、指针、函数 这 6 种类型</strong>，即指针类型</p>
-<p>不要把 <code>nil</code> 理解成一个特殊的值，而要理解成一个触发条件，编译器识别到代码里有 <code>nil</code> 之后，会对应做出处理和判断；</p>
-<p><code>channel</code>，<code>map</code> 类型的变量必须要 <code>make </code> 才能使用的原因（否则会出现空指针的 panic ）在于 var 定义的变量仅仅是分配了一个指向 <code>hchan</code> 和 <code>hmap</code> 的指针变量而已，并且还是置 0 分配的。真正的管理结构只有 make 调用才能分配出来，对应的函数分别是 <code>makechan</code>  和 <code>makemap</code> 等；</p>
-<p><code>slice</code> 变量为什么 <code>var</code> 就能用是因为 <code>struct slice</code> 核心结构是定义的时候就分配出来了；</p>
-<p>以上 6 种变量赋值 <code>nil</code> 的行为都是把变量本身置 0 ，仅此而已。<code>slice</code> 的 24 字节管理结构，<code>map</code> 的  8 字节指针，<code>channel</code> 的 8 字节指针，<code>interface</code> 的 16 字节，8 字节指针和函数指针也是如此；</p>
-<p>以上 6 种类型和 <code>nil</code> 进行比较判断本质上都是和变量本身做判断，<code>slice</code> 是判断管理结构的第一个指针字段，<code>map</code>，<code>channel</code> 本身就是指针，<code>interface</code> 也是判断管理结构的第一个指针字段，指针和函数变量本身就是指针；</p>
-<p>var只是声明变量，创建一个指向值的指针。make和new才是让这个值分配和置零的操作，而new是返回指针（或者说是二级指针），make直接是返回一级指针</p>
+<ul>
+<li>不要把 <code>nil</code> 理解成一个特殊的值，而要理解成一个触发条件，编译器识别到代码里有 <code>nil</code> 之后，会对应做出处理和判断；</li>
+<li><code>channel</code>，<code>map</code> 类型的变量必须要 <code>make </code> 才能使用的原因（否则会出现空指针的 panic ）在于 var 定义的变量仅仅是分配了一个指向 <code>hchan</code> 和 <code>hmap</code> 的指针变量而已，并且还是置 0 分配的。真正的管理结构只有 make 调用才能分配出来，对应的函数分别是 <code>makechan</code>  和 <code>makemap</code> 等。<code>slice</code> 变量为什么 <code>var</code> 就能用是因为 <code>struct slice</code> 核心结构是定义的时候就分配出来了；</li>
+<li>以上 6 种变量赋值 <code>nil</code> 的行为都是把变量本身置 0 ，仅此而已。<code>slice</code> 的 24 字节管理结构，<code>map</code> 的  8 字节指针，<code>channel</code> 的 8 字节指针，<code>interface</code> 的 16 字节，8 字节指针和函数指针也是如此；</li>
+<li>以上 6 种类型和 <code>nil</code> 进行比较判断本质上都是和变量本身做判断，<code>slice</code> 是判断管理结构的第一个指针字段，<code>map</code>，<code>channel</code> 本身就是指针，<code>interface</code> 也是判断管理结构的第一个指针字段，指针和函数变量本身就是指针；</li>
+<li>var只是声明变量，创建一个指向值的指针。make和new才是让这个值分配和置零的操作，而new是返回指针（或者说是二级指针），make直接是返回一级指针</li>
+</ul>
 <h2 id="init函数">Init函数</h2>
 <ol>
 <li>init()函数是用于程序执行前做包的初始化的函数，比如初始化包里的变量等；</li>
@@ -630,8 +631,8 @@ if (!doNotTrack) {
 <li>P: <strong>P</strong>rocessor，即一种人为抽象的、用于执行 Go 代码的<strong>局部资源</strong>。只有当 M 与一个 P 关联后才能执行 Go 代码。除非 M 发生阻塞或在进行系统调用时间过长时，没有与之关联的 P。</li>
 </ul>
 <h2 id="channel">channel</h2>
-<p><a href="https://segmentfault.com/a/1190000017958702">channel的使用</a></p>
 <h3 id="channel各种情况下的操作情况">channel各种情况下的操作情况</h3>
+<p><a href="https://segmentfault.com/a/1190000017958702">channel的使用</a></p>
 <ul>
 <li>nil channel
 <ul>
@@ -674,7 +675,7 @@ if (!doNotTrack) {
 <p>大致流程：传入key经过hash后得到值，根据值找map里的buckets（bmap切片）会找到里面的一个bmap，再根据hash值的高8位寻找这个bmap里的topbits获得索引后匹配keys和elems</p>
 <p><img src="Golang%E5%B0%8F%E7%9F%A5%E8%AF%86.assets/1460000039101407.png" alt="http://cdn.tigerb.cn/20201217165551.png"></p>
 <h3 id="为什么线程不安全">为什么线程不安全？</h3>
-<p>因为hash map 的内存是按照2的倍数开辟的，当前面开辟的内存不够的时候，会新开辟一段内存，将原来内存的数据转移到新的内存块中，这个过程是没有加锁的，如果这个时候同时有个读的线程过来获取这块内存数据，就会出现安全问题。切片也有这样的问题，但是人们通常认为切片出现这样的问题是使用者问题，于是不报错</p>
+<p>因为hash map 的内存是按照2的倍数开辟的，当前面开辟的内存不够的时候，会新开辟一段内存，将原来内存的数据转移到新的内存块中，这个过程是没有加锁的，如果这个时候同时有个读的线程过来获取这块内存数据，就会出现安全问题。切片也有这样的问题，但是人们通常认为切片出现这样的问题是使用者问题，于是不报错。</p>
 <h2 id="time包的使用">Time包的使用</h2>
 <h3 id="获取时间戳">获取时间戳</h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">//返回Int64类型

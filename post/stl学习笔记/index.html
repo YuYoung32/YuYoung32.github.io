@@ -300,8 +300,9 @@ if (!doNotTrack) {
     <li><a href="#仿函数">仿函数</a>
       <ul>
         <li><a href="#为什么需要仿函数">为什么需要仿函数</a></li>
-        <li><a href="#stl传入的函数">STL传入的函数</a></li>
+        <li><a href="#stl可以传入的函数">STL可以传入的函数</a></li>
         <li><a href="#stl提供的一些仿函数">STL提供的一些仿函数</a></li>
+        <li><a href="#仿函数的适配器">仿函数的适配器</a></li>
       </ul>
     </li>
   </ul>
@@ -310,21 +311,22 @@ if (!doNotTrack) {
 <h2 id="前言">前言</h2>
 <p>STL是GP编程的典范，使用容器涉及六大模块：</p>
 <ul>
-<li>容器 template class</li>
-<li>分配器 template class</li>
-<li>算法 <strong>template function</strong></li>
-<li>迭代器 template class</li>
-<li>适配器 template class</li>
-<li>仿函数 template class</li>
+<li>容器</li>
+<li>分配器</li>
+<li>算法</li>
+<li>迭代器</li>
+<li>适配器</li>
+<li>仿函数</li>
 </ul>
 <p>分配器为容器分配内存，迭代器用来访问容器数据，算法通过迭代器操作容器内的数据，算法使用仿函数改变算法过程。适配器是各部分的粘合剂。</p>
+<p>这其中，除了算法是模板函数外，其他都是模板类。</p>
 <h2 id="容器">容器</h2>
 <h3 id="list实现">list实现</h3>
 <p><code>Sequence Container</code></p>
 <p>有头节点的 双向 循环 链表。</p>
 <h3 id="deque实现">deque实现</h3>
 <p><code>Sequence Container</code></p>
-<p>deque分段连续，数组存放数组指针，每个数组指针指向buffer。通过iterator模拟连续。</p>
+<p>deque是分段连续的。有很多个小段连续空间（buffer），外部一个数组用来存放buffer指针。通过iterator模拟连续。 外部buffer指针数组会类似vector扩容。这意味着可以不改变元素扩容，不像vector那样真正的连续。</p>
 <h4 id="容器适配器stack-queue">容器适配器：stack queue</h4>
 <p>stack和queue默认的Seqence是deque，stack和queue可以默认是deque的适配器。 二者还可以选用<strong>list</strong>作为底层容器。</p>
 <h3 id="array和vector实现">array和vector实现</h3>
@@ -403,16 +405,23 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#f92672">*</span>it; <span style="color:#75715e">//输出hello
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
 </span></span></code></pre></div><h4 id="gnu-c的内置的hash函数">GNU C++的内置的hash函数</h4>
-<p>对于两种类型，STL使用模板偏特化做了特殊处理：</p>
+<p>std::hash就是<strong>传入一个类型返回一个size_t</strong>的函数。</p>
+<p>STL的<code>size_t hash(Ty t);</code>使用模板偏特化对不同类型做不同处理：</p>
 <ul>
 <li>
-<p>对于无符号数值类型比如unsigned int, unsigned char，把数值同统一转为size_t后返回。</p>
+<p>对于<strong>整数</strong>类型（有符号和无符号整数如int char enum），使用static_cast做类型强转为size_t。</p>
 </li>
 <li>
-<p>对于指针类型*T，则是使用reinterpret_cast重新解释为size_t。</p>
+<p>对于浮点数类型（float double），是使用<code>std::_Hash_bytes(const void* __ptr, size_t __len, size_t __seed);</code>。</p>
+</li>
+<li>
+<p>对于<strong>指针</strong>类型*T，则是使用reinterpret_cast重新解释为size_t。</p>
+</li>
+<li>
+<p>对于<strong>字符串对象</strong>类型（std::string），也是使用<code>std::_Hash_bytes(const void* __ptr, size_t __len, size_t __seed);</code>。</p>
 </li>
 </ul>
-<p>实际放到bucket时要对存放bucket的vector大小取模的。</p>
+<p>实际放到bucket数组时要对存放bucket的vector大小取模的。</p>
 <p>以下代码是指针类型偏特化 和 数值类型偏特化。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>  <span style="color:#75715e">/// Partial specializations for pointer types.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> _Tp<span style="color:#f92672">&gt;</span>
@@ -438,6 +447,13 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/// Explicit specialization for bool.
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  _Cxx_hashtable_define_trivial_hash(<span style="color:#66d9ef">bool</span>)
 </span></span></code></pre></div><h4 id="适配器unordered_-容器">适配器：unordered_ 容器</h4>
+<p>unordered容器内部实现是</p>
+<ul>
+<li>一个存放单链表首个地址的动态数组</li>
+<li>一个单链表存放实际数据</li>
+</ul>
+<p>注意他们是两个数据结构，而不是一个数组，然后数组各自存放自己的单链表，推测是为了添加第0个元素时提高效率并且为了迭代时直接跳过空bucket。</p>
+<p>数组有很多bucket（实际上就是存放链表首个指针的数组元素），每个bucket存放链表用于解决冲突。bucket数量是固定的且大于元素个数，每次当元素数量等于bucket数量时，会重新分配下一个数量的bucket（一般是最接近之前数量二倍的质数），同时会rehash之前的所有元素到新的bucket数组。</p>
 <ul>
 <li>unordered_map</li>
 <li>unordered_set</li>
@@ -630,7 +646,7 @@ reference		引用类型是什么,比如说int&amp;
 </span></span><span style="display:flex;"><span>    s.show(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>);
 </span></span><span style="display:flex;"><span>};
 </span></span></code></pre></div><p>注意，为了让自己的仿函数具有更好的<em>兼容性</em>，要继承<code>unary_function </code>或<code>binary_function</code>等（一元函数，二元函数），这里继承了里面的<code>typedef</code>，做到类似<code>iterator type</code>的效果。</p>
-<h3 id="stl传入的函数">STL传入的函数</h3>
+<h3 id="stl可以传入的函数">STL可以传入的函数</h3>
 <p>当然可以传入算法的不是只有仿函数。</p>
 <p>如下展示了可以传入：函数、仿函数、lambda函数、STL仿函数</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">MyLessObj</span>
@@ -654,6 +670,76 @@ reference		引用类型是什么,比如说int&amp;
 </span></span><span style="display:flex;"><span>};
 </span></span></code></pre></div><h3 id="stl提供的一些仿函数">STL提供的一些仿函数</h3>
 <p>比如，<code>std::plus&lt;T&gt;</code>，就是简单包装了<code>operator+</code>。在有些必须传简单仿函数时，可以直接传入。</p>
+<h3 id="仿函数的适配器">仿函数的适配器</h3>
+<p><strong>为什么需要仿函数适配器?</strong></p>
+<p>我们试图改变某个std函数或者自己写的函数里面的某个选项。</p>
+<p><strong>以<code>std::bind2nd</code>为例</strong></p>
+<p><code>std::less</code>，我们可以指定比某个数值小，这时使用适配器<code>std::bind2nd</code>，将某个值绑定到第二个参数上。</p>
+<p>本质上就是封装了一层，粗糙版见下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">MyLess</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">operator</span>()(<span style="color:#66d9ef">int</span> a, <span style="color:#66d9ef">int</span> b) <span style="color:#66d9ef">const</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> a <span style="color:#f92672">&lt;</span> b;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">AdapterMyLess</span> {
+</span></span><span style="display:flex;"><span>    AdapterMyLess(<span style="color:#66d9ef">int</span> b) <span style="color:#f92672">:</span> b(b) {}
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//重载()
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">operator</span>()(<span style="color:#66d9ef">int</span> a) <span style="color:#66d9ef">const</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> MyLess()(a, b);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> b;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//调用
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//AdapterMyLess(1)(2);//2&lt;1 false
+</span></span></span></code></pre></div><p>而详细版需要考虑类型通用（泛型），类型检查（类型强转operatorT()）。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> _Operation<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">binder2nd</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">/* unary_function 转换成一元函数，将属性传承下去
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		template&lt;typename _Arg, typename _Result&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        struct unary_function
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">          typedef _Arg 	argument_type;   
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">          typedef _Result 	result_type;  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        };
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> unary_function<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> _Operation<span style="color:#f92672">::</span>first_argument_type, <span style="color:#66d9ef">typename</span> _Operation<span style="color:#f92672">::</span>result_type<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">protected</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//暂存，为了重载调用运算符
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    _Operation op;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">typename</span> _Operation<span style="color:#f92672">::</span>second_argument_type value;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//构造函数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    binder2nd(<span style="color:#66d9ef">const</span> _Operation<span style="color:#f92672">&amp;</span> __x, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">typename</span> _Operation<span style="color:#f92672">::</span>second_argument_type<span style="color:#f92672">&amp;</span> __y)
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">:</span> op(__x), value(__y) { }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//重载调用运算符，真正起作用的部分
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">typename</span> _Operation<span style="color:#f92672">::</span>result_type <span style="color:#66d9ef">operator</span>()(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">typename</span> _Operation<span style="color:#f92672">::</span>first_argument_type<span style="color:#f92672">&amp;</span> __x) <span style="color:#66d9ef">const</span>
+</span></span><span style="display:flex;"><span>    { <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">op</span>(__x, value);}
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">typename</span> _Operation<span style="color:#f92672">::</span>result_type <span style="color:#66d9ef">operator</span>()(<span style="color:#66d9ef">typename</span> _Operation<span style="color:#f92672">::</span>first_argument_type<span style="color:#f92672">&amp;</span> __x) <span style="color:#66d9ef">const</span>
+</span></span><span style="display:flex;"><span>    { <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">op</span>(__x, value);}
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//对外使用这个模板函数，对class binder2nd做了一层封装，返回了一个binder2nd对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//目的是使用模板函数可以自动推导类型，不用像类模板那样必须指明类型，顺便把类型检查也做了
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> _Operation, <span style="color:#66d9ef">typename</span> _Tp<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">inline</span> binder2nd<span style="color:#f92672">&lt;</span>_Operation<span style="color:#f92672">&gt;</span> bind2nd(<span style="color:#66d9ef">const</span> _Operation<span style="color:#f92672">&amp;</span> __fn, <span style="color:#66d9ef">const</span> _Tp<span style="color:#f92672">&amp;</span> __x)
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">typename</span> _Operation<span style="color:#f92672">::</span>second_argument_type _Arg2_type;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//_Arg2_type(__x) 此处做编译期类型检查，是否可以转换成_Arg2_type类型
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> binder2nd<span style="color:#f92672">&lt;</span>_Operation<span style="color:#f92672">&gt;</span>(__fn, _Arg2_type(__x));
+</span></span><span style="display:flex;"><span>  } 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//调用
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>std<span style="color:#f92672">::</span>bind2nd(std<span style="color:#f92672">::</span>less<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span>(), <span style="color:#ae81ff">1</span>)(<span style="color:#ae81ff">2</span>); <span style="color:#75715e">//2&lt;1 false
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//或者直接调用对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>binder2nd<span style="color:#f92672">&lt;</span>less<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;&gt;</span> b(less<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span>(), <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>b(<span style="color:#ae81ff">2</span>); <span style="color:#75715e">//2&lt;1 false
+</span></span></span></code></pre></div><p>仿函数适配器都是这个套路，首先向上传递参数类型（为了可能被别人adapter），以便将来算法使用这些类型。然后重载<code>()</code>运算符，在这个重载函数里面做一些操作，再调用传入的仿函数对象的<code>operator()</code>。</p>
               
 
 
@@ -668,7 +754,7 @@ reference		引用类型是什么,比如说int&amp;
       
         <li class="post-action">
           
-            <a class="post-action-btn btn btn--disabled">
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/%E5%AE%9E%E7%8E%B0stdbind/" data-tooltip="实现std::bind" aria-label="下一篇: 实现std::bind">
           
               <i class="fa fa-angle-left"></i>
               <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
@@ -727,7 +813,7 @@ reference		引用类型是什么,比如说int&amp;
       
         <li class="post-action">
           
-            <a class="post-action-btn btn btn--disabled">
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/%E5%AE%9E%E7%8E%B0stdbind/" data-tooltip="实现std::bind" aria-label="下一篇: 实现std::bind">
           
               <i class="fa fa-angle-left"></i>
               <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
