@@ -327,13 +327,6 @@ if (!doNotTrack) {
         <li><a href="#embedded-pointer">embedded pointer</a></li>
       </ul>
     </li>
-    <li><a href="#内存管理">内存管理</a>
-      <ul>
-        <li><a href="#内存分配过程">内存分配过程</a></li>
-        <li><a href="#重载内存分配函数">重载内存分配函数</a></li>
-        <li><a href="#内存分配器">内存分配器</a></li>
-      </ul>
-    </li>
   </ul>
 </nav>
 
@@ -775,6 +768,8 @@ C 语言中，全局变量又分为初始化的和未初始化的。初始化的
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">mutable</span> <span style="color:#66d9ef">int</span> b;
 </span></span><span style="display:flex;"><span>};
 </span></span></code></pre></div><p>const放在成员函数后面可以让函数不改变类的变量，若又想改变，需要在成员变量前加mutable。</p>
+<p>成员函数const保证不更改对象。const对象调用的方法只能是const方法，以此保证const。</p>
+<p>当const和非const成员函数共存时，const对象只会调用const成员函数，非const只会调用非const成员函数。</p>
 <h2 id="友元函数">友元函数</h2>
 <p><strong>解决了什么问题？</strong></p>
 <p>非类成员函数可以访问类私有变量</p>
@@ -1064,115 +1059,7 @@ C 语言中，全局变量又分为初始化的和未初始化的。初始化的
 </span></span><span style="display:flex;"><span>---------------------
 </span></span><span style="display:flex;"><span>|      data         |
 </span></span><span style="display:flex;"><span>---------------------
-</span></span></code></pre></div><h2 id="内存管理">内存管理</h2>
-<h3 id="内存分配过程">内存分配过程</h3>
-<p>分配内存</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>Foo<span style="color:#f92672">*</span> p <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Foo(x);
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//等同于
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Foo<span style="color:#f92672">*</span> p <span style="color:#f92672">=</span> (Foo<span style="color:#f92672">*</span>)<span style="color:#66d9ef">operator</span> <span style="color:#66d9ef">new</span>(<span style="color:#66d9ef">sizeof</span>(Foo)); <span style="color:#75715e">//分配空间 此处可重载,使之不调用全局的::operator new
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">new</span>(p) Foo(x); <span style="color:#75715e">//placement new 创建对象(初始化内存)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//等同于
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">::</span><span style="color:#66d9ef">operator</span> <span style="color:#66d9ef">new</span>(size_t);
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//等同于
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>malloc(size_t);
-</span></span></code></pre></div><p>释放内存</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">delete</span> p;
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//等同于
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>p<span style="color:#f92672">-&gt;~</span>Foo();<span style="color:#75715e">//析构函数
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">operator</span> <span style="color:#a6e22e">delete</span>(p); <span style="color:#75715e">//此处可重载,使之不调用全局的::operator delete 
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//等同于
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">::</span><span style="color:#66d9ef">operator</span> <span style="color:#66d9ef">delete</span>(<span style="color:#66d9ef">void</span><span style="color:#f92672">*</span>);
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//等同于
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>free(<span style="color:#66d9ef">void</span><span style="color:#f92672">*</span>);
-</span></span></code></pre></div><h3 id="重载内存分配函数">重载内存分配函数</h3>
-<p>注意：</p>
-<p>在重载operator new，第一个参数必须是size_t形式</p>
-<p>在重载operator delete时，第一个参数必须是void*形式</p>
-<p>例如：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyClass</span> {
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//operator new(int a)//出错，第一个参数必须是size_t
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">operator</span> <span style="color:#66d9ef">new</span>(size_t size) {
-</span></span><span style="display:flex;"><span>        cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;MyClass new&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">malloc</span>(size);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">operator</span> <span style="color:#a6e22e">new</span>(size_t size, <span style="color:#66d9ef">void</span><span style="color:#f92672">*</span> ptr) {
-</span></span><span style="display:flex;"><span>        cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;MyClass new&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> malloc(size);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#66d9ef">operator</span> <span style="color:#a6e22e">delete</span>(<span style="color:#66d9ef">void</span><span style="color:#f92672">*</span> p) {
-</span></span><span style="display:flex;"><span>        cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;MyClass delete&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
-</span></span><span style="display:flex;"><span>        free(p);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>};
-</span></span></code></pre></div><h3 id="内存分配器">内存分配器</h3>
-<p><strong>编译器在最终使用malloc时，分配的内存会在最终需求的上下有多余块</strong>，一方面是为了内存对齐，另一方面是为了调试时追踪。如下图，只有<code>user use</code>才是用户申请的空间。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>----------
-</span></span><span style="display:flex;"><span>| cookie |
-</span></span><span style="display:flex;"><span>----------
-</span></span><span style="display:flex;"><span>| debug  |
-</span></span><span style="display:flex;"><span>| header |
-</span></span><span style="display:flex;"><span>----------
-</span></span><span style="display:flex;"><span>| user   |
-</span></span><span style="display:flex;"><span>| use    |
-</span></span><span style="display:flex;"><span>----------
-</span></span><span style="display:flex;"><span>| debug  |
-</span></span><span style="display:flex;"><span>| tail   |
-</span></span><span style="display:flex;"><span>----------
-</span></span><span style="display:flex;"><span>| padding|
-</span></span><span style="display:flex;"><span>----------
-</span></span><span style="display:flex;"><span>| cookie |
-</span></span><span style="display:flex;"><span>----------
-</span></span></code></pre></div><p>内存分配器就要做到尽量减少多余空间的占用（减少cookie），<strong>减少调用malloc的次数</strong>。</p>
-<p>思想就是内存池，实现就是预先分配大空间，大空间分成多个对象，对象间用链表相连（为了模拟离散空间）。此外，可以把每个池子面向的大小固定下来，比如8 16 24 32 40这样固定的值，超过最大固定值后交给malloc直接分配带cookie的块。概念图如下。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>    8     ----    16     ----    24    ----    32    ----    MAX
-</span></span><span style="display:flex;"><span>    |
-</span></span><span style="display:flex;"><span>----------    ----------
-</span></span><span style="display:flex;"><span>| cookie |    | cookie |    
-</span></span><span style="display:flex;"><span>----------    ----------
-</span></span><span style="display:flex;"><span>| debug  |    | debug  |
-</span></span><span style="display:flex;"><span>| header |    | header |
-</span></span><span style="display:flex;"><span>----------    ----------
-</span></span><span style="display:flex;"><span>| user   |    | user   |
-</span></span><span style="display:flex;"><span>| use    |    | use    |    
-</span></span><span style="display:flex;"><span>----------    ----------    
-</span></span><span style="display:flex;"><span>| debug  |    | debug  |    
-</span></span><span style="display:flex;"><span>| tail   |    | tail   |    
-</span></span><span style="display:flex;"><span>----------    ----------    
-</span></span><span style="display:flex;"><span>| padding|    | padding|    
-</span></span><span style="display:flex;"><span>----------    ----------    
-</span></span><span style="display:flex;"><span>| cookie |    | cookie |    
-</span></span><span style="display:flex;"><span>----------    ----------    
-</span></span><span style="display:flex;"><span>    |        
-</span></span><span style="display:flex;"><span>----------
-</span></span><span style="display:flex;"><span>| cookie |
-</span></span><span style="display:flex;"><span>----------
-</span></span><span style="display:flex;"><span>| debug  |
-</span></span><span style="display:flex;"><span>| header |
-</span></span><span style="display:flex;"><span>----------
-</span></span><span style="display:flex;"><span>| user   |
-</span></span><span style="display:flex;"><span>| use    |
-</span></span><span style="display:flex;"><span>----------
-</span></span><span style="display:flex;"><span>| debug  |
-</span></span><span style="display:flex;"><span>| tail   |
-</span></span><span style="display:flex;"><span>----------
-</span></span><span style="display:flex;"><span>| padding|
-</span></span><span style="display:flex;"><span>----------
-</span></span><span style="display:flex;"><span>| cookie |
-</span></span><span style="display:flex;"><span>----------
-</span></span></code></pre></div><p>此外，因为是使用连续空间切割，然后模拟链表之间可以使用embedded pointer节省一个指针，概念图如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>---------------------
-</span></span><span style="display:flex;"><span>|next  | data       |
-</span></span><span style="display:flex;"><span>---------------------
-</span></span><span style="display:flex;"><span>---------------------
-</span></span><span style="display:flex;"><span>|next  | data       |
-</span></span><span style="display:flex;"><span>---------------------
-</span></span><span style="display:flex;"><span>---------------------
-</span></span><span style="display:flex;"><span>|      data         |
-</span></span><span style="display:flex;"><span>---------------------
-</span></span></code></pre></div><p>这样每次分配出去后，当前指针指向下一个可用的块。回收时，直接将回收块的embedded pointer指向当前的，然后当前指针指向回收的就好了。不必专门清除。</p>
+</span></span></code></pre></div>
               
 
 
