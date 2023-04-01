@@ -361,7 +361,7 @@ if (!doNotTrack) {
 <p>需要与之关联的容器已删除</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$docker rmi imageID
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 删除所有镜像</span>
-</span></span><span style="display:flex;"><span>$docker rmi <span style="color:#66d9ef">$(</span>docker iamges -aq<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>$docker rmi <span style="color:#66d9ef">$(</span>docker images -aq<span style="color:#66d9ef">)</span>
 </span></span></code></pre></div><h4 id="本地镜像列表">本地镜像列表</h4>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$docker images
 </span></span></code></pre></div><h4 id="镜像构建与发布">镜像构建与发布</h4>

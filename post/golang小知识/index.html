@@ -845,7 +845,7 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span><span style="color:#75715e">//2
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">MyType</span> <span style="color:#a6e22e">Type</span>
 </span></span></code></pre></div><p>第一种方式是真正的起别名，第二种方式是定义了一个新的类型。</p>
-<p>第二种方式<code>MyType</code>本质上仍是<code>Type</code>，如下程序说明</p>
+<p>第一种方式<code>MyType</code>本质上仍是<code>Type</code>，如下程序说明</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">MyType</span> = <span style="color:#a6e22e">Type</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">a</span> <span style="color:#a6e22e">MyType</span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%T&#34;</span>, <span style="color:#a6e22e">a</span>)
