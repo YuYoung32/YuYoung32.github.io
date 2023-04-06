@@ -321,7 +321,7 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>INFO<span style="color:#f92672">[</span>0000<span style="color:#f92672">]</span> Start initial compatible provider xx  
 </span></span><span style="display:flex;"><span>INFO<span style="color:#f92672">[</span>0000<span style="color:#f92672">]</span> Mixed<span style="color:#f92672">(</span>http+socks<span style="color:#f92672">)</span> proxy listening at: 127.0.0.1:7890 
 </span></span><span style="display:flex;"><span>INFO<span style="color:#f92672">[</span>0000<span style="color:#f92672">]</span> RESTful API listening at: <span style="color:#f92672">[</span>::<span style="color:#f92672">]</span>:9090  
-</span></span></code></pre></div><p>初次之外，还要开启系统代理：</p>
+</span></span></code></pre></div><p>除此之外，还要开启系统代理：</p>
 <pre tabindex="0"><code>export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890
 </code></pre><p>测试运行：</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>curl https://www.google.com
