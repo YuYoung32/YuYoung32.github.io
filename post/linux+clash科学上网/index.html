@@ -298,7 +298,7 @@ if (!doNotTrack) {
 </span></span></code></pre></div><pre tabindex="0"><code></code></pre></li>
 </ul>
 <p>然后解压得到binaries，重命名一下。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>gzip clash-linux-amd64-v3-v1.13.0.gz
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>gzip -d clash-linux-amd64-v3-v1.13.0.gz
 </span></span><span style="display:flex;"><span>mv clash-linux-amd64-v1.10.0 clash
 </span></span></code></pre></div><p>添加执行权限。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>chmod +x clash
@@ -324,15 +324,17 @@ if (!doNotTrack) {
 </span></span></code></pre></div><p>除此之外，还要开启系统代理：</p>
 <pre tabindex="0"><code>export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890
 </code></pre><p>测试运行：</p>
+<p>注意：如果新开了SSH窗口，需要单独再次export：<code>export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890</code>。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>curl https://www.google.com
-</span></span></code></pre></div><p>连通输出示例：此时可以<code>curl -L https://www.google.com</code>跟踪跳转</p>
+</span></span></code></pre></div><p>连通输出示例：</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>&lt;HTML&gt;&lt;HEAD&gt;&lt;meta http-equiv=&#34;content-type&#34; content=&#34;text/html;charset=utf-8&#34;&gt;
 </span></span><span style="display:flex;"><span>&lt;TITLE&gt;302 Moved&lt;/TITLE&gt;&lt;/HEAD&gt;&lt;BODY&gt;
 </span></span><span style="display:flex;"><span>&lt;H1&gt;302 Moved&lt;/H1&gt;
 </span></span><span style="display:flex;"><span>The document has moved
 </span></span><span style="display:flex;"><span>&lt;A HREF=&#34;https://www.google.com.hk/url?sa=p&amp;amp;hl=zh-CN&amp;amp;pref=hkredirect&amp;amp;pval=yes&amp;amp;q=https://www.google.com.hk/&amp;amp;ust=1677655826189564&amp;amp;usg=AOvVaw0zuWWrC_vCIRd5fj5JIcRS&#34;&gt;here&lt;/A&gt;.
 </span></span><span style="display:flex;"><span>&lt;/BODY&gt;&lt;/HTML&gt;
-</span></span></code></pre></div><p>未连通输出示例：</p>
+</span></span></code></pre></div><p>此时可以<code>curl -L https://www.google.com</code>跟踪跳转，不出意外的话会得到一大堆HTML，代表成功访问外网。</p>
+<p>未连通输出示例：</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>curl: (35) Encountered end of file
 </span></span></code></pre></div><h2 id="4-可选以服务方式运行与快捷启动关闭代理">4. （可选）以服务方式运行与快捷启动/关闭代理</h2>
 <h3 id="以服务方式运行">以服务方式运行</h3>
