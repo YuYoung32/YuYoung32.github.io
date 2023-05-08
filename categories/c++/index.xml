@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>c&#43;&#43; on YuYoung&#39;s Blog</title>
-    <link>http://example.org/categories/c&#43;&#43;/</link>
+    <link>https://yuyoung32.github.io/categories/c&#43;&#43;/</link>
     <description>Recent content in c&#43;&#43; on YuYoung&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Thu, 24 Nov 2022 16:52:52 +0800</lastBuildDate><atom:link href="http://example.org/categories/c++/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 24 Nov 2022 16:52:52 +0800</lastBuildDate><atom:link href="https://yuyoung32.github.io/categories/c++/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>C&#43;&#43;动态内存分配与allocator</title>
-      <link>http://example.org/post/c&#43;&#43;%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83%E4%B8%8Eallocator/</link>
+      <link>https://yuyoung32.github.io/post/c&#43;&#43;%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83%E4%B8%8Eallocator/</link>
       <pubDate>Thu, 24 Nov 2022 16:52:52 +0800</pubDate>
       
-      <guid>http://example.org/post/c&#43;&#43;%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83%E4%B8%8Eallocator/</guid>
+      <guid>https://yuyoung32.github.io/post/c&#43;&#43;%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83%E4%B8%8Eallocator/</guid>
       <description>内存分配call stack 分配内存
 Foo* p = new Foo(x); //等同于 Foo* p = (Foo*)operator new(sizeof(Foo)); //分配空间 此处可重载,使之不调用全局的::operator new new(p) Foo(x); //placement new 创建对象(初始化内存) //等同于 ::operator new(size_t); //等同于 malloc(size_t); 释放内存
 delete p; //等同于 p-&amp;gt;~Foo();//析构函数 operator delete(p); //此处可重载,使之不调用全局的::operator delete //等同于 ::operator delete(void*); //等同于 free(void*); 重载operator new 注意：
@@ -24,19 +24,19 @@ class MyClass { public: //operator new(int a)//出错，第一个参数必须是
     
     <item>
       <title>实现std::bind</title>
-      <link>http://example.org/post/%E5%AE%9E%E7%8E%B0stdbind/</link>
+      <link>https://yuyoung32.github.io/post/%E5%AE%9E%E7%8E%B0stdbind/</link>
       <pubDate>Tue, 04 Oct 2022 16:05:49 +0800</pubDate>
       
-      <guid>http://example.org/post/%E5%AE%9E%E7%8E%B0stdbind/</guid>
+      <guid>https://yuyoung32.github.io/post/%E5%AE%9E%E7%8E%B0stdbind/</guid>
       <description>手写std::bind与源码解读</description>
     </item>
     
     <item>
       <title>STL学习笔记</title>
-      <link>http://example.org/post/stl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <link>https://yuyoung32.github.io/post/stl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Wed, 14 Sep 2022 22:55:15 +0800</pubDate>
       
-      <guid>http://example.org/post/stl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://yuyoung32.github.io/post/stl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
       <description>前言 STL是GP编程的典范，使用容器涉及六大模块：
 容器 分配器 算法 迭代器 适配器 仿函数 分配器为容器分配内存，迭代器用来访问容器数据，算法通过迭代器操作容器内的数据，算法使用仿函数改变算法过程。适配器是各部分的粘合剂。
 这其中，除了算法是模板函数外，其他都是模板类。
@@ -55,10 +55,10 @@ _Rb_tree 容器 Associative Container
     
     <item>
       <title>C&#43;&#43;小知识</title>
-      <link>http://example.org/post/c&#43;&#43;%E5%B0%8F%E7%9F%A5%E8%AF%86/</link>
+      <link>https://yuyoung32.github.io/post/c&#43;&#43;%E5%B0%8F%E7%9F%A5%E8%AF%86/</link>
       <pubDate>Tue, 09 Aug 2022 23:25:36 +0800</pubDate>
       
-      <guid>http://example.org/post/c&#43;&#43;%E5%B0%8F%E7%9F%A5%E8%AF%86/</guid>
+      <guid>https://yuyoung32.github.io/post/c&#43;&#43;%E5%B0%8F%E7%9F%A5%E8%AF%86/</guid>
       <description>左右值和左右值引用 左值： 可以取地址，有名字的，非临时的就是左值。
 右值： 不能取地址，没有名字的，临时的就是右值。
 左值引用： 相当于指针指向某个左值，取了左值的地址。就是说左值引用要求右边的值可以取地址，若不能取地址可以，像这样const int&amp;amp; a = 1;实际是创建临时变量。

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>YuYoung&#39;s Blog</title>
-    <link>http://example.org/</link>
+    <link>https://yuyoung32.github.io/</link>
     <description>Recent content on YuYoung&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Tue, 25 Apr 2023 13:27:19 +0800</lastBuildDate><atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 25 Apr 2023 13:27:19 +0800</lastBuildDate><atom:link href="https://yuyoung32.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Nginx简述与业务场景指引</title>
-      <link>http://example.org/post/nginx%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/</link>
+      <link>https://yuyoung32.github.io/post/nginx%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/</link>
       <pubDate>Tue, 25 Apr 2023 13:27:19 +0800</pubDate>
       
-      <guid>http://example.org/post/nginx%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/</guid>
+      <guid>https://yuyoung32.github.io/post/nginx%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/</guid>
       <description>概念与安装 Nginx-安装和配置详解
 #ubuntu apt install nginx 主配置文件：/etc/nginx/nginx.conf 日志默认存放位置：/var/log/nginx/access.log与/var/log/nginx/error.log 配置文件大纲
 #main # 全局配置 events { # nginx工作模式配置 } http { # http设置 .... server { # 服务器主机配置 .... location { # 路由配置 .... } location path { .... } location otherpath { .... } } server { .... location { .... } } upstream name { # 负载均衡配置 .... } } 业务场景 子域名http://admin.domain.name:80导向前端server 以vue-cli构建的dist目录，使用hash history为例
@@ -21,10 +21,10 @@ server { listen 80; server_name admin.domain.name; root /home/www/dist; index in
     
     <item>
       <title>如何把某个应用包装成服务aka后台运行</title>
-      <link>http://example.org/post/%E5%A6%82%E4%BD%95%E6%8A%8A%E6%9F%90%E4%B8%AA%E5%BA%94%E7%94%A8%E5%8C%85%E8%A3%85%E6%88%90%E6%9C%8D%E5%8A%A1aka%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C/</link>
+      <link>https://yuyoung32.github.io/post/%E5%A6%82%E4%BD%95%E6%8A%8A%E6%9F%90%E4%B8%AA%E5%BA%94%E7%94%A8%E5%8C%85%E8%A3%85%E6%88%90%E6%9C%8D%E5%8A%A1aka%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C/</link>
       <pubDate>Sun, 23 Apr 2023 16:06:34 +0800</pubDate>
       
-      <guid>http://example.org/post/%E5%A6%82%E4%BD%95%E6%8A%8A%E6%9F%90%E4%B8%AA%E5%BA%94%E7%94%A8%E5%8C%85%E8%A3%85%E6%88%90%E6%9C%8D%E5%8A%A1aka%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C/</guid>
+      <guid>https://yuyoung32.github.io/post/%E5%A6%82%E4%BD%95%E6%8A%8A%E6%9F%90%E4%B8%AA%E5%BA%94%E7%94%A8%E5%8C%85%E8%A3%85%E6%88%90%E6%9C%8D%E5%8A%A1aka%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C/</guid>
       <description>将某个应用包装成服务（后台运行） 简要说明 在指定目录下创建服务说明文件
 vim /etc/systemd/system/myapp.service 输入相关信息
 [Unit] Description=My Application After=network.target [Service] User=yourusername WorkingDirectory=/opt/myapp ExecStart=/opt/myapp/run.sh Restart=always [Install] WantedBy=multi-user.target 保存配置
@@ -40,10 +40,10 @@ no：服务退出时不会重启。 on-abnormal：仅当服务以非正常方式
     
     <item>
       <title>运维的问题其他汇总</title>
-      <link>http://example.org/post/%E8%BF%90%E7%BB%B4%E7%9A%84%E9%97%AE%E9%A2%98%E5%85%B6%E4%BB%96%E6%B1%87%E6%80%BB/</link>
+      <link>https://yuyoung32.github.io/post/%E8%BF%90%E7%BB%B4%E7%9A%84%E9%97%AE%E9%A2%98%E5%85%B6%E4%BB%96%E6%B1%87%E6%80%BB/</link>
       <pubDate>Sun, 23 Apr 2023 16:03:50 +0800</pubDate>
       
-      <guid>http://example.org/post/%E8%BF%90%E7%BB%B4%E7%9A%84%E9%97%AE%E9%A2%98%E5%85%B6%E4%BB%96%E6%B1%87%E6%80%BB/</guid>
+      <guid>https://yuyoung32.github.io/post/%E8%BF%90%E7%BB%B4%E7%9A%84%E9%97%AE%E9%A2%98%E5%85%B6%E4%BB%96%E6%B1%87%E6%80%BB/</guid>
       <description>网络防火墙 放通20000到30000之间的端口连接 在 Linux 中放通 20000 到 30000 之间的端口连接，可以通过修改防火墙规则实现。
 以下是通过 iptables 命令添加规则的步骤：
 打开终端，并以管理员权限登录系统； 输入以下命令以列出当前的防火墙规则： iptables -L 如果已存在 DROP 或 REJECT 策略，则需要添加允许策略。输入以下命令以添加策略： iptables -P INPUT ACCEPT iptables -P OUTPUT ACCEPT iptables -P FORWARD ACCEPT 输入以下命令以开放端口： iptables -A INPUT -p tcp --dport 20000:30000 -j ACCEPT 这条命令将允许从任何来源 IP 地址访问在 20000 到 30000 范围内的 TCP 端口。如果需要允许 UDP 端口，请将 -p tcp 改为 -p udp。
@@ -53,10 +53,10 @@ no：服务退出时不会重启。 on-abnormal：仅当服务以非正常方式
     
     <item>
       <title>Linux快速配置MySQL&amp;Redis指引</title>
-      <link>http://example.org/post/linux%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AEmysqlredis%E6%8C%87%E5%BC%95/</link>
+      <link>https://yuyoung32.github.io/post/linux%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AEmysqlredis%E6%8C%87%E5%BC%95/</link>
       <pubDate>Sun, 23 Apr 2023 15:56:47 +0800</pubDate>
       
-      <guid>http://example.org/post/linux%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AEmysqlredis%E6%8C%87%E5%BC%95/</guid>
+      <guid>https://yuyoung32.github.io/post/linux%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AEmysqlredis%E6%8C%87%E5%BC%95/</guid>
       <description>安装与配置MySQL 安装 ubuntu
 apt update apt install mysql-server systemctl start mysql systemctl status mysql 修改与设置root密码 mysql -u root -p 进入MySQL命令行后
 ALTER USER &amp;#39;root&amp;#39;@&amp;#39;localhost&amp;#39; IDENTIFIED WITH mysql_native_password BY &amp;#39;yourpassword&amp;#39;; FLUSH PRIVILEGES; exit; 再次使用mysql -u root -p进入验证密码是否已经更改。
@@ -74,10 +74,10 @@ mysql&amp;gt; select user,host from user; 修改</description>
     
     <item>
       <title>vue&#43;前端速通</title>
-      <link>http://example.org/post/vue_%E5%89%8D%E7%AB%AF%E9%80%9F%E9%80%9A/</link>
+      <link>https://yuyoung32.github.io/post/vue_%E5%89%8D%E7%AB%AF%E9%80%9F%E9%80%9A/</link>
       <pubDate>Sat, 25 Mar 2023 16:03:50 +0800</pubDate>
       
-      <guid>http://example.org/post/vue_%E5%89%8D%E7%AB%AF%E9%80%9F%E9%80%9A/</guid>
+      <guid>https://yuyoung32.github.io/post/vue_%E5%89%8D%E7%AB%AF%E9%80%9F%E9%80%9A/</guid>
       <description>前端小知识 CSS Display(显示) 与 Visibility（可见性
 CSS 盒子模型 CSS 盒子模型
 CSS 选择器 p 标签选择
@@ -96,19 +96,19 @@ CSS position CSS Position(定位)
     
     <item>
       <title>编译安装ZSH和Oh-my-zsh</title>
-      <link>http://example.org/post/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85zsh%E5%92%8Coh-my-zsh/</link>
+      <link>https://yuyoung32.github.io/post/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85zsh%E5%92%8Coh-my-zsh/</link>
       <pubDate>Wed, 01 Mar 2023 16:05:28 +0800</pubDate>
       
-      <guid>http://example.org/post/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85zsh%E5%92%8Coh-my-zsh/</guid>
+      <guid>https://yuyoung32.github.io/post/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85zsh%E5%92%8Coh-my-zsh/</guid>
       <description>配置舒服的Linux终端: zsh编译安装和安装oh-my-zsh 在此针对有些实在不能安装新版ZSH的服务器</description>
     </item>
     
     <item>
       <title>Linux自用脚本</title>
-      <link>http://example.org/post/%E8%87%AA%E7%94%A8shell%E8%84%9A%E6%9C%AC/</link>
+      <link>https://yuyoung32.github.io/post/%E8%87%AA%E7%94%A8shell%E8%84%9A%E6%9C%AC/</link>
       <pubDate>Wed, 01 Mar 2023 15:52:19 +0800</pubDate>
       
-      <guid>http://example.org/post/%E8%87%AA%E7%94%A8shell%E8%84%9A%E6%9C%AC/</guid>
+      <guid>https://yuyoung32.github.io/post/%E8%87%AA%E7%94%A8shell%E8%84%9A%E6%9C%AC/</guid>
       <description>定时任务与发送邮件 功能：输入某个进程名称，当进程结束后向指定邮箱发送邮件。
 使用：./watch-and-mail.sh processname
 需要自定义：
@@ -117,10 +117,10 @@ CSS position CSS Position(定位)
     
     <item>
       <title>云服务器Linux&#43;Clash科学上网</title>
-      <link>http://example.org/post/linux&#43;clash%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</link>
+      <link>https://yuyoung32.github.io/post/linux&#43;clash%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</link>
       <pubDate>Wed, 01 Mar 2023 14:43:16 +0800</pubDate>
       
-      <guid>http://example.org/post/linux&#43;clash%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</guid>
+      <guid>https://yuyoung32.github.io/post/linux&#43;clash%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</guid>
       <description>1. 下载Clash for Linux到Linux主机上 获取Clash文件
 方法1，下载网址Releases · Dreamacro/clash (github.com)，选择自己的系统的包，然后上传到服务器上。
 方法2，使用wget命令.
@@ -137,10 +137,10 @@ export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.</description>
     
     <item>
       <title>C&#43;&#43;动态内存分配与allocator</title>
-      <link>http://example.org/post/c&#43;&#43;%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83%E4%B8%8Eallocator/</link>
+      <link>https://yuyoung32.github.io/post/c&#43;&#43;%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83%E4%B8%8Eallocator/</link>
       <pubDate>Thu, 24 Nov 2022 16:52:52 +0800</pubDate>
       
-      <guid>http://example.org/post/c&#43;&#43;%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83%E4%B8%8Eallocator/</guid>
+      <guid>https://yuyoung32.github.io/post/c&#43;&#43;%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83%E4%B8%8Eallocator/</guid>
       <description>内存分配call stack 分配内存
 Foo* p = new Foo(x); //等同于 Foo* p = (Foo*)operator new(sizeof(Foo)); //分配空间 此处可重载,使之不调用全局的::operator new new(p) Foo(x); //placement new 创建对象(初始化内存) //等同于 ::operator new(size_t); //等同于 malloc(size_t); 释放内存
 delete p; //等同于 p-&amp;gt;~Foo();//析构函数 operator delete(p); //此处可重载,使之不调用全局的::operator delete //等同于 ::operator delete(void*); //等同于 free(void*); 重载operator new 注意：
@@ -152,19 +152,19 @@ class MyClass { public: //operator new(int a)//出错，第一个参数必须是
     
     <item>
       <title>实现std::bind</title>
-      <link>http://example.org/post/%E5%AE%9E%E7%8E%B0stdbind/</link>
+      <link>https://yuyoung32.github.io/post/%E5%AE%9E%E7%8E%B0stdbind/</link>
       <pubDate>Tue, 04 Oct 2022 16:05:49 +0800</pubDate>
       
-      <guid>http://example.org/post/%E5%AE%9E%E7%8E%B0stdbind/</guid>
+      <guid>https://yuyoung32.github.io/post/%E5%AE%9E%E7%8E%B0stdbind/</guid>
       <description>手写std::bind与源码解读</description>
     </item>
     
     <item>
       <title>STL学习笔记</title>
-      <link>http://example.org/post/stl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <link>https://yuyoung32.github.io/post/stl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Wed, 14 Sep 2022 22:55:15 +0800</pubDate>
       
-      <guid>http://example.org/post/stl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://yuyoung32.github.io/post/stl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
       <description>前言 STL是GP编程的典范，使用容器涉及六大模块：
 容器 分配器 算法 迭代器 适配器 仿函数 分配器为容器分配内存，迭代器用来访问容器数据，算法通过迭代器操作容器内的数据，算法使用仿函数改变算法过程。适配器是各部分的粘合剂。
 这其中，除了算法是模板函数外，其他都是模板类。
@@ -183,10 +183,10 @@ _Rb_tree 容器 Associative Container
     
     <item>
       <title>C&#43;&#43;小知识</title>
-      <link>http://example.org/post/c&#43;&#43;%E5%B0%8F%E7%9F%A5%E8%AF%86/</link>
+      <link>https://yuyoung32.github.io/post/c&#43;&#43;%E5%B0%8F%E7%9F%A5%E8%AF%86/</link>
       <pubDate>Tue, 09 Aug 2022 23:25:36 +0800</pubDate>
       
-      <guid>http://example.org/post/c&#43;&#43;%E5%B0%8F%E7%9F%A5%E8%AF%86/</guid>
+      <guid>https://yuyoung32.github.io/post/c&#43;&#43;%E5%B0%8F%E7%9F%A5%E8%AF%86/</guid>
       <description>左右值和左右值引用 左值： 可以取地址，有名字的，非临时的就是左值。
 右值： 不能取地址，没有名字的，临时的就是右值。
 左值引用： 相当于指针指向某个左值，取了左值的地址。就是说左值引用要求右边的值可以取地址，若不能取地址可以，像这样const int&amp;amp; a = 1;实际是创建临时变量。
@@ -200,10 +200,10 @@ _Rb_tree 容器 Associative Container
     
     <item>
       <title>webRTC学习笔记</title>
-      <link>http://example.org/post/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <link>https://yuyoung32.github.io/post/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Fri, 29 Jul 2022 12:51:14 +0800</pubDate>
       
-      <guid>http://example.org/post/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://yuyoung32.github.io/post/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
       <description>前言 在网络上传输数据，最原始的方式就是C-S通信。CS模式固然可靠，适合绝大部分场景。但是对于音视频尤其是及时音视频来说，CS模式需要服务器做中转延迟过高，而且服务器也没必要知道传输的数据流不需要承载这个负荷。
 所以需要点对点直连，即p2p通信，直接连接收发双方。既然是通信，收发双方就需要知道对方的地址。通常来说二者通过ICE来交换地址。本机对外的IP如何获取？有以下几种方式：
 在局域网里，大家的对外的IP都是本机读到的IP，可以方便的分享出去。 但是大多数设备都是不知道自己在互联网上的地址的，因为有NAT的存在，本机设备的IP地址被映射到公网的IP。设备需要使用STUN获取自己映射后的唯一地址。 尽管可以通过STUN获得公网地址，但是NAT是有4种类型的。特别的，对称NAT每次会根据本机IP、目标IP和目标端口生成一个公网IP和端口，因此外界无法确定本机设备的唯一地址。在这种情况下只能通过中继传输数据即TURN。 实现以上二者知道对方地址的过程叫做ICE。ICE是一种方法而不是协议，ICE通过STUN或TURN收集双方信息，然后进行交换。收集信息的过程可能比较崎岖，但ICE的最终目的就是让二者能够通信。在获取通信方式的以上3种方法里，ICE会根据优先级1&amp;gt;2&amp;gt;3向双方提供信息，其中3就类似于类似于传统CS模式所以优先级最低。
@@ -233,20 +233,20 @@ STUN和TURN 什么是STUN Session Traversal Utilities for NAT，它允许位于N
     
     <item>
       <title>SOCKET编程与复用</title>
-      <link>http://example.org/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</link>
+      <link>https://yuyoung32.github.io/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</link>
       <pubDate>Wed, 20 Jul 2022 10:47:56 +0800</pubDate>
       
-      <guid>http://example.org/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</guid>
+      <guid>https://yuyoung32.github.io/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</guid>
       <description>SOCKET编程 TCP 流程图 关键函数 int fd = socket(AF_INET, SOCK_STREAM, 0); int setsockopt(int sockfd, int level, int optname, const void *optval, socklen_t optlen); setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &amp;amp;flag, sizeof(flag)); bind(fd, local_addr, sizeof(local_addr)); conn_fd = accept(fd, backlog); recv(conn_fd, buff, sizeof(buff), 0); send(conn_fd, buff, sizeof(buff), 0); UDP 流程图 关键函数 int fd = socket(AF_INET, SOCK_DGRAM, 0); bind(fd, local_addr, sizeof(local_addr)); //和recv的区别是后两个参数是出参，能够获得IP地址，供sendto使用 recvfrom(fd, buff, sizeof(buff), 0, client_addr, sizeof(client_addr)); sendto(fd, buff, sizeof(buff), 0, client_addr, sizeof(client_addr)); IO复用 一般来说，一个进程只处理一个连接。但这样显然不合理，所以需要一个进程通过某种方式处理多个连接。就是说一个进程同时管控多个连接socket，同时处理多个连接的业务。Linux系统下可以通过以下几种方式实现。
 fork 关键函数 pid会在子进程中为0，父进程中不为0。</description>
     </item>
     
     <item>
       <title>IP spoofing 在Windows上的实践</title>
-      <link>http://example.org/post/ipspoofingwindows/</link>
+      <link>https://yuyoung32.github.io/post/ipspoofingwindows/</link>
       <pubDate>Sat, 25 Jun 2022 13:31:10 +0800</pubDate>
       
-      <guid>http://example.org/post/ipspoofingwindows/</guid>
+      <guid>https://yuyoung32.github.io/post/ipspoofingwindows/</guid>
       <description>什么是IP spoofing？ 通常情况下，在网络上发包，程序员只需要考虑应用层数据和选择传输层协议，网络层及更底层的数据由操作系统填充。但是在某些情况下（善意的或恶意的），程序员想要手动改变在发送层的srcIP，这种手动改变IP头的srcIP的行为称为IP欺骗（IP spoofing）。
 遇到的问题 现在需要测试某软件网络包解析性能，需要模拟发出具有不同源IP和负载数据的UDP包，不同负载数据很容易做到，但是改变源IP则不简单。为了高性能以及方便的使用，需要这个程序使用C++编写并可以原生跑在Windows系统上。
 对于这种定制化需求，我们很容易想到使用socket编程，也就是使用raw socket。
@@ -263,10 +263,10 @@ type protocol SOCK_STREAM IPPROTO_TCP SOCK_DGRAM IPPROTO_UDP SOCK_RAW IPPROTO_TC
     
     <item>
       <title>Golang小知识</title>
-      <link>http://example.org/post/golang%E5%B0%8F%E7%9F%A5%E8%AF%86/</link>
+      <link>https://yuyoung32.github.io/post/golang%E5%B0%8F%E7%9F%A5%E8%AF%86/</link>
       <pubDate>Fri, 01 Apr 2022 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/golang%E5%B0%8F%E7%9F%A5%E8%AF%86/</guid>
+      <guid>https://yuyoung32.github.io/post/golang%E5%B0%8F%E7%9F%A5%E8%AF%86/</guid>
       <description>内建接口 内建接口，builtin-interface，是go包内的接口，你可以实现它，这样go的官方库比如fmt在调用时就会使用你实现的方法。
 Stringer 类似于Java的toString，打印自身信息，很多包如fmt通过这个打印信息。
 type Stringer interface { String() string } package main import &amp;#34;fmt&amp;#34; type Person struct { Name string Age int } func (p Person) String() string { return fmt.Sprintf(&amp;#34;%v (%v years)&amp;#34;, p.Name, p.Age) } func main() { a := Person{&amp;#34;Arthur Dent&amp;#34;, 42} z := Person{&amp;#34;Zaphod Beeblebrox&amp;#34;, 9001} // 在pirint时会自动调用你自己实现的 fmt.Println(a, z) } error error是一个接口类型，实现error接口的struct可以作为error返回，可以做到错误包含指定的信息。fmt在打印错误时也会调用这个。
@@ -275,10 +275,10 @@ type error interface { Error() string } package main import ( &amp;#34;fmt&amp;#
     
     <item>
       <title>Golang-内置container包</title>
-      <link>http://example.org/post/golang-%E5%86%85%E7%BD%AEcontainer%E5%8C%85/</link>
+      <link>https://yuyoung32.github.io/post/golang-%E5%86%85%E7%BD%AEcontainer%E5%8C%85/</link>
       <pubDate>Fri, 25 Mar 2022 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/golang-%E5%86%85%E7%BD%AEcontainer%E5%8C%85/</guid>
+      <guid>https://yuyoung32.github.io/post/golang-%E5%86%85%E7%BD%AEcontainer%E5%8C%85/</guid>
       <description>Go常见数据结构包container Heap container/heap
 首先需要实现这这个接口（包含5个方法），heap实现并维护小顶堆（大根堆）或者说是优先队列。
 type Interface interface { sort.Interface Push(x interface{}) // 向末尾添加元素 Pop() interface{} // 从末尾删除元素 } //sort.Interface type Interface interface { Len() int Less(i, j int) bool Swap(i, j int) } 简单例子
@@ -287,10 +287,10 @@ package main import ( &amp;#34;container/heap&amp;#34; &amp;#34;fmt&amp;#34; ) t
     
     <item>
       <title>集群管理工具consul学习笔记</title>
-      <link>http://example.org/post/%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0/</link>
+      <link>https://yuyoung32.github.io/post/%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0/</link>
       <pubDate>Tue, 08 Mar 2022 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0/</guid>
+      <guid>https://yuyoung32.github.io/post/%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0/</guid>
       <description>Consul功能与原理 功能原理
 consul是一个集群管理工具，特点：
 服务发现：不需要手动记录各个服务的ip地址，中心能够主动搜寻服务并进行健康检查下线掉不健康的节点 健康检查：每个agent上线和下线时都会向服务目录添加或者删除自己，此外会根据agent规模定时（几分钟）同步服务目录 KV存储 解决了手动配置服务的痛点。
@@ -312,10 +312,10 @@ Gossip的优势与缺点：
     
     <item>
       <title>Go-micro学习笔记</title>
-      <link>http://example.org/post/go-micro%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <link>https://yuyoung32.github.io/post/go-micro%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Mon, 07 Mar 2022 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/go-micro%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://yuyoung32.github.io/post/go-micro%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
       <description>Go-micro 原理 go-micro原理
 broker原理
 Service通过Register注册到服务中心，Client通过Selector模块选择Service并进行负载均衡，从注册中心拿到服务节点然后通过节点信息通过Transport定义的通信协议来进行通信。
@@ -329,10 +329,10 @@ new命令： --namespace &amp;#34;go.micro&amp;#34; 命名空间（首部）e.g 
     
     <item>
       <title>关于Gin&#43;Vue的项目协作流程</title>
-      <link>http://example.org/post/%E5%85%B3%E4%BA%8Egin&#43;vue%E7%9A%84%E9%A1%B9%E7%9B%AE%E5%8D%8F%E4%BD%9C%E6%B5%81%E7%A8%8B/</link>
+      <link>https://yuyoung32.github.io/post/%E5%85%B3%E4%BA%8Egin&#43;vue%E7%9A%84%E9%A1%B9%E7%9B%AE%E5%8D%8F%E4%BD%9C%E6%B5%81%E7%A8%8B/</link>
       <pubDate>Tue, 01 Mar 2022 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/%E5%85%B3%E4%BA%8Egin&#43;vue%E7%9A%84%E9%A1%B9%E7%9B%AE%E5%8D%8F%E4%BD%9C%E6%B5%81%E7%A8%8B/</guid>
+      <guid>https://yuyoung32.github.io/post/%E5%85%B3%E4%BA%8Egin&#43;vue%E7%9A%84%E9%A1%B9%E7%9B%AE%E5%8D%8F%E4%BD%9C%E6%B5%81%E7%A8%8B/</guid>
       <description>流程图 后端 设计理念 配置与程序分离，单独写在配置文件里方便修改 log记录在文件里持久化 redis记录session更快速 主引擎注册 使用gin.New()创建引擎，或者使用gin.Default()创建引擎并自动使用中间件gin.Logger()和gin.Recovery()两个中间件。
 使用中间件 中间件需要在路由前或者创建路由时使用，这里可以在所有路由前使用中间件即全局中间件。
 gin.GET(&amp;#39;/path&amp;#39;,HandlerFunc,Middleware) 中间件
@@ -350,10 +350,10 @@ if v, ok := binding.Validator.Engine().(*validator.Validate); ok { v.RegisterVal
     
     <item>
       <title>Golang-常见中间件</title>
-      <link>http://example.org/post/golang-%E5%B8%B8%E8%A7%81%E4%B8%AD%E9%97%B4%E4%BB%B6/</link>
+      <link>https://yuyoung32.github.io/post/golang-%E5%B8%B8%E8%A7%81%E4%B8%AD%E9%97%B4%E4%BB%B6/</link>
       <pubDate>Tue, 22 Feb 2022 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/golang-%E5%B8%B8%E8%A7%81%E4%B8%AD%E9%97%B4%E4%BB%B6/</guid>
+      <guid>https://yuyoung32.github.io/post/golang-%E5%B8%B8%E8%A7%81%E4%B8%AD%E9%97%B4%E4%BB%B6/</guid>
       <description>SemVer https://semver.org/lang/zh-CN/
 semantic versioning 语义化版本信息，根据版号判断信息
 v(major).(minor).(patch)
@@ -366,10 +366,10 @@ A module is defined by a tree of Go source files with a go.mod file in the tree&
     
     <item>
       <title>Golang-反射，静态类型与动态类型</title>
-      <link>http://example.org/post/golang-%E5%8F%8D%E5%B0%84%E9%9D%99%E6%80%81%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</link>
+      <link>https://yuyoung32.github.io/post/golang-%E5%8F%8D%E5%B0%84%E9%9D%99%E6%80%81%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</link>
       <pubDate>Tue, 25 Jan 2022 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/golang-%E5%8F%8D%E5%B0%84%E9%9D%99%E6%80%81%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</guid>
+      <guid>https://yuyoung32.github.io/post/golang-%E5%8F%8D%E5%B0%84%E9%9D%99%E6%80%81%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</guid>
       <description>反射，静态类型与动态类型 原理 https://segmentfault.com/a/1190000022931452
 静态和动态是对于接口来说的
 每个接口变量，实际上都是由一 pair 对（type 和 data）组合而成，pair 对中记录着实际变量的值和类型
@@ -389,10 +389,10 @@ type User struct { Name string } type UserFun interface { GetName() } func (u Us
     
     <item>
       <title>Golang-从比较到动态类型</title>
-      <link>http://example.org/post/golang-%E4%BB%8E%E6%AF%94%E8%BE%83%E5%88%B0%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</link>
+      <link>https://yuyoung32.github.io/post/golang-%E4%BB%8E%E6%AF%94%E8%BE%83%E5%88%B0%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</link>
       <pubDate>Sun, 23 Jan 2022 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/golang-%E4%BB%8E%E6%AF%94%E8%BE%83%E5%88%B0%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</guid>
+      <guid>https://yuyoung32.github.io/post/golang-%E4%BB%8E%E6%AF%94%E8%BE%83%E5%88%B0%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</guid>
       <description>比较 结构体 结构体的比较，有几个需要注意的地方：
 结构体只能比较是否相等，但是不能比较大小； 想同类型的结构体才能进行比较，结构体是否相同不但与属性类型有关，还与属性顺序相关； 如果struct的所有成员都可以比较，则该struct就可以通过==或!=进行比较是否相同，比较时逐个项进行比较，如果每一项都相等，则两个结构体才相等，否则不相等； 那有什么是可以比较的呢？
 常见的有bool、数值型、字符、指针、数组等，同时注意数组需要大小相同，否则还是不能比较 不能比较的有
@@ -404,10 +404,10 @@ package main import &amp;#34;fmt&amp;#34; type Person struct { first string last
     
     <item>
       <title>社保体系解读</title>
-      <link>http://example.org/post/%E7%A4%BE%E4%BF%9D%E4%BD%93%E7%B3%BB%E8%A7%A3%E8%AF%BB/</link>
+      <link>https://yuyoung32.github.io/post/%E7%A4%BE%E4%BF%9D%E4%BD%93%E7%B3%BB%E8%A7%A3%E8%AF%BB/</link>
       <pubDate>Wed, 15 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/%E7%A4%BE%E4%BF%9D%E4%BD%93%E7%B3%BB%E8%A7%A3%E8%AF%BB/</guid>
+      <guid>https://yuyoung32.github.io/post/%E7%A4%BE%E4%BF%9D%E4%BD%93%E7%B3%BB%E8%A7%A3%E8%AF%BB/</guid>
       <description>什么是社保 社保分为城镇职工社会保险（五险一金）和城乡居民保险（城居保、新农合）。
 城镇职工社会保险 又称五险一金
 缴费对象为有雇主的打工一族
@@ -430,10 +430,10 @@ package main import &amp;#34;fmt&amp;#34; type Person struct { first string last
     
     <item>
       <title>Docker学习笔记</title>
-      <link>http://example.org/post/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <link>https://yuyoung32.github.io/post/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Thu, 02 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://yuyoung32.github.io/post/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
       <description>为什么使用Docker 环境方便移植组装，应用可以把包和依赖发布到镜像，这样任何docker即可直接拉下来，构建环境，运行软件。
 原理 三个基本概念 镜像（Image）：Docker 镜像（Image），就相当于是一个 root 文件系统。 容器（Container）：镜像和容器的关系，镜像是静态的定义，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等。 仓库（Repository）：仓库可看成一个代码控制中心，用来保存镜像。 容器隔离原理 Docker 原理
 PID Namespace进行进程可见性限制：创建进程时设置参数CLONE_NEWPID参数，可以让这个进程有自己的命名空间和进程根目录，结合操作系统的rootfs和联合文件系统就基本实现了docker的隔离问题。
@@ -447,10 +447,10 @@ Container RW --------- Image Vim R Image Emacs R Image Apache R Baseimage ubuntu
     
     <item>
       <title>函数闭包-Go&amp;Java</title>
-      <link>http://example.org/post/%E5%87%BD%E6%95%B0%E9%97%AD%E5%8C%85/</link>
+      <link>https://yuyoung32.github.io/post/%E5%87%BD%E6%95%B0%E9%97%AD%E5%8C%85/</link>
       <pubDate>Mon, 04 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/%E5%87%BD%E6%95%B0%E9%97%AD%E5%8C%85/</guid>
+      <guid>https://yuyoung32.github.io/post/%E5%87%BD%E6%95%B0%E9%97%AD%E5%8C%85/</guid>
       <description>函数闭包概念 闭包是由函数及其相关的引用环境组合而成的实体(即：闭包=函数+引用环境)。 在本质上，闭包是将函数内部和函数外部连接起来的桥梁，通过它可以修改函数的内部的变量。
 闭包实现 在Go里，使用匿名函数实现。可见内部匿名函数被推出到外部后，就可以改变内部值。
 package main import &amp;#34;fmt&amp;#34; // 实现斐波那契数列 func fibonacci() func() int { a:=0 b:=1 return func() int { temp:=b b=a+b a=temp return a } } func main() { f := fibonacci() for i := 0; i &amp;lt; 10; i++ { fmt.Println(f()) } } // 输出1 1 2 3 5 ... ////非闭包实现 //import &amp;#34;fmt&amp;#34; // //func main() { //	a:=1 //	b:=1 //	for i := 0; i &amp;lt; 10 ;i++{ //	fmt.</description>
@@ -458,10 +458,10 @@ package main import &amp;#34;fmt&amp;#34; // 实现斐波那契数列 func fibon
     
     <item>
       <title>从Java到Golang-对interface的理解</title>
-      <link>http://example.org/post/golang-%E5%AF%B9interface%E7%9A%84%E7%90%86%E8%A7%A3/</link>
+      <link>https://yuyoung32.github.io/post/golang-%E5%AF%B9interface%E7%9A%84%E7%90%86%E8%A7%A3/</link>
       <pubDate>Sun, 03 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/golang-%E5%AF%B9interface%E7%9A%84%E7%90%86%E8%A7%A3/</guid>
+      <guid>https://yuyoung32.github.io/post/golang-%E5%AF%B9interface%E7%9A%84%E7%90%86%E8%A7%A3/</guid>
       <description>If it walks like a duck, swims like a duck, and quacks like a duck, then it probably is a duck.
 如果一个东西走路、游泳、叫声都像鸭子，那么它大概就是一只鸭子。
 对interface的理解 interface的实现 ​	在JAVA里，interface定义了一个类的行为标准，里面可以包含不可变换的实体，例如没有函数体的函数或者不可改变的值比如final变量。一旦一个类implement这个interface，那么就要将这个interface的全部方法都实现。这样在工程上的好处是，解决了多继承问题（JAVA不能实现多继承，本质上是因为多个class之间的可变实体如同名变量，同名方法不同方法体会冲突），更高程度上抽象了一个类，只要知道这个类实现了什么接口，就可以调用接口的方法。在这个过程中不需要知道类中的具体实现，把函数注释写在接口的文件即可，保护了类。
@@ -471,20 +471,20 @@ package main import ( &amp;#34;fmt&amp;#34; ) type Animal interface { eat() } ty
     
     <item>
       <title>PowerShell学习笔记</title>
-      <link>http://example.org/post/powersehll%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <link>https://yuyoung32.github.io/post/powersehll%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Sat, 17 Jul 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/powersehll%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://yuyoung32.github.io/post/powersehll%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
       <description>常用cmdlet 常用命令
 常识 很多命令都是和Linux是一样的。ps命令也有自己的别名，标注在命令下方，查看当前所有别名get-alias 文件目录支持通配符*，加上-Include``-Exclude可以用于筛选目录下的项目 -Confirm运行前确认，-WhatIf只显示即将运行的操作但不会真的运行 万物皆是文件，目录操作时，如果不加-Recurse就只是操作了空目录 文件 #添加内容到文件 add-content filename content add-content test.txt &amp;#34;hello&amp;#34; #替换文件内容 set-content filename content set-content test.txt &amp;#34;hi&amp;#34; #查看文件内容 get-content filename get-content test.txt #清空文件内容 clear-content filename clear-content test.txt #拷贝文件 copy-item src des copy-item test.txt test2.txt #移动文件 move-item src des move-item test.txt des #新建文件 new-item filename new-item test.txt #删除文件 remove-item filename remove-item test.txt #重命名 rename-item oldname newname rename-item test.txt test2.txt 位置 #显示当前位置 pwd get-location #切换当前位置 cd set-location 其他常用 #命令行输出重定向 out-file filename 等同于 &amp;gt; #若不指定append则覆写 get-childItem &amp;gt; test.</description>
     </item>
     
     <item>
       <title>Java各种内部类解析</title>
-      <link>http://example.org/post/java%E5%90%84%E7%A7%8D%E7%B1%BB%E8%A7%A3%E6%9E%90/</link>
+      <link>https://yuyoung32.github.io/post/java%E5%90%84%E7%A7%8D%E7%B1%BB%E8%A7%A3%E6%9E%90/</link>
       <pubDate>Sat, 12 Jun 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/java%E5%90%84%E7%A7%8D%E7%B1%BB%E8%A7%A3%E6%9E%90/</guid>
+      <guid>https://yuyoung32.github.io/post/java%E5%90%84%E7%A7%8D%E7%B1%BB%E8%A7%A3%E6%9E%90/</guid>
       <description>内部类 Java Class是一种行为规范，它不只是可以定义在packge中，还可以定义在方法里，分支结构里&amp;hellip;
 按照定义的位置可以分为：
 成员内部类 packge 局部内部类 方法、分支结构 成员内部类 成员内部类定义在外部大的Class内。成员内部类的特点：
@@ -493,10 +493,10 @@ package main import ( &amp;#34;fmt&amp;#34; ) type Animal interface { eat() } ty
     
     <item>
       <title>C语言写项目的注意事项</title>
-      <link>http://example.org/post/c%E8%AF%AD%E8%A8%80%E5%86%99%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</link>
+      <link>https://yuyoung32.github.io/post/c%E8%AF%AD%E8%A8%80%E5%86%99%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</link>
       <pubDate>Sat, 01 May 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/c%E8%AF%AD%E8%A8%80%E5%86%99%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</guid>
+      <guid>https://yuyoung32.github.io/post/c%E8%AF%AD%E8%A8%80%E5%86%99%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</guid>
       <description>项目架构 C语言可以用 .h文件来区分层次，类似于Java的接口与包，可以将不同功能模块、不同层次的代码给分开，然后用 include进行导入。但仍需注意以下几点：
 函数如果没有预定义，无法使用，也就是说如果没有形如 void func();的短的预定义，函数调用仍然区分前后，即前面书写的代码不能调用后面的。 .h文件不能循环调用，即在 a.h里include了 b.h则b.h里不能再includea.h。 C语言是面向过程的语言，有的时候可以声明全局变量而不使用指针，当所有函数需要传入同一个指针的时候即可以设为全局变量，这样会更为优雅。 具体细节 C语言只能返回单个值，要改变数组等只能传入数组指针，通常会同时传入数组大小。
 void Change(int num[], int size){ num[0] = 1; num[1] = 2; num[size] = size; } 注意静态定义的值属于函数的堆空间，函数结束即销毁，不能将指针返回到外部进行使用，需要使用动态分配malloc()。如下例子：
@@ -509,10 +509,10 @@ void Read(const Stack stack){ while(stack.pos != 0){ // 此处会清空栈，需
     
     <item>
       <title>关于</title>
-      <link>http://example.org/about/</link>
+      <link>https://yuyoung32.github.io/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/about/</guid>
+      <guid>https://yuyoung32.github.io/about/</guid>
       <description>求知若渴，虚心甚愚 📧 young_em@foxmail.com</description>
     </item>
     

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>golang on YuYoung&#39;s Blog</title>
-    <link>http://example.org/categories/golang/</link>
+    <link>https://yuyoung32.github.io/categories/golang/</link>
     <description>Recent content in golang on YuYoung&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Fri, 01 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://example.org/categories/golang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 01 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://yuyoung32.github.io/categories/golang/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Golang小知识</title>
-      <link>http://example.org/post/golang%E5%B0%8F%E7%9F%A5%E8%AF%86/</link>
+      <link>https://yuyoung32.github.io/post/golang%E5%B0%8F%E7%9F%A5%E8%AF%86/</link>
       <pubDate>Fri, 01 Apr 2022 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/golang%E5%B0%8F%E7%9F%A5%E8%AF%86/</guid>
+      <guid>https://yuyoung32.github.io/post/golang%E5%B0%8F%E7%9F%A5%E8%AF%86/</guid>
       <description>内建接口 内建接口，builtin-interface，是go包内的接口，你可以实现它，这样go的官方库比如fmt在调用时就会使用你实现的方法。
 Stringer 类似于Java的toString，打印自身信息，很多包如fmt通过这个打印信息。
 type Stringer interface { String() string } package main import &amp;#34;fmt&amp;#34; type Person struct { Name string Age int } func (p Person) String() string { return fmt.Sprintf(&amp;#34;%v (%v years)&amp;#34;, p.Name, p.Age) } func main() { a := Person{&amp;#34;Arthur Dent&amp;#34;, 42} z := Person{&amp;#34;Zaphod Beeblebrox&amp;#34;, 9001} // 在pirint时会自动调用你自己实现的 fmt.Println(a, z) } error error是一个接口类型，实现error接口的struct可以作为error返回，可以做到错误包含指定的信息。fmt在打印错误时也会调用这个。
@@ -21,10 +21,10 @@ type error interface { Error() string } package main import ( &amp;#34;fmt&amp;#
     
     <item>
       <title>Golang-内置container包</title>
-      <link>http://example.org/post/golang-%E5%86%85%E7%BD%AEcontainer%E5%8C%85/</link>
+      <link>https://yuyoung32.github.io/post/golang-%E5%86%85%E7%BD%AEcontainer%E5%8C%85/</link>
       <pubDate>Fri, 25 Mar 2022 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/golang-%E5%86%85%E7%BD%AEcontainer%E5%8C%85/</guid>
+      <guid>https://yuyoung32.github.io/post/golang-%E5%86%85%E7%BD%AEcontainer%E5%8C%85/</guid>
       <description>Go常见数据结构包container Heap container/heap
 首先需要实现这这个接口（包含5个方法），heap实现并维护小顶堆（大根堆）或者说是优先队列。
 type Interface interface { sort.Interface Push(x interface{}) // 向末尾添加元素 Pop() interface{} // 从末尾删除元素 } //sort.Interface type Interface interface { Len() int Less(i, j int) bool Swap(i, j int) } 简单例子
@@ -33,10 +33,10 @@ package main import ( &amp;#34;container/heap&amp;#34; &amp;#34;fmt&amp;#34; ) t
     
     <item>
       <title>Golang-常见中间件</title>
-      <link>http://example.org/post/golang-%E5%B8%B8%E8%A7%81%E4%B8%AD%E9%97%B4%E4%BB%B6/</link>
+      <link>https://yuyoung32.github.io/post/golang-%E5%B8%B8%E8%A7%81%E4%B8%AD%E9%97%B4%E4%BB%B6/</link>
       <pubDate>Tue, 22 Feb 2022 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/golang-%E5%B8%B8%E8%A7%81%E4%B8%AD%E9%97%B4%E4%BB%B6/</guid>
+      <guid>https://yuyoung32.github.io/post/golang-%E5%B8%B8%E8%A7%81%E4%B8%AD%E9%97%B4%E4%BB%B6/</guid>
       <description>SemVer https://semver.org/lang/zh-CN/
 semantic versioning 语义化版本信息，根据版号判断信息
 v(major).(minor).(patch)
@@ -49,10 +49,10 @@ A module is defined by a tree of Go source files with a go.mod file in the tree&
     
     <item>
       <title>Golang-反射，静态类型与动态类型</title>
-      <link>http://example.org/post/golang-%E5%8F%8D%E5%B0%84%E9%9D%99%E6%80%81%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</link>
+      <link>https://yuyoung32.github.io/post/golang-%E5%8F%8D%E5%B0%84%E9%9D%99%E6%80%81%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</link>
       <pubDate>Tue, 25 Jan 2022 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/golang-%E5%8F%8D%E5%B0%84%E9%9D%99%E6%80%81%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</guid>
+      <guid>https://yuyoung32.github.io/post/golang-%E5%8F%8D%E5%B0%84%E9%9D%99%E6%80%81%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</guid>
       <description>反射，静态类型与动态类型 原理 https://segmentfault.com/a/1190000022931452
 静态和动态是对于接口来说的
 每个接口变量，实际上都是由一 pair 对（type 和 data）组合而成，pair 对中记录着实际变量的值和类型
@@ -72,10 +72,10 @@ type User struct { Name string } type UserFun interface { GetName() } func (u Us
     
     <item>
       <title>Golang-从比较到动态类型</title>
-      <link>http://example.org/post/golang-%E4%BB%8E%E6%AF%94%E8%BE%83%E5%88%B0%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</link>
+      <link>https://yuyoung32.github.io/post/golang-%E4%BB%8E%E6%AF%94%E8%BE%83%E5%88%B0%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</link>
       <pubDate>Sun, 23 Jan 2022 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/golang-%E4%BB%8E%E6%AF%94%E8%BE%83%E5%88%B0%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</guid>
+      <guid>https://yuyoung32.github.io/post/golang-%E4%BB%8E%E6%AF%94%E8%BE%83%E5%88%B0%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</guid>
       <description>比较 结构体 结构体的比较，有几个需要注意的地方：
 结构体只能比较是否相等，但是不能比较大小； 想同类型的结构体才能进行比较，结构体是否相同不但与属性类型有关，还与属性顺序相关； 如果struct的所有成员都可以比较，则该struct就可以通过==或!=进行比较是否相同，比较时逐个项进行比较，如果每一项都相等，则两个结构体才相等，否则不相等； 那有什么是可以比较的呢？
 常见的有bool、数值型、字符、指针、数组等，同时注意数组需要大小相同，否则还是不能比较 不能比较的有
@@ -87,10 +87,10 @@ package main import &amp;#34;fmt&amp;#34; type Person struct { first string last
     
     <item>
       <title>从Java到Golang-对interface的理解</title>
-      <link>http://example.org/post/golang-%E5%AF%B9interface%E7%9A%84%E7%90%86%E8%A7%A3/</link>
+      <link>https://yuyoung32.github.io/post/golang-%E5%AF%B9interface%E7%9A%84%E7%90%86%E8%A7%A3/</link>
       <pubDate>Sun, 03 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/golang-%E5%AF%B9interface%E7%9A%84%E7%90%86%E8%A7%A3/</guid>
+      <guid>https://yuyoung32.github.io/post/golang-%E5%AF%B9interface%E7%9A%84%E7%90%86%E8%A7%A3/</guid>
       <description>If it walks like a duck, swims like a duck, and quacks like a duck, then it probably is a duck.
 如果一个东西走路、游泳、叫声都像鸭子，那么它大概就是一只鸭子。
 对interface的理解 interface的实现 ​	在JAVA里，interface定义了一个类的行为标准，里面可以包含不可变换的实体，例如没有函数体的函数或者不可改变的值比如final变量。一旦一个类implement这个interface，那么就要将这个interface的全部方法都实现。这样在工程上的好处是，解决了多继承问题（JAVA不能实现多继承，本质上是因为多个class之间的可变实体如同名变量，同名方法不同方法体会冲突），更高程度上抽象了一个类，只要知道这个类实现了什么接口，就可以调用接口的方法。在这个过程中不需要知道类中的具体实现，把函数注释写在接口的文件即可，保护了类。

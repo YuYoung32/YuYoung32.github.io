@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>网络 on YuYoung&#39;s Blog</title>
-    <link>http://example.org/categories/%E7%BD%91%E7%BB%9C/</link>
+    <link>https://yuyoung32.github.io/categories/%E7%BD%91%E7%BB%9C/</link>
     <description>Recent content in 网络 on YuYoung&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Fri, 29 Jul 2022 12:51:14 +0800</lastBuildDate><atom:link href="http://example.org/categories/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 29 Jul 2022 12:51:14 +0800</lastBuildDate><atom:link href="https://yuyoung32.github.io/categories/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>webRTC学习笔记</title>
-      <link>http://example.org/post/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <link>https://yuyoung32.github.io/post/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Fri, 29 Jul 2022 12:51:14 +0800</pubDate>
       
-      <guid>http://example.org/post/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://yuyoung32.github.io/post/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
       <description>前言 在网络上传输数据，最原始的方式就是C-S通信。CS模式固然可靠，适合绝大部分场景。但是对于音视频尤其是及时音视频来说，CS模式需要服务器做中转延迟过高，而且服务器也没必要知道传输的数据流不需要承载这个负荷。
 所以需要点对点直连，即p2p通信，直接连接收发双方。既然是通信，收发双方就需要知道对方的地址。通常来说二者通过ICE来交换地址。本机对外的IP如何获取？有以下几种方式：
 在局域网里，大家的对外的IP都是本机读到的IP，可以方便的分享出去。 但是大多数设备都是不知道自己在互联网上的地址的，因为有NAT的存在，本机设备的IP地址被映射到公网的IP。设备需要使用STUN获取自己映射后的唯一地址。 尽管可以通过STUN获得公网地址，但是NAT是有4种类型的。特别的，对称NAT每次会根据本机IP、目标IP和目标端口生成一个公网IP和端口，因此外界无法确定本机设备的唯一地址。在这种情况下只能通过中继传输数据即TURN。 实现以上二者知道对方地址的过程叫做ICE。ICE是一种方法而不是协议，ICE通过STUN或TURN收集双方信息，然后进行交换。收集信息的过程可能比较崎岖，但ICE的最终目的就是让二者能够通信。在获取通信方式的以上3种方法里，ICE会根据优先级1&amp;gt;2&amp;gt;3向双方提供信息，其中3就类似于类似于传统CS模式所以优先级最低。
@@ -42,20 +42,20 @@ STUN和TURN 什么是STUN Session Traversal Utilities for NAT，它允许位于N
     
     <item>
       <title>SOCKET编程与复用</title>
-      <link>http://example.org/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</link>
+      <link>https://yuyoung32.github.io/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</link>
       <pubDate>Wed, 20 Jul 2022 10:47:56 +0800</pubDate>
       
-      <guid>http://example.org/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</guid>
+      <guid>https://yuyoung32.github.io/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</guid>
       <description>SOCKET编程 TCP 流程图 关键函数 int fd = socket(AF_INET, SOCK_STREAM, 0); int setsockopt(int sockfd, int level, int optname, const void *optval, socklen_t optlen); setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &amp;amp;flag, sizeof(flag)); bind(fd, local_addr, sizeof(local_addr)); conn_fd = accept(fd, backlog); recv(conn_fd, buff, sizeof(buff), 0); send(conn_fd, buff, sizeof(buff), 0); UDP 流程图 关键函数 int fd = socket(AF_INET, SOCK_DGRAM, 0); bind(fd, local_addr, sizeof(local_addr)); //和recv的区别是后两个参数是出参，能够获得IP地址，供sendto使用 recvfrom(fd, buff, sizeof(buff), 0, client_addr, sizeof(client_addr)); sendto(fd, buff, sizeof(buff), 0, client_addr, sizeof(client_addr)); IO复用 一般来说，一个进程只处理一个连接。但这样显然不合理，所以需要一个进程通过某种方式处理多个连接。就是说一个进程同时管控多个连接socket，同时处理多个连接的业务。Linux系统下可以通过以下几种方式实现。
 fork 关键函数 pid会在子进程中为0，父进程中不为0。</description>
     </item>
     
     <item>
       <title>IP spoofing 在Windows上的实践</title>
-      <link>http://example.org/post/ipspoofingwindows/</link>
+      <link>https://yuyoung32.github.io/post/ipspoofingwindows/</link>
       <pubDate>Sat, 25 Jun 2022 13:31:10 +0800</pubDate>
       
-      <guid>http://example.org/post/ipspoofingwindows/</guid>
+      <guid>https://yuyoung32.github.io/post/ipspoofingwindows/</guid>
       <description>什么是IP spoofing？ 通常情况下，在网络上发包，程序员只需要考虑应用层数据和选择传输层协议，网络层及更底层的数据由操作系统填充。但是在某些情况下（善意的或恶意的），程序员想要手动改变在发送层的srcIP，这种手动改变IP头的srcIP的行为称为IP欺骗（IP spoofing）。
 遇到的问题 现在需要测试某软件网络包解析性能，需要模拟发出具有不同源IP和负载数据的UDP包，不同负载数据很容易做到，但是改变源IP则不简单。为了高性能以及方便的使用，需要这个程序使用C++编写并可以原生跑在Windows系统上。
 对于这种定制化需求，我们很容易想到使用socket编程，也就是使用raw socket。

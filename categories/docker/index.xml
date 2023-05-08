@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>docker on YuYoung&#39;s Blog</title>
-    <link>http://example.org/categories/docker/</link>
+    <link>https://yuyoung32.github.io/categories/docker/</link>
     <description>Recent content in docker on YuYoung&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Thu, 02 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://example.org/categories/docker/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 02 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://yuyoung32.github.io/categories/docker/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Docker学习笔记</title>
-      <link>http://example.org/post/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <link>https://yuyoung32.github.io/post/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Thu, 02 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://yuyoung32.github.io/post/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
       <description>为什么使用Docker 环境方便移植组装，应用可以把包和依赖发布到镜像，这样任何docker即可直接拉下来，构建环境，运行软件。
 原理 三个基本概念 镜像（Image）：Docker 镜像（Image），就相当于是一个 root 文件系统。 容器（Container）：镜像和容器的关系，镜像是静态的定义，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等。 仓库（Repository）：仓库可看成一个代码控制中心，用来保存镜像。 容器隔离原理 Docker 原理
 PID Namespace进行进程可见性限制：创建进程时设置参数CLONE_NEWPID参数，可以让这个进程有自己的命名空间和进程根目录，结合操作系统的rootfs和联合文件系统就基本实现了docker的隔离问题。

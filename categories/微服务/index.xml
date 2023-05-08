@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>微服务 on YuYoung&#39;s Blog</title>
-    <link>http://example.org/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/</link>
+    <link>https://yuyoung32.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/</link>
     <description>Recent content in 微服务 on YuYoung&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Tue, 08 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://example.org/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 08 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://yuyoung32.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>集群管理工具consul学习笔记</title>
-      <link>http://example.org/post/%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0/</link>
+      <link>https://yuyoung32.github.io/post/%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0/</link>
       <pubDate>Tue, 08 Mar 2022 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0/</guid>
+      <guid>https://yuyoung32.github.io/post/%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0/</guid>
       <description>Consul功能与原理 功能原理
 consul是一个集群管理工具，特点：
 服务发现：不需要手动记录各个服务的ip地址，中心能够主动搜寻服务并进行健康检查下线掉不健康的节点 健康检查：每个agent上线和下线时都会向服务目录添加或者删除自己，此外会根据agent规模定时（几分钟）同步服务目录 KV存储 解决了手动配置服务的痛点。
@@ -34,10 +34,10 @@ Gossip的优势与缺点：
     
     <item>
       <title>Go-micro学习笔记</title>
-      <link>http://example.org/post/go-micro%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <link>https://yuyoung32.github.io/post/go-micro%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Mon, 07 Mar 2022 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/go-micro%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://yuyoung32.github.io/post/go-micro%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
       <description>Go-micro 原理 go-micro原理
 broker原理
 Service通过Register注册到服务中心，Client通过Selector模块选择Service并进行负载均衡，从注册中心拿到服务节点然后通过节点信息通过Transport定义的通信协议来进行通信。

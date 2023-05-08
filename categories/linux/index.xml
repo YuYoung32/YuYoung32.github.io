@@ -2,26 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>linux on YuYoung&#39;s Blog</title>
-    <link>http://example.org/categories/linux/</link>
+    <link>https://yuyoung32.github.io/categories/linux/</link>
     <description>Recent content in linux on YuYoung&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Wed, 01 Mar 2023 16:05:28 +0800</lastBuildDate><atom:link href="http://example.org/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 01 Mar 2023 16:05:28 +0800</lastBuildDate><atom:link href="https://yuyoung32.github.io/categories/linux/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>编译安装ZSH和Oh-my-zsh</title>
-      <link>http://example.org/post/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85zsh%E5%92%8Coh-my-zsh/</link>
+      <link>https://yuyoung32.github.io/post/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85zsh%E5%92%8Coh-my-zsh/</link>
       <pubDate>Wed, 01 Mar 2023 16:05:28 +0800</pubDate>
       
-      <guid>http://example.org/post/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85zsh%E5%92%8Coh-my-zsh/</guid>
+      <guid>https://yuyoung32.github.io/post/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85zsh%E5%92%8Coh-my-zsh/</guid>
       <description>配置舒服的Linux终端: zsh编译安装和安装oh-my-zsh 在此针对有些实在不能安装新版ZSH的服务器</description>
     </item>
     
     <item>
       <title>Linux自用脚本</title>
-      <link>http://example.org/post/%E8%87%AA%E7%94%A8shell%E8%84%9A%E6%9C%AC/</link>
+      <link>https://yuyoung32.github.io/post/%E8%87%AA%E7%94%A8shell%E8%84%9A%E6%9C%AC/</link>
       <pubDate>Wed, 01 Mar 2023 15:52:19 +0800</pubDate>
       
-      <guid>http://example.org/post/%E8%87%AA%E7%94%A8shell%E8%84%9A%E6%9C%AC/</guid>
+      <guid>https://yuyoung32.github.io/post/%E8%87%AA%E7%94%A8shell%E8%84%9A%E6%9C%AC/</guid>
       <description>定时任务与发送邮件 功能：输入某个进程名称，当进程结束后向指定邮箱发送邮件。
 使用：./watch-and-mail.sh processname
 需要自定义：
@@ -30,10 +30,10 @@
     
     <item>
       <title>云服务器Linux&#43;Clash科学上网</title>
-      <link>http://example.org/post/linux&#43;clash%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</link>
+      <link>https://yuyoung32.github.io/post/linux&#43;clash%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</link>
       <pubDate>Wed, 01 Mar 2023 14:43:16 +0800</pubDate>
       
-      <guid>http://example.org/post/linux&#43;clash%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</guid>
+      <guid>https://yuyoung32.github.io/post/linux&#43;clash%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</guid>
       <description>1. 下载Clash for Linux到Linux主机上 获取Clash文件
 方法1，下载网址Releases · Dreamacro/clash (github.com)，选择自己的系统的包，然后上传到服务器上。
 方法2，使用wget命令.

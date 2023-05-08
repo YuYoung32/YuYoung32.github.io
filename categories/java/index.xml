@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>java on YuYoung&#39;s Blog</title>
-    <link>http://example.org/categories/java/</link>
+    <link>https://yuyoung32.github.io/categories/java/</link>
     <description>Recent content in java on YuYoung&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sat, 12 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://example.org/categories/java/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 12 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://yuyoung32.github.io/categories/java/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Java各种内部类解析</title>
-      <link>http://example.org/post/java%E5%90%84%E7%A7%8D%E7%B1%BB%E8%A7%A3%E6%9E%90/</link>
+      <link>https://yuyoung32.github.io/post/java%E5%90%84%E7%A7%8D%E7%B1%BB%E8%A7%A3%E6%9E%90/</link>
       <pubDate>Sat, 12 Jun 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/java%E5%90%84%E7%A7%8D%E7%B1%BB%E8%A7%A3%E6%9E%90/</guid>
+      <guid>https://yuyoung32.github.io/post/java%E5%90%84%E7%A7%8D%E7%B1%BB%E8%A7%A3%E6%9E%90/</guid>
       <description>内部类 Java Class是一种行为规范，它不只是可以定义在packge中，还可以定义在方法里，分支结构里&amp;hellip;
 按照定义的位置可以分为：
 成员内部类 packge 局部内部类 方法、分支结构 成员内部类 成员内部类定义在外部大的Class内。成员内部类的特点：

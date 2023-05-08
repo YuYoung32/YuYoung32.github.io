@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>杂想 on YuYoung&#39;s Blog</title>
-    <link>http://example.org/categories/%E6%9D%82%E6%83%B3/</link>
+    <link>https://yuyoung32.github.io/categories/%E6%9D%82%E6%83%B3/</link>
     <description>Recent content in 杂想 on YuYoung&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Wed, 15 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://example.org/categories/%E6%9D%82%E6%83%B3/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 15 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://yuyoung32.github.io/categories/%E6%9D%82%E6%83%B3/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>社保体系解读</title>
-      <link>http://example.org/post/%E7%A4%BE%E4%BF%9D%E4%BD%93%E7%B3%BB%E8%A7%A3%E8%AF%BB/</link>
+      <link>https://yuyoung32.github.io/post/%E7%A4%BE%E4%BF%9D%E4%BD%93%E7%B3%BB%E8%A7%A3%E8%AF%BB/</link>
       <pubDate>Wed, 15 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/%E7%A4%BE%E4%BF%9D%E4%BD%93%E7%B3%BB%E8%A7%A3%E8%AF%BB/</guid>
+      <guid>https://yuyoung32.github.io/post/%E7%A4%BE%E4%BF%9D%E4%BD%93%E7%B3%BB%E8%A7%A3%E8%AF%BB/</guid>
       <description>什么是社保 社保分为城镇职工社会保险（五险一金）和城乡居民保险（城居保、新农合）。
 城镇职工社会保险 又称五险一金
 缴费对象为有雇主的打工一族

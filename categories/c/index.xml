@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>c on YuYoung&#39;s Blog</title>
-    <link>http://example.org/categories/c/</link>
+    <link>https://yuyoung32.github.io/categories/c/</link>
     <description>Recent content in c on YuYoung&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sat, 01 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://example.org/categories/c/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 01 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://yuyoung32.github.io/categories/c/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>C语言写项目的注意事项</title>
-      <link>http://example.org/post/c%E8%AF%AD%E8%A8%80%E5%86%99%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</link>
+      <link>https://yuyoung32.github.io/post/c%E8%AF%AD%E8%A8%80%E5%86%99%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</link>
       <pubDate>Sat, 01 May 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/post/c%E8%AF%AD%E8%A8%80%E5%86%99%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</guid>
+      <guid>https://yuyoung32.github.io/post/c%E8%AF%AD%E8%A8%80%E5%86%99%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</guid>
       <description>项目架构 C语言可以用 .h文件来区分层次，类似于Java的接口与包，可以将不同功能模块、不同层次的代码给分开，然后用 include进行导入。但仍需注意以下几点：
 函数如果没有预定义，无法使用，也就是说如果没有形如 void func();的短的预定义，函数调用仍然区分前后，即前面书写的代码不能调用后面的。 .h文件不能循环调用，即在 a.h里include了 b.h则b.h里不能再includea.h。 C语言是面向过程的语言，有的时候可以声明全局变量而不使用指针，当所有函数需要传入同一个指针的时候即可以设为全局变量，这样会更为优雅。 具体细节 C语言只能返回单个值，要改变数组等只能传入数组指针，通常会同时传入数组大小。
 void Change(int num[], int size){ num[0] = 1; num[1] = 2; num[size] = size; } 注意静态定义的值属于函数的堆空间，函数结束即销毁，不能将指针返回到外部进行使用，需要使用动态分配malloc()。如下例子：

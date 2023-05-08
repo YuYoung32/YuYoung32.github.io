@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>运维 on YuYoung&#39;s Blog</title>
-    <link>http://example.org/categories/%E8%BF%90%E7%BB%B4/</link>
+    <link>https://yuyoung32.github.io/categories/%E8%BF%90%E7%BB%B4/</link>
     <description>Recent content in 运维 on YuYoung&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Tue, 25 Apr 2023 13:27:19 +0800</lastBuildDate><atom:link href="http://example.org/categories/%E8%BF%90%E7%BB%B4/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 25 Apr 2023 13:27:19 +0800</lastBuildDate><atom:link href="https://yuyoung32.github.io/categories/%E8%BF%90%E7%BB%B4/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Nginx简述与业务场景指引</title>
-      <link>http://example.org/post/nginx%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/</link>
+      <link>https://yuyoung32.github.io/post/nginx%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/</link>
       <pubDate>Tue, 25 Apr 2023 13:27:19 +0800</pubDate>
       
-      <guid>http://example.org/post/nginx%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/</guid>
+      <guid>https://yuyoung32.github.io/post/nginx%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/</guid>
       <description>概念与安装 Nginx-安装和配置详解
 #ubuntu apt install nginx 主配置文件：/etc/nginx/nginx.conf 日志默认存放位置：/var/log/nginx/access.log与/var/log/nginx/error.log 配置文件大纲
 #main # 全局配置 events { # nginx工作模式配置 } http { # http设置 .... server { # 服务器主机配置 .... location { # 路由配置 .... } location path { .... } location otherpath { .... } } server { .... location { .... } } upstream name { # 负载均衡配置 .... } } 业务场景 子域名http://admin.domain.name:80导向前端server 以vue-cli构建的dist目录，使用hash history为例
@@ -21,10 +21,10 @@ server { listen 80; server_name admin.domain.name; root /home/www/dist; index in
     
     <item>
       <title>如何把某个应用包装成服务aka后台运行</title>
-      <link>http://example.org/post/%E5%A6%82%E4%BD%95%E6%8A%8A%E6%9F%90%E4%B8%AA%E5%BA%94%E7%94%A8%E5%8C%85%E8%A3%85%E6%88%90%E6%9C%8D%E5%8A%A1aka%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C/</link>
+      <link>https://yuyoung32.github.io/post/%E5%A6%82%E4%BD%95%E6%8A%8A%E6%9F%90%E4%B8%AA%E5%BA%94%E7%94%A8%E5%8C%85%E8%A3%85%E6%88%90%E6%9C%8D%E5%8A%A1aka%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C/</link>
       <pubDate>Sun, 23 Apr 2023 16:06:34 +0800</pubDate>
       
-      <guid>http://example.org/post/%E5%A6%82%E4%BD%95%E6%8A%8A%E6%9F%90%E4%B8%AA%E5%BA%94%E7%94%A8%E5%8C%85%E8%A3%85%E6%88%90%E6%9C%8D%E5%8A%A1aka%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C/</guid>
+      <guid>https://yuyoung32.github.io/post/%E5%A6%82%E4%BD%95%E6%8A%8A%E6%9F%90%E4%B8%AA%E5%BA%94%E7%94%A8%E5%8C%85%E8%A3%85%E6%88%90%E6%9C%8D%E5%8A%A1aka%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C/</guid>
       <description>将某个应用包装成服务（后台运行） 简要说明 在指定目录下创建服务说明文件
 vim /etc/systemd/system/myapp.service 输入相关信息
 [Unit] Description=My Application After=network.target [Service] User=yourusername WorkingDirectory=/opt/myapp ExecStart=/opt/myapp/run.sh Restart=always [Install] WantedBy=multi-user.target 保存配置
@@ -40,10 +40,10 @@ no：服务退出时不会重启。 on-abnormal：仅当服务以非正常方式
     
     <item>
       <title>运维的问题其他汇总</title>
-      <link>http://example.org/post/%E8%BF%90%E7%BB%B4%E7%9A%84%E9%97%AE%E9%A2%98%E5%85%B6%E4%BB%96%E6%B1%87%E6%80%BB/</link>
+      <link>https://yuyoung32.github.io/post/%E8%BF%90%E7%BB%B4%E7%9A%84%E9%97%AE%E9%A2%98%E5%85%B6%E4%BB%96%E6%B1%87%E6%80%BB/</link>
       <pubDate>Sun, 23 Apr 2023 16:03:50 +0800</pubDate>
       
-      <guid>http://example.org/post/%E8%BF%90%E7%BB%B4%E7%9A%84%E9%97%AE%E9%A2%98%E5%85%B6%E4%BB%96%E6%B1%87%E6%80%BB/</guid>
+      <guid>https://yuyoung32.github.io/post/%E8%BF%90%E7%BB%B4%E7%9A%84%E9%97%AE%E9%A2%98%E5%85%B6%E4%BB%96%E6%B1%87%E6%80%BB/</guid>
       <description>网络防火墙 放通20000到30000之间的端口连接 在 Linux 中放通 20000 到 30000 之间的端口连接，可以通过修改防火墙规则实现。
 以下是通过 iptables 命令添加规则的步骤：
 打开终端，并以管理员权限登录系统； 输入以下命令以列出当前的防火墙规则： iptables -L 如果已存在 DROP 或 REJECT 策略，则需要添加允许策略。输入以下命令以添加策略： iptables -P INPUT ACCEPT iptables -P OUTPUT ACCEPT iptables -P FORWARD ACCEPT 输入以下命令以开放端口： iptables -A INPUT -p tcp --dport 20000:30000 -j ACCEPT 这条命令将允许从任何来源 IP 地址访问在 20000 到 30000 范围内的 TCP 端口。如果需要允许 UDP 端口，请将 -p tcp 改为 -p udp。
@@ -53,10 +53,10 @@ no：服务退出时不会重启。 on-abnormal：仅当服务以非正常方式
     
     <item>
       <title>Linux快速配置MySQL&amp;Redis指引</title>
-      <link>http://example.org/post/linux%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AEmysqlredis%E6%8C%87%E5%BC%95/</link>
+      <link>https://yuyoung32.github.io/post/linux%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AEmysqlredis%E6%8C%87%E5%BC%95/</link>
       <pubDate>Sun, 23 Apr 2023 15:56:47 +0800</pubDate>
       
-      <guid>http://example.org/post/linux%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AEmysqlredis%E6%8C%87%E5%BC%95/</guid>
+      <guid>https://yuyoung32.github.io/post/linux%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AEmysqlredis%E6%8C%87%E5%BC%95/</guid>
       <description>安装与配置MySQL 安装 ubuntu
 apt update apt install mysql-server systemctl start mysql systemctl status mysql 修改与设置root密码 mysql -u root -p 进入MySQL命令行后
 ALTER USER &amp;#39;root&amp;#39;@&amp;#39;localhost&amp;#39; IDENTIFIED WITH mysql_native_password BY &amp;#39;yourpassword&amp;#39;; FLUSH PRIVILEGES; exit; 再次使用mysql -u root -p进入验证密码是否已经更改。
