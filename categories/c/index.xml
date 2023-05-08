@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>c on YuYoung&#39;s Blog</title>
+    <link>http://example.org/categories/c/</link>
+    <description>Recent content in c on YuYoung&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sat, 01 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://example.org/categories/c/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>C语言写项目的注意事项</title>
+      <link>http://example.org/post/c%E8%AF%AD%E8%A8%80%E5%86%99%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</link>
+      <pubDate>Sat, 01 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/post/c%E8%AF%AD%E8%A8%80%E5%86%99%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</guid>
+      <description>项目架构 C语言可以用 .h文件来区分层次，类似于Java的接口与包，可以将不同功能模块、不同层次的代码给分开，然后用 include进行导入。但仍需注意以下几点：
+函数如果没有预定义，无法使用，也就是说如果没有形如 void func();的短的预定义，函数调用仍然区分前后，即前面书写的代码不能调用后面的。 .h文件不能循环调用，即在 a.h里include了 b.h则b.h里不能再includea.h。 C语言是面向过程的语言，有的时候可以声明全局变量而不使用指针，当所有函数需要传入同一个指针的时候即可以设为全局变量，这样会更为优雅。 具体细节 C语言只能返回单个值，要改变数组等只能传入数组指针，通常会同时传入数组大小。
+void Change(int num[], int size){ num[0] = 1; num[1] = 2; num[size] = size; } 注意静态定义的值属于函数的堆空间，函数结束即销毁，不能将指针返回到外部进行使用，需要使用动态分配malloc()。如下例子：
+int *Set(){ int num[10]; /* * 尝试返回数组地址。出错 * Address of stack memory associated with local variable &amp;#39;num&amp;#39; returned */ return num;// 尝试返回数组地址，出错 } 多次输入使用scanf()时，由于std缓冲区的存在，时刻要注意上次输入的多余的空格或换行，常用getchar()进行抛弃。这是个大坑。
+使用fscanf(f,&amp;quot;%s&amp;quot;,str);读取读取字符串数据时遇到空格&amp;rsquo; &amp;lsquo;; 制表符&amp;rsquo;\t&amp;rsquo;; 新行符&amp;rsquo;\n&amp;rsquo;会停止读入，算作一个字符串，若要读取完整的一行数据，可以使用格式控制%[^\n]%*c读取一行。
+格式控制说明：%[ ]表示读取指定字符集的文本，例如%[0-9]表示仅读取数字，遇到非数字字符就停止；%[a-zA-Z]表示读取字符，遇到非字母字符就停止）。第一个字符是&amp;rsquo;^&amp;rsquo;，表示反向读取，读取指定字符集以外的文本，遇到指定字符集就停止。*表示忽略读取的字符，就是说读取指定的字符但不保存到变量中。
+注意引用的问题，函数传入指针，一切操作都会对其造成改变，如果不期望改变他只需要读取，可以在传入变量时加入const，这样如果尝试在函数内改变，则IDE会有error。尤其是在处理栈和队列时，想要临时展示其中数据，进行出栈操作进行读取数据，则其他函数再调用时就会为空，这种读取全部操作可以考虑通过栈内数组进行访问，或者复制栈。
+void Read(const Stack stack){ while(stack.pos != 0){ // 此处会清空栈，需要注意 Pop(stack); } } 关于字符文件的读写</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>微服务 on YuYoung&#39;s Blog</title>
+    <link>http://example.org/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/</link>
+    <description>Recent content in 微服务 on YuYoung&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Tue, 08 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://example.org/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>集群管理工具consul学习笔记</title>
+      <link>http://example.org/post/%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0/</link>
+      <pubDate>Tue, 08 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/post/%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0/</guid>
+      <description>Consul功能与原理 功能原理
+consul是一个集群管理工具，特点：
+服务发现：不需要手动记录各个服务的ip地址，中心能够主动搜寻服务并进行健康检查下线掉不健康的节点 健康检查：每个agent上线和下线时都会向服务目录添加或者删除自己，此外会根据agent规模定时（几分钟）同步服务目录 KV存储 解决了手动配置服务的痛点。
+每个consul agent（节点）有3种模式：
+Client模式，所有注册到当前节点的服务会被转发到SERVER，本身是不持久化这些信息 Server模式，功能和Client完全一样，唯一不同的是，它会把所有的信息持久化的本地，这样遇到故障，信息是可以被保留的。一般我们的部署模型是 Server + Client的模式（当然也可以纯Server）, Server 具有Client的全部功能， 但是由于Server负责存储数据，并且强一致性模型的缘故， Server数是有限的（3-5个Server节点，Client可以无限扩展的）。之所以是有限的是在权衡故障场景下可用性和性能之间取得平衡的结果，因为随着机器的增加，共识的速度会逐渐变慢。然而，Client的数量没有限制，它们可以轻松地扩展到数千或数万 Leader（ServerLeader）模式，和其它Server不一样的一点是，它需要负责1.同步注册的信息给其它的Server，2.同时也要负责各个节点的健康监测。Leader是自动选举的，当Leader下线后会自动选举新的Leader 工作流程：每个agent都可以注册一些RPC或者说是服务，从网络传给server类型的agent一些RPC，这些RPC会根据服务列表直接访问服务层或者分发给其他Client，那些client再调用服务层。其中LeaderServer由其他server投票选出，通过轮询记录其他agent的地址与注册在agent的服务，这也即服务列表，当然会同步给其他server。当Leader下线后，会触发重新投票选出LeaderServer。
+端口功能：
+8300：集群内数据的读写和复制 8301：单个数据中心gossip协议通讯 8302：跨数据中心gossip协议通讯 8500：提供获取服务列表、注册服务、注销服务等HTTP接口；提供UI服务 8600：采用DNS协议提供服务发现功能 一致性算法-Gossip协议 算法详解
+朴素原理：Gossip协议是基于六度分隔理论（Six Degrees of Separation）哲学的体现，简单的来说，一个人通过6个中间人可以认识世界任何人。这意味着不需要很多次信息交换，就可以蔓延到整个网络。
+Gossip协议在计算机系统通常以随机的“对等选择”形式实现：以给定的频率，每台计算机随机选择另一台计算机，并共享任何消息。定义十分简单，所以实现方式非常多。
+一种原始的Gossip协议的执行过程：
+种子节点周期性的散播消息 【假定把周期限定为 1 秒】 被感染节点随机选择N个邻接节点散播消息【假定fan-out(扇出)设置为6，每次最多往6个节点散播】 节点只接收消息不反馈结果 每次散播消息都选择尚未发送过的节点进行散播 谣言传播收到消息的节点不回传散播：A -&amp;gt; B，那么B进行散播的时候，不再发给 A 反熵传播则是相互交换全部信息 Gossip 协议的消息传播方式有两种：Anti-Entropy(反熵传播)和Rumor-Mongering(谣言传播)，反熵传播使用“simple epidemics(SI model)”的方式：以固定的概率传播所有的数据。所有参与节点只有两种状态：
+Suspective(病原)：处于 susceptible 状态的节点代表其并没有收到来自其他节点的更新。 Infective(感染)：处于 infective 状态的节点代表其有数据更新，并且会将这个数据分享给其他节点。 ​ 反熵传播过程是每个节点周期性地随机选择其他节点，然后通过互相交换自己的所有数据来消除两者之间的差异。反熵传播方法每次节点两两交换自己的所有数据会带来非常大的通信负担，因此不会频繁使用，通常只用于新加入节点的数据初始化。
+谣言传播使用“complex epidemics”(SIR model)的方式：以固定的概率仅传播新到达的数据。所有参与节点有三种状态：Suspective(病原)、Infective(感染)、Removed(愈除)。
+Removed(愈除):其已经接收到来自其他节点的更新，但是其并不会将这个更新分享给其他节点。 ​ 谣言传播过程是消息只包含最新 update，谣言消息在某个时间点之后会被标记为removed，并且不再被传播。缺点是系统有一定的概率会不一致，通常用于节点间数据增量同步。
+​ 一般来说，为了在通信代价和可靠性之间取得折中，需要将这两种方法结合使用。
+Gossip的优势与缺点：
+可扩展性（Scalable）：允许节点的任意增加和减少，新增节点的状态最终会与其他节点一致 容错（Fault-tolerance）：网络中任何节点的重启或者宕机都不会影响 gossip 协议的运行，具有天然的分布式系统容错特性 健壮性（Robust）：gossip 协议是去中心化的协议，所以集群中的所有节点都是对等的，没有特殊的节点，所以任何节点出现问题都不会阻止其他节点继续发送消息。任何节点都可以随时加入或离开，而不会影响系统的整体服务质量 最终一致性（Convergent consistency）：谣言传播可以是指数级的快速传播，因此新信息传播时，消息可以快速地发送到全局节点，在有限的时间内能够做到所有节点都拥有最新的数据 简单 缺点：</description>
+    </item>
+    
+    <item>
+      <title>Go-micro学习笔记</title>
+      <link>http://example.org/post/go-micro%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Mon, 07 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/post/go-micro%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <description>Go-micro 原理 go-micro原理
+broker原理
+Service通过Register注册到服务中心，Client通过Selector模块选择Service并进行负载均衡，从注册中心拿到服务节点然后通过节点信息通过Transport定义的通信协议来进行通信。
+详细介绍
+整个Go Micro 都是有这8个interface构成的。
+Transport 服务通信接口 Codec 传输编码与解码 Registry 服务注册于发现，如consul Selector 客户端级别的负载均衡，当有客户端向服务发送请求时， selector根据不同的算法从Registery中的主机列表，得到可用的Service节点，进行通信 Broker 消息发布和订阅，可以使服务订阅某个主题，当有信息发布时，所有的监听服务都会收到信息，根据你的需要做相应的行为 Client 是请求服务的接口，他封装Transport和Codec进行rpc调用，也封装了Brocker进行信息的发布 Server 监听等待rpc请求，监听Broker的订阅信息 Service Service是Client和Server的封装，他包含了一系列的方法使用初始值去初始化Service和Client，使我们可以很简单的创建一个rpc服务 操作 使用micro new创建项目
+new命令： --namespace &amp;#34;go.micro&amp;#34; 命名空间（首部）e.g com.example --type &amp;#34;srv&amp;#34; 服务类型 e.g api, fnc, srv, web --fqdn 全限定域名 服务的全名称包括命名空间和别名 e.g com.example.srv.service (defaults to namespace.type.alias) --alias 给项目名称起别名 （末尾） --plugin [--plugin option --plugin option] Specify plugins e.g --plugin=registry=etcd:broker=nats or use flag multiple times 后端服务先在consul上注册，然后前端需要调用时根据后端服务注册时的名字，调用服务。
+前端：
+// main.</description>
+    </item>
+    
+  </channel>
+</rss>

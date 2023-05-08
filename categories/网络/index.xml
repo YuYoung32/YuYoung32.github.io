@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>网络 on YuYoung&#39;s Blog</title>
+    <link>http://example.org/categories/%E7%BD%91%E7%BB%9C/</link>
+    <description>Recent content in 网络 on YuYoung&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Fri, 29 Jul 2022 12:51:14 +0800</lastBuildDate><atom:link href="http://example.org/categories/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>webRTC学习笔记</title>
+      <link>http://example.org/post/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Fri, 29 Jul 2022 12:51:14 +0800</pubDate>
+      
+      <guid>http://example.org/post/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <description>前言 在网络上传输数据，最原始的方式就是C-S通信。CS模式固然可靠，适合绝大部分场景。但是对于音视频尤其是及时音视频来说，CS模式需要服务器做中转延迟过高，而且服务器也没必要知道传输的数据流不需要承载这个负荷。
+所以需要点对点直连，即p2p通信，直接连接收发双方。既然是通信，收发双方就需要知道对方的地址。通常来说二者通过ICE来交换地址。本机对外的IP如何获取？有以下几种方式：
+在局域网里，大家的对外的IP都是本机读到的IP，可以方便的分享出去。 但是大多数设备都是不知道自己在互联网上的地址的，因为有NAT的存在，本机设备的IP地址被映射到公网的IP。设备需要使用STUN获取自己映射后的唯一地址。 尽管可以通过STUN获得公网地址，但是NAT是有4种类型的。特别的，对称NAT每次会根据本机IP、目标IP和目标端口生成一个公网IP和端口，因此外界无法确定本机设备的唯一地址。在这种情况下只能通过中继传输数据即TURN。 实现以上二者知道对方地址的过程叫做ICE。ICE是一种方法而不是协议，ICE通过STUN或TURN收集双方信息，然后进行交换。收集信息的过程可能比较崎岖，但ICE的最终目的就是让二者能够通信。在获取通信方式的以上3种方法里，ICE会根据优先级1&amp;gt;2&amp;gt;3向双方提供信息，其中3就类似于类似于传统CS模式所以优先级最低。
+以上获取对方IP地址进行连接只是第一步，接下来需要传输媒体信息（SDP），传输媒体信息使用SRTP和RTCP，当然传输媒体信息前需要进行SDP协商以确认音视频信息。
+大致流程如下
+详细流程如下
+ICE 交互式连接建立（Interactive Connectivity Establishment）
+ICE做什么 收集Candidate信息 对Candidate Pair排序（用哪种效果最好，本地网用Host，然后外网是反射进行，最后是中继） 联通性检查，发送侦测包 ICE candidate candidate是一个[协议-IP-端口-类型]四元组，例如
+UDP-192.168.1.1-12123-host
+candidate类型有：
+主机Host：本机，收集时本机所有IP和指定端口 反射Reflexive：NAT映射后的，收集时Host向STUN服务器发送消息，然后获得本机的外网地址 中继Relay：NAT穿越不通过时，收集时向TURN服务器发送，获得响应，中继Candidate要中转一次类似于传统的CS模式，速度最慢。 RTP和RTCP RTP 即时传输协议（Real-time Transport Protocol或简写RTP），是一个建立在UDP上的应用层协议。
+其头部如下：
+其中，Timestamp和SSRC字段比较重要，Timestamp标志了这一帧的事件，用于一帧由多个包组成时的同步，SSRC标志了唯一源。
+RTCP 实时传输控制协议（Real-time Transport Control Protocol或RTP Control Protocol或简写RTCP）是实时传输协议（RTP）的一个姐妹协议。RTCP并不传输媒体数据，只是用来传输统计数据。
+SRTP和SRTCP 安全实时传输协议（Secure Real-time Transport Protocol），是建立在DTLS上的RTP。
+DTLS：
+Data Transport Layer Security。UDP的TLS。
+四次握手：hello-&amp;gt;hello resp+认证信息-&amp;gt;解析认证信息+加密套件-&amp;gt;按照加密套件发送信息
+DTLS要解决的问题：
+通过DTLS交换加密算法，交换密钥。
+通过SRTP进行媒体数据交换。
+SRTP：
+SRTP解决的问题：
+保证数据安全 保证数据完整性 SRTP就是把RTP的payload进行加密。
+STUN和TURN 什么是STUN Session Traversal Utilities for NAT，它允许位于NAT（或多重NAT）后的客户端找出自己的公网地址。 这些信息被用来在两个同时处于NAT路由器之后的主机之间建立UDP通信。RTP协议是使用UDP分组在Internet上传输音频和/或视频数据的。 不幸的是，由于通信的两个末端往往位于NAT之后，因此用传统的方法是无法建立连接的。 这也就是STUN发挥作用的地方。STUN是一个建立在UDP上的应用层协议。</description>
+    </item>
+    
+    <item>
+      <title>SOCKET编程与复用</title>
+      <link>http://example.org/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</link>
+      <pubDate>Wed, 20 Jul 2022 10:47:56 +0800</pubDate>
+      
+      <guid>http://example.org/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</guid>
+      <description>SOCKET编程 TCP 流程图 关键函数 int fd = socket(AF_INET, SOCK_STREAM, 0); int setsockopt(int sockfd, int level, int optname, const void *optval, socklen_t optlen); setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &amp;amp;flag, sizeof(flag)); bind(fd, local_addr, sizeof(local_addr)); conn_fd = accept(fd, backlog); recv(conn_fd, buff, sizeof(buff), 0); send(conn_fd, buff, sizeof(buff), 0); UDP 流程图 关键函数 int fd = socket(AF_INET, SOCK_DGRAM, 0); bind(fd, local_addr, sizeof(local_addr)); //和recv的区别是后两个参数是出参，能够获得IP地址，供sendto使用 recvfrom(fd, buff, sizeof(buff), 0, client_addr, sizeof(client_addr)); sendto(fd, buff, sizeof(buff), 0, client_addr, sizeof(client_addr)); IO复用 一般来说，一个进程只处理一个连接。但这样显然不合理，所以需要一个进程通过某种方式处理多个连接。就是说一个进程同时管控多个连接socket，同时处理多个连接的业务。Linux系统下可以通过以下几种方式实现。
+fork 关键函数 pid会在子进程中为0，父进程中不为0。</description>
+    </item>
+    
+    <item>
+      <title>IP spoofing 在Windows上的实践</title>
+      <link>http://example.org/post/ipspoofingwindows/</link>
+      <pubDate>Sat, 25 Jun 2022 13:31:10 +0800</pubDate>
+      
+      <guid>http://example.org/post/ipspoofingwindows/</guid>
+      <description>什么是IP spoofing？ 通常情况下，在网络上发包，程序员只需要考虑应用层数据和选择传输层协议，网络层及更底层的数据由操作系统填充。但是在某些情况下（善意的或恶意的），程序员想要手动改变在发送层的srcIP，这种手动改变IP头的srcIP的行为称为IP欺骗（IP spoofing）。
+遇到的问题 现在需要测试某软件网络包解析性能，需要模拟发出具有不同源IP和负载数据的UDP包，不同负载数据很容易做到，但是改变源IP则不简单。为了高性能以及方便的使用，需要这个程序使用C++编写并可以原生跑在Windows系统上。
+对于这种定制化需求，我们很容易想到使用socket编程，也就是使用raw socket。
+在通常情况下，创建socket和发送数据使用Winsock2.h里的这些函数：
+SOCKET sock = socket(AF_INET, type, protocol); sendto(sock, buff, sizeof(buff),flag, addr, sizeof(addr)); 其中type和protocol为对应关系如下：
+type protocol SOCK_STREAM IPPROTO_TCP SOCK_DGRAM IPPROTO_UDP SOCK_RAW IPPROTO_TCP/IPPROTO_UDP/IPPROTO_RAW 于是想到不指定socket类型和协议，即使用raw socket，这时type为SOCK_RAW对应的protocol为IPPROTO_RAW（当protocol为IPPROTO_RAW时，意味着系统将不自动添加IP头到数据段里），然后自己构造一个IP/UDP包放到buff里，再调用send函数发出。
+实现的关键函数如下：
+//创建raw socket SOCKET sock = WSASocket(AF_INET, SOCK_RAW, IPPROTO_RAW, NULL, 0, WSA_FLAG_OVERLAPPED); //设置IP_HDRINCL，拒绝系统自动添加IP头 setsockopt(sock, IPPROTO_IP, IP_HDRINCL, (char*)&amp;amp; flag, sizeof(flag)); //按照IP UDP填充buff，此处省略 //发送 sendto(sock, sendBuf, sizeof(ipHeader) + sizeof(tcpHeader)); 虽然以上代码可以在非server版的Windows上运行，且不会报任何错误，但是在任务管理器的网络一栏发送速率表现为0，并且Wireshark抓取不到任何包，只有高的CPU占用率。如果发送成功，应该会显示有较大的流量通过。
+原因微软为了安全原因进行了限制，具体见下图官网
+表达的意思就是只有Windows Server可以使用raw发送自定义IP的包，普通版的Windows不能发自定义IP的包。可以看到Windows只有古早版本（Windows XP SP2之前)和server可以自由的使用raw socket。
+那么怎样才能实现我们的需求呢，大概有以下几种方式：
+修改系统内某个文件或注册表，破解掉限制 使用Cwinpcap库，使用winpcap需要从数据链路层开始构造数据包，而raw socket只需从网络层开始 使用Windows server版 使用其他语言和库，其他语言或许也有类似winpcap的库 在Linux上运行，Linux使用UNIX socket，具有完全的socket使用权限 这里先说结论：</description>
+    </item>
+    
+  </channel>
+</rss>

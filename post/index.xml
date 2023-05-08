@@ -1,217 +1,510 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on YuYoung的博客</title>
-    <link>https://yuyoung32.github.io/post/</link>
-    <description>Recent content in Posts on YuYoung的博客</description>
+    <title>Posts on YuYoung&#39;s Blog</title>
+    <link>http://example.org/post/</link>
+    <description>Recent content in Posts on YuYoung&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Wed, 01 Mar 2023 14:43:16 +0800</lastBuildDate><atom:link href="https://yuyoung32.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <language>zh</language>
+    <lastBuildDate>Tue, 25 Apr 2023 13:27:19 +0800</lastBuildDate><atom:link href="http://example.org/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Nginx简述与业务场景指引</title>
+      <link>http://example.org/post/nginx%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/</link>
+      <pubDate>Tue, 25 Apr 2023 13:27:19 +0800</pubDate>
+      
+      <guid>http://example.org/post/nginx%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF/</guid>
+      <description>概念与安装 Nginx-安装和配置详解
+#ubuntu apt install nginx 主配置文件：/etc/nginx/nginx.conf 日志默认存放位置：/var/log/nginx/access.log与/var/log/nginx/error.log 配置文件大纲
+#main # 全局配置 events { # nginx工作模式配置 } http { # http设置 .... server { # 服务器主机配置 .... location { # 路由配置 .... } location path { .... } location otherpath { .... } } server { .... location { .... } } upstream name { # 负载均衡配置 .... } } 业务场景 子域名http://admin.domain.name:80导向前端server 以vue-cli构建的dist目录，使用hash history为例
+server { listen 80; server_name admin.domain.name; root /home/www/dist; index index.</description>
+    </item>
+    
+    <item>
+      <title>如何把某个应用包装成服务aka后台运行</title>
+      <link>http://example.org/post/%E5%A6%82%E4%BD%95%E6%8A%8A%E6%9F%90%E4%B8%AA%E5%BA%94%E7%94%A8%E5%8C%85%E8%A3%85%E6%88%90%E6%9C%8D%E5%8A%A1aka%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C/</link>
+      <pubDate>Sun, 23 Apr 2023 16:06:34 +0800</pubDate>
+      
+      <guid>http://example.org/post/%E5%A6%82%E4%BD%95%E6%8A%8A%E6%9F%90%E4%B8%AA%E5%BA%94%E7%94%A8%E5%8C%85%E8%A3%85%E6%88%90%E6%9C%8D%E5%8A%A1aka%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C/</guid>
+      <description>将某个应用包装成服务（后台运行） 简要说明 在指定目录下创建服务说明文件
+vim /etc/systemd/system/myapp.service 输入相关信息
+[Unit] Description=My Application After=network.target [Service] User=yourusername WorkingDirectory=/opt/myapp ExecStart=/opt/myapp/run.sh Restart=always [Install] WantedBy=multi-user.target 保存配置
+systemctl daemon-reload 启动服务和检查状态
+systemctl start myapp.service &amp;amp;&amp;amp; systemctl status myapp.service 设置开机自启动【可选】
+systemctl enable myapp.service systemctl disable my_service #关闭自启动 如有出错可检查详细日志文件
+tail /var/log/syslog tail /var/log/messages 详细说明 .service文件可选择在以下目录创建 /etc/systemd/system/：这是系统级服务文件存放的目录。在这个目录下创建服务文件需要超级用户权限。 /usr/lib/systemd/system/：这是系统默认服务文件存放的目录。通常在这个目录下安装软件包时会自动创建相应的服务文件。 /run/systemd/system/：这个目录包含了运行时系统所使用的服务文件，通常由 systemd 自动管理。 [service]下的User 可以接受一个用户名或用户ID（UID）或用户组名或用户组ID (GID)作为参数，以标识服务所运行的用户和组。如果未指定，则默认情况下服务将以 root 用户身份运行。
+[service]下的WorkingDirectory，如果没有正确地设置 WorkingDirectory ，那么服务可能无法正常启动或运行，因为服务可能会试图在不正确的目录中寻找需要的文件或资源。在服务文件的配置中， WorkingDirectory 可以使用相对路径或绝对路径指定服务的工作目录。如果该选项未设置，则默认情况下服务将在 / 根目录下运行。
+[service]下的Restart，当 Restart=always 选项设置在服务文件中时，如果系统检测到服务已经停止（无论是由于任何原因），systemd 将自动尝试重新启动该服务。它将一直尝试重新启动服务，直到服务成功启动为止。
+除了 always，Restart 选项还支持其他几个值：
+no：服务退出时不会重启。 on-abnormal：仅当服务以非正常方式退出时才会重启。 on-failure：仅当服务以错误状态（退出代码非零）退出时才会重启。 on-success：仅当服务以成功状态（退出代码为零）退出时才会重启。 on-watchdog：仅当服务未及时响应守护程序时才会重启。这个选项需要服务内部有守护程序的支持。 </description>
+    </item>
+    
+    <item>
+      <title>运维的问题其他汇总</title>
+      <link>http://example.org/post/%E8%BF%90%E7%BB%B4%E7%9A%84%E9%97%AE%E9%A2%98%E5%85%B6%E4%BB%96%E6%B1%87%E6%80%BB/</link>
+      <pubDate>Sun, 23 Apr 2023 16:03:50 +0800</pubDate>
+      
+      <guid>http://example.org/post/%E8%BF%90%E7%BB%B4%E7%9A%84%E9%97%AE%E9%A2%98%E5%85%B6%E4%BB%96%E6%B1%87%E6%80%BB/</guid>
+      <description>网络防火墙 放通20000到30000之间的端口连接 在 Linux 中放通 20000 到 30000 之间的端口连接，可以通过修改防火墙规则实现。
+以下是通过 iptables 命令添加规则的步骤：
+打开终端，并以管理员权限登录系统； 输入以下命令以列出当前的防火墙规则： iptables -L 如果已存在 DROP 或 REJECT 策略，则需要添加允许策略。输入以下命令以添加策略： iptables -P INPUT ACCEPT iptables -P OUTPUT ACCEPT iptables -P FORWARD ACCEPT 输入以下命令以开放端口： iptables -A INPUT -p tcp --dport 20000:30000 -j ACCEPT 这条命令将允许从任何来源 IP 地址访问在 20000 到 30000 范围内的 TCP 端口。如果需要允许 UDP 端口，请将 -p tcp 改为 -p udp。
+最后保存规则，输入以下命令以使之生效： iptables-save &amp;gt; /etc/sysconfig/iptables 以上命令将当前的防火墙规则保存到 /etc/sysconfig/iptables 文件中。这样也可以保证在系统重启后该规则依然有效。
+查看端口占用 lsof -i :28081 性能 查看整体配置 查看CPU信息：cat /proc/cpuinfo 查看内存信息：cat /proc/meminfo 查看硬盘信息：sudo fdisk -l 查看网络设备信息：ifconfig -a 查看系统版本信息：uname -a 查看CPU/内存使用情况 实时</description>
+    </item>
+    
+    <item>
+      <title>Linux快速配置MySQL&amp;Redis指引</title>
+      <link>http://example.org/post/linux%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AEmysqlredis%E6%8C%87%E5%BC%95/</link>
+      <pubDate>Sun, 23 Apr 2023 15:56:47 +0800</pubDate>
+      
+      <guid>http://example.org/post/linux%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AEmysqlredis%E6%8C%87%E5%BC%95/</guid>
+      <description>安装与配置MySQL 安装 ubuntu
+apt update apt install mysql-server systemctl start mysql systemctl status mysql 修改与设置root密码 mysql -u root -p 进入MySQL命令行后
+ALTER USER &amp;#39;root&amp;#39;@&amp;#39;localhost&amp;#39; IDENTIFIED WITH mysql_native_password BY &amp;#39;yourpassword&amp;#39;; FLUSH PRIVILEGES; exit; 再次使用mysql -u root -p进入验证密码是否已经更改。
+设置外网可访问 修改配置文件
+vim /etc/mysql/mysql.conf.d/mysqld.cnf 修改端口【可选】，修改防止简单被猜到。
+port = 23306 修改绑定IP为全部网卡。
+注释掉bind-address
+#bind-address = 127.0.0.1 重启服务
+systemctl restart mysql 查看是否成功
+netstat -an | grep 23306 修改权限
+登陆
+mysql -u root -p mysql&amp;gt; use mysql; 查询
+mysql&amp;gt; select user,host from user; 修改</description>
+    </item>
+    
+    <item>
+      <title>vue&#43;前端速通</title>
+      <link>http://example.org/post/vue_%E5%89%8D%E7%AB%AF%E9%80%9F%E9%80%9A/</link>
+      <pubDate>Sat, 25 Mar 2023 16:03:50 +0800</pubDate>
+      
+      <guid>http://example.org/post/vue_%E5%89%8D%E7%AB%AF%E9%80%9F%E9%80%9A/</guid>
+      <description>前端小知识 CSS Display(显示) 与 Visibility（可见性
+CSS 盒子模型 CSS 盒子模型
+CSS 选择器 p 标签选择
+.p 类选择
+#p id选择
+[tag=value] 属性选择器
+组合选择器被称为 组合器（Combinators）。一共有4种组合器：
+&amp;rsquo; &amp;lsquo; 后代组合器（Descendant combinator）
+&amp;rsquo;&amp;gt;&amp;rsquo; 直接子代组合器（Child combinator）
+&amp;rsquo;~&amp;rsquo; 一般兄弟组合器（General sibling combinator）
+&amp;rsquo;+&amp;rsquo; 紧邻兄弟组合器（Adjacent sibling combinator）
+CSS position CSS Position(定位)
+1、absolute(绝对定位)，其位置相对于最近已定位的父元素，如果元素没有已定位的父元素那么它的位置相对于。因此absolute应该放在某个容器内，并且只有这一个元素。否则会相互重叠。 2、static(默认的静态定位)，即没有定位，遵循正常的文档流对象，静态定位的元素不受top、left、right、bottom影响。 3、relative(相对定位)，其位置相对其正常时的位置。 relative只能根据上一个relative进行位置改变，若上一个是absolute则直接叠加在上一个上面。相对定位元素经常被用来作为绝对定位元素的容器块。 考虑一个父元素static元素作为容器，而其内有一个子元素relative元素改变left等位置，那么这个子元素会根据定位，而不是父元素，链接相对定位内的绝对定位CSS-Tricks - CSS-Tricks。因此absolute元素如果需要改变定位父元素不为static。 4、fixed，元素的位置相对于浏览器窗口，是固定位置。即使窗口是滚动的它也不会移动。 5、sticky(粘性定位)，基于用户滚动位置来定位，在未滚动出目标区域时，它的行为就像position:relative;它的表现就像 position:fixed;，它会固定在目标位置。元素定位表现为在跨越特定阈值前为相对定位，之后为固定定位。这个特定阈值指的是 top, right, bottom 或 left 之一，换言之，指定 top, right, bottom 或 left 四个阈值其中之一，才可使粘性定位生效。否则其行为与相对定位相同。 一些和position配合使用的属性，在position为static时无效。
+属性 说明 值 bottom 定义了定位元素下外边距边界与其包含块下边界之间的偏移，向上推 auto *length % *inherit left 定义了定位元素左外边距边界与其包含块左边界之间的偏移。 auto *length % *inherit right 定义了定位元素右外边距边界与其包含块右边界之间的偏移。 auto *length % *inherit top 定义了一个定位元素的上外边距边界与其包含块上边界之间的偏移。 auto *length % *inherit CSS display 块级元素(block)特性：</description>
+    </item>
+    
+    <item>
+      <title>编译安装ZSH和Oh-my-zsh</title>
+      <link>http://example.org/post/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85zsh%E5%92%8Coh-my-zsh/</link>
+      <pubDate>Wed, 01 Mar 2023 16:05:28 +0800</pubDate>
+      
+      <guid>http://example.org/post/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85zsh%E5%92%8Coh-my-zsh/</guid>
+      <description>配置舒服的Linux终端: zsh编译安装和安装oh-my-zsh 在此针对有些实在不能安装新版ZSH的服务器</description>
+    </item>
+    
+    <item>
+      <title>Linux自用脚本</title>
+      <link>http://example.org/post/%E8%87%AA%E7%94%A8shell%E8%84%9A%E6%9C%AC/</link>
+      <pubDate>Wed, 01 Mar 2023 15:52:19 +0800</pubDate>
+      
+      <guid>http://example.org/post/%E8%87%AA%E7%94%A8shell%E8%84%9A%E6%9C%AC/</guid>
+      <description>定时任务与发送邮件 功能：输入某个进程名称，当进程结束后向指定邮箱发送邮件。
+使用：./watch-and-mail.sh processname
+需要自定义：
+1. `mailx`的配置文件，4行内容1. 最后一行的接受邮件地址，you@example.com#!/bin/bash #需要安装mailx然后配置文件 #vim /etc/mail.rc ## 添加以下 #set from=x@126.com #set smtp=smtp.126.com #set smtp-auth-user=x@126.com #授权码 #set smtp-auth-password=x # 检查参数是否为空 if [ -z &amp;#34;$1&amp;#34; ]; then echo &amp;#34;Usage: $0 &amp;lt;process_name&amp;gt;&amp;#34; exit 1 fi # 获取进程名 process_name=&amp;#34;$1&amp;#34; # 检查进程是否存在 if ! pgrep &amp;#34;$process_name&amp;#34; &amp;gt;/dev/null; then echo &amp;#34;Process &amp;#39;$process_name&amp;#39; not found.&amp;#34; exit 1 else echo &amp;#34;Process &amp;#39;$process_name&amp;#39; found.&amp;#34; echo &amp;#34;pid: $(pgrep -f $process_name)&amp;#34; echo &amp;#34;waiting for process to finish.</description>
+    </item>
+    
     <item>
       <title>云服务器Linux&#43;Clash科学上网</title>
-      <link>https://yuyoung32.github.io/post/linux&#43;clash%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</link>
+      <link>http://example.org/post/linux&#43;clash%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</link>
       <pubDate>Wed, 01 Mar 2023 14:43:16 +0800</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/linux&#43;clash%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</guid>
-      <description></description>
+      <guid>http://example.org/post/linux&#43;clash%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</guid>
+      <description>1. 下载Clash for Linux到Linux主机上 获取Clash文件
+方法1，下载网址Releases · Dreamacro/clash (github.com)，选择自己的系统的包，然后上传到服务器上。
+方法2，使用wget命令.
+wget https://github.com/Dreamacro/clash/releases/download/v1.13.0/clash-linux-amd64-v3-v1.13.0.gz 然后解压得到binaries，重命名一下。
+gzip -d clash-linux-amd64-v3-v1.13.0.gz mv clash-linux-amd64-v1.10.0 clash 添加执行权限。
+chmod +x clash 2. 添加配置文件 创建配置文件目录，Clash会自动读取这个文件里的配置。
+mkdir ~/.config/clash 接下来向~/.config/clash添加config.yaml和Country.mmdb。前者是节点配置文件，后者是GeoLite2 data created by MaxMind。
+添加config.yaml。
+从Clash for Windows里可以找到自己机场的配置文件，右键Show in folder，把这个文件（有可能是.yml后缀，二者格式完全相同）重命名为config.yaml，并上传至~/.config/clash。 添加Country.mmdb。
+首次运行clash，Clash会自行下载，下载速度虽然慢，但是一般不会出错的下载完成。 手动下载Releases · Dreamacro/maxmind-geoip (github.com)，然后上传至~/.config/clash。 3. 运行 在刚才有clash的目录下运行，不出意外的话应该显示：
+clash INFO[0000] Start initial compatible provider xx INFO[0000] Mixed(http+socks) proxy listening at: 127.0.0.1:7890 INFO[0000] RESTful API listening at: [::]:9090 除此之外，还要开启系统代理：
+export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.</description>
     </item>
     
     <item>
       <title>C&#43;&#43;动态内存分配与allocator</title>
-      <link>https://yuyoung32.github.io/post/c&#43;&#43;%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83%E4%B8%8Eallocator/</link>
+      <link>http://example.org/post/c&#43;&#43;%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83%E4%B8%8Eallocator/</link>
       <pubDate>Thu, 24 Nov 2022 16:52:52 +0800</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/c&#43;&#43;%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83%E4%B8%8Eallocator/</guid>
-      <description></description>
+      <guid>http://example.org/post/c&#43;&#43;%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83%E4%B8%8Eallocator/</guid>
+      <description>内存分配call stack 分配内存
+Foo* p = new Foo(x); //等同于 Foo* p = (Foo*)operator new(sizeof(Foo)); //分配空间 此处可重载,使之不调用全局的::operator new new(p) Foo(x); //placement new 创建对象(初始化内存) //等同于 ::operator new(size_t); //等同于 malloc(size_t); 释放内存
+delete p; //等同于 p-&amp;gt;~Foo();//析构函数 operator delete(p); //此处可重载,使之不调用全局的::operator delete //等同于 ::operator delete(void*); //等同于 free(void*); 重载operator new 注意：
+在重载operator new，第一个参数必须是size_t形式
+在重载operator delete时，第一个参数必须是void*形式
+例如：
+class MyClass { public: //operator new(int a)//出错，第一个参数必须是size_t void *operator new(size_t size) { cout &amp;lt;&amp;lt; &amp;#34;MyClass new&amp;#34; &amp;lt;&amp;lt; endl; return malloc(size); } void *operator new(size_t size, void* ptr) { cout &amp;lt;&amp;lt; &amp;#34;MyClass new&amp;#34; &amp;lt;&amp;lt; endl; return malloc(size); } void operator delete(void* p) { cout &amp;lt;&amp;lt; &amp;#34;MyClass delete&amp;#34; &amp;lt;&amp;lt; endl; free(p); } }; 内存池构建思路 GNU C++ pool_allocator 内存分配器 编译器在最终使用malloc时，分配的内存会在最终需求的上下有多余块，一方面是为了内存对齐，另一方面是为了调试时追踪。如下图，只有user use才是用户申请的空间。</description>
     </item>
     
     <item>
       <title>实现std::bind</title>
-      <link>https://yuyoung32.github.io/post/%E5%AE%9E%E7%8E%B0stdbind/</link>
+      <link>http://example.org/post/%E5%AE%9E%E7%8E%B0stdbind/</link>
       <pubDate>Tue, 04 Oct 2022 16:05:49 +0800</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/%E5%AE%9E%E7%8E%B0stdbind/</guid>
-      <description></description>
+      <guid>http://example.org/post/%E5%AE%9E%E7%8E%B0stdbind/</guid>
+      <description>手写std::bind与源码解读</description>
     </item>
     
     <item>
       <title>STL学习笔记</title>
-      <link>https://yuyoung32.github.io/post/stl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <link>http://example.org/post/stl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Wed, 14 Sep 2022 22:55:15 +0800</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/stl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
-      <description></description>
+      <guid>http://example.org/post/stl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <description>前言 STL是GP编程的典范，使用容器涉及六大模块：
+容器 分配器 算法 迭代器 适配器 仿函数 分配器为容器分配内存，迭代器用来访问容器数据，算法通过迭代器操作容器内的数据，算法使用仿函数改变算法过程。适配器是各部分的粘合剂。
+这其中，除了算法是模板函数外，其他都是模板类。
+容器 list实现 Sequence Container
+有头节点的 双向 循环 链表。
+deque实现 Sequence Container
+deque是分段连续的。有很多个小段连续空间（buffer），外部一个数组用来存放buffer指针。通过iterator模拟连续。 外部buffer指针数组会类似vector扩容。这意味着可以不改变元素扩容，不像vector那样真正的连续。
+容器适配器：stack queue stack和queue默认的Seqence是deque，stack和queue可以默认是deque的适配器。 二者还可以选用list作为底层容器。
+array和vector实现 Sequence Container
+vector动态连续数组，空间不足时会两倍扩充。
+array，底层数组直接封装。
+_Rb_tree 容器 Associative Container
+如名，红黑树，节点是双向链表形式的树。模板参数提供至少前四个，分别是Key，Value（Key和Data的结合体），GetKey（仿函数，如何从Value里拿到Key），Compare（仿函数，如何比较Key）
+#include &amp;lt;bits/stl_tree.h&amp;gt; int main() { struct MyS { int a; int b; }; struct GetKey { int operator()(const MyS &amp;amp;s) const { return s.a; } }; //key, key and data = value, how to get key from value, compare, allocator(default) std::_Rb_tree&amp;lt;int, MyS, GetKey, std::less&amp;lt;int&amp;gt;&amp;gt; rbTree; rbTree.</description>
     </item>
     
     <item>
       <title>C&#43;&#43;小知识</title>
-      <link>https://yuyoung32.github.io/post/c&#43;&#43;%E5%B0%8F%E7%9F%A5%E8%AF%86/</link>
+      <link>http://example.org/post/c&#43;&#43;%E5%B0%8F%E7%9F%A5%E8%AF%86/</link>
       <pubDate>Tue, 09 Aug 2022 23:25:36 +0800</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/c&#43;&#43;%E5%B0%8F%E7%9F%A5%E8%AF%86/</guid>
-      <description></description>
+      <guid>http://example.org/post/c&#43;&#43;%E5%B0%8F%E7%9F%A5%E8%AF%86/</guid>
+      <description>左右值和左右值引用 左值： 可以取地址，有名字的，非临时的就是左值。
+右值： 不能取地址，没有名字的，临时的就是右值。
+左值引用： 相当于指针指向某个左值，取了左值的地址。就是说左值引用要求右边的值可以取地址，若不能取地址可以，像这样const int&amp;amp; a = 1;实际是创建临时变量。
+右值引用： 相当于指针指向某个右值，右值没有地址意味着创建了临时变量来存储。类似于左值引用使用const，但是使用了const无法修改，这里可以修改。
+为何会有左右值？引用实际上就是简化了指针，或者说内存标识符。为了精确控制内存生命周期，避免没必要的内存拷贝。
+例如：在深拷贝时，直接将传入的右值内存拿过来，因为右值是临时创建的，不可能再用。可移动对象在需要拷贝且被拷贝者之后不再被需要的场景，可以使用 std::move 将左值转换成右值，提升性能。但如果像将右值转换成左值怎么办？std::forward&amp;lt;T&amp;gt;(rlValue)，会左转右或右转左。
+构造函数初始化列表 在函数下面直接冒号对成员变量赋值。
+为什么要使用这个？
+不是所有成员都可以通过形参赋值的，比如引用类型，const类型。 为了一些性能原因，对于类里面有声明类的话，编译器会先把里面声明的类构建一下，然后再进入构造函数类型，再调用赋值拷贝函数，然后再析构最初初始化的类。使用初始化列表后，就会在外面的类初始化的适合就直接把传入的参数给它了，就不会再初始化了。省去了3步：最初的构建函数，最初的构建好的类的析构函数，赋值拷贝函数。 int cnt = 0; class MyClassB { public: MyClassB(){std::cout &amp;lt;&amp;lt; &amp;#34;constructorB called&amp;#34; &amp;lt;&amp;lt; cnt++ &amp;lt;&amp;lt; std::endl;} ~MyClassB(){std::cout &amp;lt;&amp;lt; &amp;#34;destructorB called&amp;#34; &amp;lt;&amp;lt; cnt++ &amp;lt;&amp;lt; std::endl;} MyClassB &amp;amp;operator=(MyClassB b) { std::cout &amp;lt;&amp;lt; &amp;#34;operator= called&amp;#34; &amp;lt;&amp;lt; cnt++ &amp;lt;&amp;lt; std::endl; return *this; } }; class MyClassA { public: MyClassA(MyClassB b) //或初始化列表 :bina(b) { bina=b; std::cout &amp;lt;&amp;lt; &amp;#34;constructorA called&amp;#34; &amp;lt;&amp;lt; cnt++ &amp;lt;&amp;lt; std::endl; } ~MyClassA(){std::cout &amp;lt;&amp;lt; &amp;#34;destructorA called&amp;#34; &amp;lt;&amp;lt; cnt++ &amp;lt;&amp;lt; std::endl;} MyClassB bina; }; int main() { MyClassB b; MyClassA a(b); } 初始化列表输出：</description>
     </item>
     
     <item>
       <title>webRTC学习笔记</title>
-      <link>https://yuyoung32.github.io/post/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <link>http://example.org/post/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Fri, 29 Jul 2022 12:51:14 +0800</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
-      <description></description>
+      <guid>http://example.org/post/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <description>前言 在网络上传输数据，最原始的方式就是C-S通信。CS模式固然可靠，适合绝大部分场景。但是对于音视频尤其是及时音视频来说，CS模式需要服务器做中转延迟过高，而且服务器也没必要知道传输的数据流不需要承载这个负荷。
+所以需要点对点直连，即p2p通信，直接连接收发双方。既然是通信，收发双方就需要知道对方的地址。通常来说二者通过ICE来交换地址。本机对外的IP如何获取？有以下几种方式：
+在局域网里，大家的对外的IP都是本机读到的IP，可以方便的分享出去。 但是大多数设备都是不知道自己在互联网上的地址的，因为有NAT的存在，本机设备的IP地址被映射到公网的IP。设备需要使用STUN获取自己映射后的唯一地址。 尽管可以通过STUN获得公网地址，但是NAT是有4种类型的。特别的，对称NAT每次会根据本机IP、目标IP和目标端口生成一个公网IP和端口，因此外界无法确定本机设备的唯一地址。在这种情况下只能通过中继传输数据即TURN。 实现以上二者知道对方地址的过程叫做ICE。ICE是一种方法而不是协议，ICE通过STUN或TURN收集双方信息，然后进行交换。收集信息的过程可能比较崎岖，但ICE的最终目的就是让二者能够通信。在获取通信方式的以上3种方法里，ICE会根据优先级1&amp;gt;2&amp;gt;3向双方提供信息，其中3就类似于类似于传统CS模式所以优先级最低。
+以上获取对方IP地址进行连接只是第一步，接下来需要传输媒体信息（SDP），传输媒体信息使用SRTP和RTCP，当然传输媒体信息前需要进行SDP协商以确认音视频信息。
+大致流程如下
+详细流程如下
+ICE 交互式连接建立（Interactive Connectivity Establishment）
+ICE做什么 收集Candidate信息 对Candidate Pair排序（用哪种效果最好，本地网用Host，然后外网是反射进行，最后是中继） 联通性检查，发送侦测包 ICE candidate candidate是一个[协议-IP-端口-类型]四元组，例如
+UDP-192.168.1.1-12123-host
+candidate类型有：
+主机Host：本机，收集时本机所有IP和指定端口 反射Reflexive：NAT映射后的，收集时Host向STUN服务器发送消息，然后获得本机的外网地址 中继Relay：NAT穿越不通过时，收集时向TURN服务器发送，获得响应，中继Candidate要中转一次类似于传统的CS模式，速度最慢。 RTP和RTCP RTP 即时传输协议（Real-time Transport Protocol或简写RTP），是一个建立在UDP上的应用层协议。
+其头部如下：
+其中，Timestamp和SSRC字段比较重要，Timestamp标志了这一帧的事件，用于一帧由多个包组成时的同步，SSRC标志了唯一源。
+RTCP 实时传输控制协议（Real-time Transport Control Protocol或RTP Control Protocol或简写RTCP）是实时传输协议（RTP）的一个姐妹协议。RTCP并不传输媒体数据，只是用来传输统计数据。
+SRTP和SRTCP 安全实时传输协议（Secure Real-time Transport Protocol），是建立在DTLS上的RTP。
+DTLS：
+Data Transport Layer Security。UDP的TLS。
+四次握手：hello-&amp;gt;hello resp+认证信息-&amp;gt;解析认证信息+加密套件-&amp;gt;按照加密套件发送信息
+DTLS要解决的问题：
+通过DTLS交换加密算法，交换密钥。
+通过SRTP进行媒体数据交换。
+SRTP：
+SRTP解决的问题：
+保证数据安全 保证数据完整性 SRTP就是把RTP的payload进行加密。
+STUN和TURN 什么是STUN Session Traversal Utilities for NAT，它允许位于NAT（或多重NAT）后的客户端找出自己的公网地址。 这些信息被用来在两个同时处于NAT路由器之后的主机之间建立UDP通信。RTP协议是使用UDP分组在Internet上传输音频和/或视频数据的。 不幸的是，由于通信的两个末端往往位于NAT之后，因此用传统的方法是无法建立连接的。 这也就是STUN发挥作用的地方。STUN是一个建立在UDP上的应用层协议。</description>
     </item>
     
     <item>
       <title>SOCKET编程与复用</title>
-      <link>https://yuyoung32.github.io/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</link>
+      <link>http://example.org/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</link>
       <pubDate>Wed, 20 Jul 2022 10:47:56 +0800</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</guid>
-      <description></description>
+      <guid>http://example.org/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</guid>
+      <description>SOCKET编程 TCP 流程图 关键函数 int fd = socket(AF_INET, SOCK_STREAM, 0); int setsockopt(int sockfd, int level, int optname, const void *optval, socklen_t optlen); setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &amp;amp;flag, sizeof(flag)); bind(fd, local_addr, sizeof(local_addr)); conn_fd = accept(fd, backlog); recv(conn_fd, buff, sizeof(buff), 0); send(conn_fd, buff, sizeof(buff), 0); UDP 流程图 关键函数 int fd = socket(AF_INET, SOCK_DGRAM, 0); bind(fd, local_addr, sizeof(local_addr)); //和recv的区别是后两个参数是出参，能够获得IP地址，供sendto使用 recvfrom(fd, buff, sizeof(buff), 0, client_addr, sizeof(client_addr)); sendto(fd, buff, sizeof(buff), 0, client_addr, sizeof(client_addr)); IO复用 一般来说，一个进程只处理一个连接。但这样显然不合理，所以需要一个进程通过某种方式处理多个连接。就是说一个进程同时管控多个连接socket，同时处理多个连接的业务。Linux系统下可以通过以下几种方式实现。
+fork 关键函数 pid会在子进程中为0，父进程中不为0。</description>
     </item>
     
     <item>
       <title>IP spoofing 在Windows上的实践</title>
-      <link>https://yuyoung32.github.io/post/ipspoofingwindows/</link>
+      <link>http://example.org/post/ipspoofingwindows/</link>
       <pubDate>Sat, 25 Jun 2022 13:31:10 +0800</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/ipspoofingwindows/</guid>
-      <description></description>
+      <guid>http://example.org/post/ipspoofingwindows/</guid>
+      <description>什么是IP spoofing？ 通常情况下，在网络上发包，程序员只需要考虑应用层数据和选择传输层协议，网络层及更底层的数据由操作系统填充。但是在某些情况下（善意的或恶意的），程序员想要手动改变在发送层的srcIP，这种手动改变IP头的srcIP的行为称为IP欺骗（IP spoofing）。
+遇到的问题 现在需要测试某软件网络包解析性能，需要模拟发出具有不同源IP和负载数据的UDP包，不同负载数据很容易做到，但是改变源IP则不简单。为了高性能以及方便的使用，需要这个程序使用C++编写并可以原生跑在Windows系统上。
+对于这种定制化需求，我们很容易想到使用socket编程，也就是使用raw socket。
+在通常情况下，创建socket和发送数据使用Winsock2.h里的这些函数：
+SOCKET sock = socket(AF_INET, type, protocol); sendto(sock, buff, sizeof(buff),flag, addr, sizeof(addr)); 其中type和protocol为对应关系如下：
+type protocol SOCK_STREAM IPPROTO_TCP SOCK_DGRAM IPPROTO_UDP SOCK_RAW IPPROTO_TCP/IPPROTO_UDP/IPPROTO_RAW 于是想到不指定socket类型和协议，即使用raw socket，这时type为SOCK_RAW对应的protocol为IPPROTO_RAW（当protocol为IPPROTO_RAW时，意味着系统将不自动添加IP头到数据段里），然后自己构造一个IP/UDP包放到buff里，再调用send函数发出。
+实现的关键函数如下：
+//创建raw socket SOCKET sock = WSASocket(AF_INET, SOCK_RAW, IPPROTO_RAW, NULL, 0, WSA_FLAG_OVERLAPPED); //设置IP_HDRINCL，拒绝系统自动添加IP头 setsockopt(sock, IPPROTO_IP, IP_HDRINCL, (char*)&amp;amp; flag, sizeof(flag)); //按照IP UDP填充buff，此处省略 //发送 sendto(sock, sendBuf, sizeof(ipHeader) + sizeof(tcpHeader)); 虽然以上代码可以在非server版的Windows上运行，且不会报任何错误，但是在任务管理器的网络一栏发送速率表现为0，并且Wireshark抓取不到任何包，只有高的CPU占用率。如果发送成功，应该会显示有较大的流量通过。
+原因微软为了安全原因进行了限制，具体见下图官网
+表达的意思就是只有Windows Server可以使用raw发送自定义IP的包，普通版的Windows不能发自定义IP的包。可以看到Windows只有古早版本（Windows XP SP2之前)和server可以自由的使用raw socket。
+那么怎样才能实现我们的需求呢，大概有以下几种方式：
+修改系统内某个文件或注册表，破解掉限制 使用Cwinpcap库，使用winpcap需要从数据链路层开始构造数据包，而raw socket只需从网络层开始 使用Windows server版 使用其他语言和库，其他语言或许也有类似winpcap的库 在Linux上运行，Linux使用UNIX socket，具有完全的socket使用权限 这里先说结论：</description>
     </item>
     
     <item>
       <title>Golang小知识</title>
-      <link>https://yuyoung32.github.io/post/golang%E5%B0%8F%E7%9F%A5%E8%AF%86/</link>
+      <link>http://example.org/post/golang%E5%B0%8F%E7%9F%A5%E8%AF%86/</link>
       <pubDate>Fri, 01 Apr 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/golang%E5%B0%8F%E7%9F%A5%E8%AF%86/</guid>
-      <description></description>
+      <guid>http://example.org/post/golang%E5%B0%8F%E7%9F%A5%E8%AF%86/</guid>
+      <description>内建接口 内建接口，builtin-interface，是go包内的接口，你可以实现它，这样go的官方库比如fmt在调用时就会使用你实现的方法。
+Stringer 类似于Java的toString，打印自身信息，很多包如fmt通过这个打印信息。
+type Stringer interface { String() string } package main import &amp;#34;fmt&amp;#34; type Person struct { Name string Age int } func (p Person) String() string { return fmt.Sprintf(&amp;#34;%v (%v years)&amp;#34;, p.Name, p.Age) } func main() { a := Person{&amp;#34;Arthur Dent&amp;#34;, 42} z := Person{&amp;#34;Zaphod Beeblebrox&amp;#34;, 9001} // 在pirint时会自动调用你自己实现的 fmt.Println(a, z) } error error是一个接口类型，实现error接口的struct可以作为error返回，可以做到错误包含指定的信息。fmt在打印错误时也会调用这个。
+type error interface { Error() string } package main import ( &amp;#34;fmt&amp;#34; ) type MyError struct { name string } // 只有实现了接口，该struct才能作为接口类型返回 func (mr MyError) Error() string { return mr.</description>
     </item>
     
     <item>
       <title>Golang-内置container包</title>
-      <link>https://yuyoung32.github.io/post/golang-%E5%86%85%E7%BD%AEcontainer%E5%8C%85/</link>
+      <link>http://example.org/post/golang-%E5%86%85%E7%BD%AEcontainer%E5%8C%85/</link>
       <pubDate>Fri, 25 Mar 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/golang-%E5%86%85%E7%BD%AEcontainer%E5%8C%85/</guid>
-      <description></description>
+      <guid>http://example.org/post/golang-%E5%86%85%E7%BD%AEcontainer%E5%8C%85/</guid>
+      <description>Go常见数据结构包container Heap container/heap
+首先需要实现这这个接口（包含5个方法），heap实现并维护小顶堆（大根堆）或者说是优先队列。
+type Interface interface { sort.Interface Push(x interface{}) // 向末尾添加元素 Pop() interface{} // 从末尾删除元素 } //sort.Interface type Interface interface { Len() int Less(i, j int) bool Swap(i, j int) } 简单例子
+package main import ( &amp;#34;container/heap&amp;#34; &amp;#34;fmt&amp;#34; ) type myHeap []int func (m myHeap) Len() int { return len(m) } func (m myHeap) Less(i, j int) bool { return m[i] &amp;lt; m[j] } func (m myHeap) Swap(i, j int) { m[i], m[j] = m[j], m[i] } //指针接收！ func (m *myHeap) Push(x interface{}) { //heap包会自动对最后一个进行堆排序 *m = append(*m, x.</description>
     </item>
     
     <item>
       <title>集群管理工具consul学习笔记</title>
-      <link>https://yuyoung32.github.io/post/%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0/</link>
+      <link>http://example.org/post/%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0/</link>
       <pubDate>Tue, 08 Mar 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0/</guid>
-      <description></description>
+      <guid>http://example.org/post/%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7consul%E5%AD%A6%E4%B9%A0/</guid>
+      <description>Consul功能与原理 功能原理
+consul是一个集群管理工具，特点：
+服务发现：不需要手动记录各个服务的ip地址，中心能够主动搜寻服务并进行健康检查下线掉不健康的节点 健康检查：每个agent上线和下线时都会向服务目录添加或者删除自己，此外会根据agent规模定时（几分钟）同步服务目录 KV存储 解决了手动配置服务的痛点。
+每个consul agent（节点）有3种模式：
+Client模式，所有注册到当前节点的服务会被转发到SERVER，本身是不持久化这些信息 Server模式，功能和Client完全一样，唯一不同的是，它会把所有的信息持久化的本地，这样遇到故障，信息是可以被保留的。一般我们的部署模型是 Server + Client的模式（当然也可以纯Server）, Server 具有Client的全部功能， 但是由于Server负责存储数据，并且强一致性模型的缘故， Server数是有限的（3-5个Server节点，Client可以无限扩展的）。之所以是有限的是在权衡故障场景下可用性和性能之间取得平衡的结果，因为随着机器的增加，共识的速度会逐渐变慢。然而，Client的数量没有限制，它们可以轻松地扩展到数千或数万 Leader（ServerLeader）模式，和其它Server不一样的一点是，它需要负责1.同步注册的信息给其它的Server，2.同时也要负责各个节点的健康监测。Leader是自动选举的，当Leader下线后会自动选举新的Leader 工作流程：每个agent都可以注册一些RPC或者说是服务，从网络传给server类型的agent一些RPC，这些RPC会根据服务列表直接访问服务层或者分发给其他Client，那些client再调用服务层。其中LeaderServer由其他server投票选出，通过轮询记录其他agent的地址与注册在agent的服务，这也即服务列表，当然会同步给其他server。当Leader下线后，会触发重新投票选出LeaderServer。
+端口功能：
+8300：集群内数据的读写和复制 8301：单个数据中心gossip协议通讯 8302：跨数据中心gossip协议通讯 8500：提供获取服务列表、注册服务、注销服务等HTTP接口；提供UI服务 8600：采用DNS协议提供服务发现功能 一致性算法-Gossip协议 算法详解
+朴素原理：Gossip协议是基于六度分隔理论（Six Degrees of Separation）哲学的体现，简单的来说，一个人通过6个中间人可以认识世界任何人。这意味着不需要很多次信息交换，就可以蔓延到整个网络。
+Gossip协议在计算机系统通常以随机的“对等选择”形式实现：以给定的频率，每台计算机随机选择另一台计算机，并共享任何消息。定义十分简单，所以实现方式非常多。
+一种原始的Gossip协议的执行过程：
+种子节点周期性的散播消息 【假定把周期限定为 1 秒】 被感染节点随机选择N个邻接节点散播消息【假定fan-out(扇出)设置为6，每次最多往6个节点散播】 节点只接收消息不反馈结果 每次散播消息都选择尚未发送过的节点进行散播 谣言传播收到消息的节点不回传散播：A -&amp;gt; B，那么B进行散播的时候，不再发给 A 反熵传播则是相互交换全部信息 Gossip 协议的消息传播方式有两种：Anti-Entropy(反熵传播)和Rumor-Mongering(谣言传播)，反熵传播使用“simple epidemics(SI model)”的方式：以固定的概率传播所有的数据。所有参与节点只有两种状态：
+Suspective(病原)：处于 susceptible 状态的节点代表其并没有收到来自其他节点的更新。 Infective(感染)：处于 infective 状态的节点代表其有数据更新，并且会将这个数据分享给其他节点。 ​ 反熵传播过程是每个节点周期性地随机选择其他节点，然后通过互相交换自己的所有数据来消除两者之间的差异。反熵传播方法每次节点两两交换自己的所有数据会带来非常大的通信负担，因此不会频繁使用，通常只用于新加入节点的数据初始化。
+谣言传播使用“complex epidemics”(SIR model)的方式：以固定的概率仅传播新到达的数据。所有参与节点有三种状态：Suspective(病原)、Infective(感染)、Removed(愈除)。
+Removed(愈除):其已经接收到来自其他节点的更新，但是其并不会将这个更新分享给其他节点。 ​ 谣言传播过程是消息只包含最新 update，谣言消息在某个时间点之后会被标记为removed，并且不再被传播。缺点是系统有一定的概率会不一致，通常用于节点间数据增量同步。
+​ 一般来说，为了在通信代价和可靠性之间取得折中，需要将这两种方法结合使用。
+Gossip的优势与缺点：
+可扩展性（Scalable）：允许节点的任意增加和减少，新增节点的状态最终会与其他节点一致 容错（Fault-tolerance）：网络中任何节点的重启或者宕机都不会影响 gossip 协议的运行，具有天然的分布式系统容错特性 健壮性（Robust）：gossip 协议是去中心化的协议，所以集群中的所有节点都是对等的，没有特殊的节点，所以任何节点出现问题都不会阻止其他节点继续发送消息。任何节点都可以随时加入或离开，而不会影响系统的整体服务质量 最终一致性（Convergent consistency）：谣言传播可以是指数级的快速传播，因此新信息传播时，消息可以快速地发送到全局节点，在有限的时间内能够做到所有节点都拥有最新的数据 简单 缺点：</description>
     </item>
     
     <item>
       <title>Go-micro学习笔记</title>
-      <link>https://yuyoung32.github.io/post/go-micro%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <link>http://example.org/post/go-micro%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Mon, 07 Mar 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/go-micro%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
-      <description></description>
+      <guid>http://example.org/post/go-micro%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <description>Go-micro 原理 go-micro原理
+broker原理
+Service通过Register注册到服务中心，Client通过Selector模块选择Service并进行负载均衡，从注册中心拿到服务节点然后通过节点信息通过Transport定义的通信协议来进行通信。
+详细介绍
+整个Go Micro 都是有这8个interface构成的。
+Transport 服务通信接口 Codec 传输编码与解码 Registry 服务注册于发现，如consul Selector 客户端级别的负载均衡，当有客户端向服务发送请求时， selector根据不同的算法从Registery中的主机列表，得到可用的Service节点，进行通信 Broker 消息发布和订阅，可以使服务订阅某个主题，当有信息发布时，所有的监听服务都会收到信息，根据你的需要做相应的行为 Client 是请求服务的接口，他封装Transport和Codec进行rpc调用，也封装了Brocker进行信息的发布 Server 监听等待rpc请求，监听Broker的订阅信息 Service Service是Client和Server的封装，他包含了一系列的方法使用初始值去初始化Service和Client，使我们可以很简单的创建一个rpc服务 操作 使用micro new创建项目
+new命令： --namespace &amp;#34;go.micro&amp;#34; 命名空间（首部）e.g com.example --type &amp;#34;srv&amp;#34; 服务类型 e.g api, fnc, srv, web --fqdn 全限定域名 服务的全名称包括命名空间和别名 e.g com.example.srv.service (defaults to namespace.type.alias) --alias 给项目名称起别名 （末尾） --plugin [--plugin option --plugin option] Specify plugins e.g --plugin=registry=etcd:broker=nats or use flag multiple times 后端服务先在consul上注册，然后前端需要调用时根据后端服务注册时的名字，调用服务。
+前端：
+// main.</description>
     </item>
     
     <item>
       <title>关于Gin&#43;Vue的项目协作流程</title>
-      <link>https://yuyoung32.github.io/post/%E5%85%B3%E4%BA%8Egin&#43;vue%E7%9A%84%E9%A1%B9%E7%9B%AE%E5%8D%8F%E4%BD%9C%E6%B5%81%E7%A8%8B/</link>
+      <link>http://example.org/post/%E5%85%B3%E4%BA%8Egin&#43;vue%E7%9A%84%E9%A1%B9%E7%9B%AE%E5%8D%8F%E4%BD%9C%E6%B5%81%E7%A8%8B/</link>
       <pubDate>Tue, 01 Mar 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/%E5%85%B3%E4%BA%8Egin&#43;vue%E7%9A%84%E9%A1%B9%E7%9B%AE%E5%8D%8F%E4%BD%9C%E6%B5%81%E7%A8%8B/</guid>
-      <description></description>
+      <guid>http://example.org/post/%E5%85%B3%E4%BA%8Egin&#43;vue%E7%9A%84%E9%A1%B9%E7%9B%AE%E5%8D%8F%E4%BD%9C%E6%B5%81%E7%A8%8B/</guid>
+      <description>流程图 后端 设计理念 配置与程序分离，单独写在配置文件里方便修改 log记录在文件里持久化 redis记录session更快速 主引擎注册 使用gin.New()创建引擎，或者使用gin.Default()创建引擎并自动使用中间件gin.Logger()和gin.Recovery()两个中间件。
+使用中间件 中间件需要在路由前或者创建路由时使用，这里可以在所有路由前使用中间件即全局中间件。
+gin.GET(&amp;#39;/path&amp;#39;,HandlerFunc,Middleware) 中间件
+以ctx.Next()为分界线，之前的为在请求前执行，之后的为在请求后执行。
+众多中间件形成方法链，使用ctx.Abort()终止方法链并直接退出当前请求。
+使用日志库 快速了解
+logrus是一个常见的日志记录库。使用方法，先注册，再使用。
+注册：
+Log = logrus.New() Log.Out = file	//设置输出文件（需可写权限） Log.SetLevel(logrus.DebugLevel)	//设置指定等级以上才输出 Log.SetFormatter(&amp;amp;logrus.JSONFormatter{}) //设置输出格式 在程序任何部位使用：
+Log.Infof(...) 使用Session Session是一种保存会话的机制，用来记录用户状态信息。根据保存位置的不同可以分为基于Cookie的和基于Redis的。先注册，再使用。在gin中以中间件的形式注册Session：
+//基于cookie的session cstore := cookie.NewStore([]byte(&amp;#34;secret&amp;#34;)) router.Use(sessions.Sessions(&amp;#34;gin_session&amp;#34;, cstore)) //基于redis的session //最大连接数，连接模式，连接Host，密码,加密的盐 rstore, _ := redis.NewStore(10, &amp;#34;tcp&amp;#34;, &amp;#34;host:6379&amp;#34;, &amp;#34;password&amp;#34;, []byte(&amp;#34;secret&amp;#34;)) router.Use(sessions.Sessions(&amp;#34;gin_session&amp;#34;, rstore)) 在handler或middleware里使用：
+session := sessions.Default(ctx) session.Set(&amp;#34;age&amp;#34;, &amp;#34;100&amp;#34;) session.Get(&amp;#34;name&amp;#34;) 使用数据验证器 在结构体里使用tag里的binding进行验证时，可以设置自己需要的验证逻辑。
+if v, ok := binding.Validator.Engine().(*validator.Validate); ok { v.RegisterValidation(&amp;#34;len_valid6&amp;#34;, func(fl validator.FieldLevel) bool { return len(fl.</description>
     </item>
     
     <item>
       <title>Golang-常见中间件</title>
-      <link>https://yuyoung32.github.io/post/golang-%E5%B8%B8%E8%A7%81%E4%B8%AD%E9%97%B4%E4%BB%B6/</link>
+      <link>http://example.org/post/golang-%E5%B8%B8%E8%A7%81%E4%B8%AD%E9%97%B4%E4%BB%B6/</link>
       <pubDate>Tue, 22 Feb 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/golang-%E5%B8%B8%E8%A7%81%E4%B8%AD%E9%97%B4%E4%BB%B6/</guid>
-      <description></description>
+      <guid>http://example.org/post/golang-%E5%B8%B8%E8%A7%81%E4%B8%AD%E9%97%B4%E4%BB%B6/</guid>
+      <description>SemVer https://semver.org/lang/zh-CN/
+semantic versioning 语义化版本信息，根据版号判断信息
+v(major).(minor).(patch)
+v0.1.0, v1.2.3, or v1.5.0-rc.1
+Go Module https://github.com/golang/go/wiki/Modules
+Summarizing the relationship between repositories, modules, and packages:
+A repository contains one or more Go modules. Each module contains one or more Go packages. Each package consists of one or more Go source files in a single directory. go.mod go.mod是在一系列源码的根目录上，定义了一个module.
+A module is defined by a tree of Go source files with a go.mod file in the tree&amp;rsquo;s root directory.</description>
     </item>
     
     <item>
       <title>Golang-反射，静态类型与动态类型</title>
-      <link>https://yuyoung32.github.io/post/golang-%E5%8F%8D%E5%B0%84%E9%9D%99%E6%80%81%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</link>
+      <link>http://example.org/post/golang-%E5%8F%8D%E5%B0%84%E9%9D%99%E6%80%81%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</link>
       <pubDate>Tue, 25 Jan 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/golang-%E5%8F%8D%E5%B0%84%E9%9D%99%E6%80%81%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</guid>
-      <description></description>
+      <guid>http://example.org/post/golang-%E5%8F%8D%E5%B0%84%E9%9D%99%E6%80%81%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</guid>
+      <description>反射，静态类型与动态类型 原理 https://segmentfault.com/a/1190000022931452
+静态和动态是对于接口来说的
+每个接口变量，实际上都是由一 pair 对（type 和 data）组合而成，pair 对中记录着实际变量的值和类型
+根据接口是否包含方法，可以将接口分为 iface 和 eface
+iface结构
+eface结构，itab指针里的静态类型为空
+实践 https://i6448038.github.io/2020/02/15/golang-reflection/
+应用规则
+//接口数据 =====》 反射对象
+Reflection goes from interface value to reflection object. //反射对象 ===&amp;gt; 接口数据
+Reflection goes from reflection object to interface value. // 倘若数据可更改，可通过反射对象来修改它
+To modify a reflection object, the value must be settable. 可通过这两个反射函数看到接口i的类型和值（动态类型，数据指针指向内容）
+reflect.TypeOf(x) reflect.ValueOf(x) 实例1
+//静态类型,i的静态类型是interface{}，此时i没有动态类型 var i interface{} //动态类型，此时i的动态类型是string，因为a实现了空interface i=&amp;#34;OK&amp;#34; 实例2
+type User struct { Name string } type UserFun interface { GetName() } func (u User) GetName() { } func main() { var user UserFun user = User{&amp;#34;Tom&amp;#34;} //不加上这句话打印显示 &amp;lt;nil&amp;gt; &amp;lt;invalid reflect.</description>
     </item>
     
     <item>
       <title>Golang-从比较到动态类型</title>
-      <link>https://yuyoung32.github.io/post/golang-%E4%BB%8E%E6%AF%94%E8%BE%83%E5%88%B0%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</link>
+      <link>http://example.org/post/golang-%E4%BB%8E%E6%AF%94%E8%BE%83%E5%88%B0%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</link>
       <pubDate>Sun, 23 Jan 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/golang-%E4%BB%8E%E6%AF%94%E8%BE%83%E5%88%B0%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</guid>
-      <description></description>
+      <guid>http://example.org/post/golang-%E4%BB%8E%E6%AF%94%E8%BE%83%E5%88%B0%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</guid>
+      <description>比较 结构体 结构体的比较，有几个需要注意的地方：
+结构体只能比较是否相等，但是不能比较大小； 想同类型的结构体才能进行比较，结构体是否相同不但与属性类型有关，还与属性顺序相关； 如果struct的所有成员都可以比较，则该struct就可以通过==或!=进行比较是否相同，比较时逐个项进行比较，如果每一项都相等，则两个结构体才相等，否则不相等； 那有什么是可以比较的呢？
+常见的有bool、数值型、字符、指针、数组等，同时注意数组需要大小相同，否则还是不能比较 不能比较的有
+slice、map、函数 interface 两个interface比较，需要静态类型相同或其中一个是空interface并且动态类型可比较且相同(comparable and equal)才可以。
+对于静态类型来说，需要比较的是他们interface包含的方法，当包含的方法相同时则可以进行下一步的动态类型比较，否则，编译器报错。 注意1，这里不需要他们的名字相同，只需要他们包含的方法相同 注意2，空interface(包括interface{}和没有方法的空interface)是可以进行比较的，编译器不会报错。但此时结果无非就是双方都空true或者任意一方不空false
+对于动态类型来说,需要可比较且相同(comparable and equal)，如果不可比较则会在运行时panic，如果不相同则false。
+package main import &amp;#34;fmt&amp;#34; type Person struct { first string last string age int } type MyEInterface interface { } type MyIInterface1 interface { Func1() } type MyIInterface2 interface { Func1() } type MyIInterface3 interface { Func3() } func (p Person) Func1() { } func (p Person) Func3() { } func main() { var e MyEInterface var i1 MyIInterface1 = Person{&amp;#34;John&amp;#34;, &amp;#34;Doe&amp;#34;, 30} var i2 MyIInterface1 = Person{&amp;#34;John&amp;#34;, &amp;#34;Doe&amp;#34;, 32} var i3 MyIInterface2 = Person{&amp;#34;John&amp;#34;, &amp;#34;Doe&amp;#34;, 32} //var i4 MyIInterface3 = Person{&amp;#34;John&amp;#34;, &amp;#34;Doe&amp;#34;, 30} var x1 interface{} var x2 interface{} = []int{3, 5} var x3 interface{} = []int{3, 5} a := i1 == i2 //静态类型相同(interface包含方法都为空),动态类型不同 false b := x2 == x3 //静态类型相同(interface包含方法都为空),动态类型不能比较 panic c := e == x1 //静态类型相同(interface包含方法都为空),动态类型相同(包含数据都为空) true d := i2 == i3 //静态类型相同(interface包含方法完全一样),动态类型相同 true //f := i2 == i4 //静态类型不同,panic g := x1 == i1 //静态类型不同但是其中一个是空interface所以可以比较,动态类型可以比较 false h := e == i1 //同上 false fmt.</description>
     </item>
     
     <item>
       <title>社保体系解读</title>
-      <link>https://yuyoung32.github.io/post/%E7%A4%BE%E4%BF%9D%E4%BD%93%E7%B3%BB%E8%A7%A3%E8%AF%BB/</link>
+      <link>http://example.org/post/%E7%A4%BE%E4%BF%9D%E4%BD%93%E7%B3%BB%E8%A7%A3%E8%AF%BB/</link>
       <pubDate>Wed, 15 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/%E7%A4%BE%E4%BF%9D%E4%BD%93%E7%B3%BB%E8%A7%A3%E8%AF%BB/</guid>
-      <description></description>
+      <guid>http://example.org/post/%E7%A4%BE%E4%BF%9D%E4%BD%93%E7%B3%BB%E8%A7%A3%E8%AF%BB/</guid>
+      <description>什么是社保 社保分为城镇职工社会保险（五险一金）和城乡居民保险（城居保、新农合）。
+城镇职工社会保险 又称五险一金
+缴费对象为有雇主的打工一族
+费用由国家强制用人单位缴纳，公司交一部分，而个人仅需承担一小部分。
+城镇职工社会保险包括：
+养老保险 医疗保险 失业保险 工伤保险 生育保险 住房公积金 城乡居民保险 又称城居保，新农合
+缴费对象为没工作的人，不强制缴费，无论是农村户口还是城镇户口，老人还是学生均可参保
+所有费用都要自己承担，但交的钱要比职工社保的五险一金少
+城乡居民保险包括：
+养老保险 医疗保险 二者对比 城居保只有医疗和养老两个部分，比职工社保项目上少了4个 城居保医疗报销比例要比职工低很多 城居保养老金一般只能领个几百上千，较少 社保具体缴费标准 社保缴费政策有明显的地域性和时效性，各个地方和各个时间的缴费比例不一样
+以下为杭州市缴费标准
+城镇职工社会保险 按照工资缴费，参考链接，更新时间：2021年10月
+注意：杭州市将生育保险归并到医疗保险，而残保金是针对大公司的，当公司残疾人就业比例达不到时进行缴纳，详情见残保金
+险种 企业缴纳 个人缴纳 残保金 1.50% 0.00% 工伤保险 0.20% 0.00% 失业保险· 0.50% 0.50% 养老保险 14.00% 8.00% 医疗保险 9.90% 2.00% 保险合计比例 26.1% 10.5% 公积金（可选） 12.00% 12.00% 五险一金合计比例 38.10% 22.50% 具体该缴费多少？ 缴费金额是根据工资计算的，例如在杭州工作月薪10000元，则个人需承担五险10000*10.5%=1050元，企业需承担10000*26.1%=2610元。个人需承担一金10000*12%=1200元，企业需承担10000*12%=1200元。
+但是也不是完全根据工资来算的，有最高缴纳基数和最低缴纳基数，五险和一金的基数不同。工资低于最低缴纳基数按照最低算，工资高于缴纳基数按照最高基数算，在之间的按照实际算。具体五险和一金缴费比例可以参考下表
+五险
+最低缴纳基数和最高缴纳基数分别是浙江省非私营和私营单位就业人员加权平均月工资（6594元）的60%和300%。以下是杭州五险的缴费数值，参考链接
+工资（元/月） 缴费数值 个人缴纳五险 小于3957 3957 3957*10.50%=415 3959~19783 工资 工资*10.</description>
     </item>
     
     <item>
       <title>Docker学习笔记</title>
-      <link>https://yuyoung32.github.io/post/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <link>http://example.org/post/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Thu, 02 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
-      <description></description>
+      <guid>http://example.org/post/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <description>为什么使用Docker 环境方便移植组装，应用可以把包和依赖发布到镜像，这样任何docker即可直接拉下来，构建环境，运行软件。
+原理 三个基本概念 镜像（Image）：Docker 镜像（Image），就相当于是一个 root 文件系统。 容器（Container）：镜像和容器的关系，镜像是静态的定义，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等。 仓库（Repository）：仓库可看成一个代码控制中心，用来保存镜像。 容器隔离原理 Docker 原理
+PID Namespace进行进程可见性限制：创建进程时设置参数CLONE_NEWPID参数，可以让这个进程有自己的命名空间和进程根目录，结合操作系统的rootfs和联合文件系统就基本实现了docker的隔离问题。
+rootfs中包含了一个操作系统所需要的文件，配置和目录，但并不包含系统内核。 因为在 Linux 中，文件和内核是分开存放的，操作系统只有在开启启动时才会加载指定的内核。这也就意味着，所有的容器都会共享宿主机上操作系统的内核。
+联合文件系统用于复用docker的镜像层。镜像层由创建容器时构建，镜像层是只读的，只有最上层的容器层才是可写的。具体过程使用了写时拷贝技术 见下一节。
+Linux Control Group进行资源的限制：主要的作用就是限制进程组使用的资源上限，包括 CPU，内存，磁盘。
+Docker Image分层 Docker镜像是由一系列层来构建的，由Dockerfile控制各层，最顶层是可修改的容器层，下面都是镜像层，最下面是。注意：容器层记录对镜像的修改，所有镜像层都是只读的，不会被容器修改，所以镜像可以被多个容器共享。
+Container RW --------- Image Vim R Image Emacs R Image Apache R Baseimage ubuntu R --------- Kernel R 对镜像中数据的访问使用了写时拷贝技术：
+添加文件 在容器中创建文件时，新文件被添加到容器层中。 读取文件 在容器中读取某个文件时，Docker 会从上往下依次在各镜像层中查找此文件。一旦找到，打开并读入内存。 修改文件 在容器中修改已存在的文件时，Docker 会从上往下依次在各镜像层中查找此文件。一旦找到，立即将其复制到容器层，然后修改之。 删除文件 在容器中删除文件时，Docker 也是从上往下依次在镜像层中查找此文件。找到后，会在容器层中记录下此删除操作。 Docker和虚拟机 传统 VM： 需要基于 Hypervisor 的硬件虚拟化技术，模拟出 CPU，内存等硬件。然后在其上搭建一套完整的操作系统，自然在性能上会有很大的损失。迁移自然更不用说，传统的 ova 导出后就是一个完整的操作系统。 Docker：Docker 将 Hypervisor 的位置换成自己的 Docekr Engine。然后运行的容器仅仅是一个特殊的进程，自然性能不会有太大的损失。并且可以应用和其所需要的系统文件打包成镜像，无论在哪读可以正常运行，而且相对于 ova 来说体积也小了更多。（需要内核支持） 命令 镜像相关 镜像搜索与安装 $docker search imagename $docker pull imagename 镜像删除 需要与之关联的容器已删除</description>
     </item>
     
     <item>
-      <title>函数闭包</title>
-      <link>https://yuyoung32.github.io/post/%E5%87%BD%E6%95%B0%E9%97%AD%E5%8C%85/</link>
+      <title>函数闭包-Go&amp;Java</title>
+      <link>http://example.org/post/%E5%87%BD%E6%95%B0%E9%97%AD%E5%8C%85/</link>
       <pubDate>Mon, 04 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/%E5%87%BD%E6%95%B0%E9%97%AD%E5%8C%85/</guid>
-      <description></description>
+      <guid>http://example.org/post/%E5%87%BD%E6%95%B0%E9%97%AD%E5%8C%85/</guid>
+      <description>函数闭包概念 闭包是由函数及其相关的引用环境组合而成的实体(即：闭包=函数+引用环境)。 在本质上，闭包是将函数内部和函数外部连接起来的桥梁，通过它可以修改函数的内部的变量。
+闭包实现 在Go里，使用匿名函数实现。可见内部匿名函数被推出到外部后，就可以改变内部值。
+package main import &amp;#34;fmt&amp;#34; // 实现斐波那契数列 func fibonacci() func() int { a:=0 b:=1 return func() int { temp:=b b=a+b a=temp return a } } func main() { f := fibonacci() for i := 0; i &amp;lt; 10; i++ { fmt.Println(f()) } } // 输出1 1 2 3 5 ... ////非闭包实现 //import &amp;#34;fmt&amp;#34; // //func main() { //	a:=1 //	b:=1 //	for i := 0; i &amp;lt; 10 ;i++{ //	fmt.</description>
     </item>
     
     <item>
-      <title>Golang-对interface的理解</title>
-      <link>https://yuyoung32.github.io/post/golang-%E5%AF%B9interface%E7%9A%84%E7%90%86%E8%A7%A3/</link>
+      <title>从Java到Golang-对interface的理解</title>
+      <link>http://example.org/post/golang-%E5%AF%B9interface%E7%9A%84%E7%90%86%E8%A7%A3/</link>
       <pubDate>Sun, 03 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/golang-%E5%AF%B9interface%E7%9A%84%E7%90%86%E8%A7%A3/</guid>
-      <description></description>
+      <guid>http://example.org/post/golang-%E5%AF%B9interface%E7%9A%84%E7%90%86%E8%A7%A3/</guid>
+      <description>If it walks like a duck, swims like a duck, and quacks like a duck, then it probably is a duck.
+如果一个东西走路、游泳、叫声都像鸭子，那么它大概就是一只鸭子。
+对interface的理解 interface的实现 ​	在JAVA里，interface定义了一个类的行为标准，里面可以包含不可变换的实体，例如没有函数体的函数或者不可改变的值比如final变量。一旦一个类implement这个interface，那么就要将这个interface的全部方法都实现。这样在工程上的好处是，解决了多继承问题（JAVA不能实现多继承，本质上是因为多个class之间的可变实体如同名变量，同名方法不同方法体会冲突），更高程度上抽象了一个类，只要知道这个类实现了什么接口，就可以调用接口的方法。在这个过程中不需要知道类中的具体实现，把函数注释写在接口的文件即可，保护了类。
+​	在golang里，struct（类）定义了一系列的属性，并没有定义方法。如果这个struct想要有方法，就需要以func (cat Cat) func(input Type) output Type{ body }的形式给出，最开头的(cat Cat)即代表是这个CatStruct（类）的方法，它被称为receiver。这时一个struct如果实现了这个接口里定义的所有方法，可以称为实现了这个接口，就如一个东西做了很多鸭子做的事情那么它就是一只鸭子。注意这里面没有显式的说明某某struct实现某interface，只要全实现了，才能说明实现了这个interface。比如：
+package main import ( &amp;#34;fmt&amp;#34; ) type Animal interface { eat() } type Cat struct { name string } // 这里Cat实现了Animal接口的全部方法，即Cat实现了Animal接口 func (cat Cat) eat() { fmt.Println(cat.name + &amp;#34;eat&amp;#34;) } func main() { // 常规调用 var cat Cat cat = Cat{name: &amp;#34;wu&amp;#34;} cat.</description>
     </item>
     
     <item>
       <title>PowerShell学习笔记</title>
-      <link>https://yuyoung32.github.io/post/powersehll%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <link>http://example.org/post/powersehll%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Sat, 17 Jul 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/powersehll%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
-      <description></description>
+      <guid>http://example.org/post/powersehll%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <description>常用cmdlet 常用命令
+常识 很多命令都是和Linux是一样的。ps命令也有自己的别名，标注在命令下方，查看当前所有别名get-alias 文件目录支持通配符*，加上-Include``-Exclude可以用于筛选目录下的项目 -Confirm运行前确认，-WhatIf只显示即将运行的操作但不会真的运行 万物皆是文件，目录操作时，如果不加-Recurse就只是操作了空目录 文件 #添加内容到文件 add-content filename content add-content test.txt &amp;#34;hello&amp;#34; #替换文件内容 set-content filename content set-content test.txt &amp;#34;hi&amp;#34; #查看文件内容 get-content filename get-content test.txt #清空文件内容 clear-content filename clear-content test.txt #拷贝文件 copy-item src des copy-item test.txt test2.txt #移动文件 move-item src des move-item test.txt des #新建文件 new-item filename new-item test.txt #删除文件 remove-item filename remove-item test.txt #重命名 rename-item oldname newname rename-item test.txt test2.txt 位置 #显示当前位置 pwd get-location #切换当前位置 cd set-location 其他常用 #命令行输出重定向 out-file filename 等同于 &amp;gt; #若不指定append则覆写 get-childItem &amp;gt; test.</description>
     </item>
     
     <item>
       <title>Java各种内部类解析</title>
-      <link>https://yuyoung32.github.io/post/java%E5%90%84%E7%A7%8D%E7%B1%BB%E8%A7%A3%E6%9E%90/</link>
+      <link>http://example.org/post/java%E5%90%84%E7%A7%8D%E7%B1%BB%E8%A7%A3%E6%9E%90/</link>
       <pubDate>Sat, 12 Jun 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/java%E5%90%84%E7%A7%8D%E7%B1%BB%E8%A7%A3%E6%9E%90/</guid>
-      <description></description>
+      <guid>http://example.org/post/java%E5%90%84%E7%A7%8D%E7%B1%BB%E8%A7%A3%E6%9E%90/</guid>
+      <description>内部类 Java Class是一种行为规范，它不只是可以定义在packge中，还可以定义在方法里，分支结构里&amp;hellip;
+按照定义的位置可以分为：
+成员内部类 packge 局部内部类 方法、分支结构 成员内部类 成员内部类定义在外部大的Class内。成员内部类的特点：
+既拥有自己独立的变量和方法，又可以获取到外部类的变量和方法，也能获取到外部类的引用 可以让多个内部类以不同的方式实现同一个接口，或者继承不同的类，实现多继承 创建内部类对象并不依赖于外部类对象的创建 其他类都不能访问到内部类，提供了更好的封装 public class TestC { int outA = 1; public static void main(String[] args) { TestC testC = new TestC(); Ex1 ex1 = testC.new Ex1(); Ex2 ex2 = testC.new Ex2(); // 外部类改变内部类的值（继承来的） ex1.num = 1; ex2.num = 2; ex1.sonFunc(); ex2.sonFunc(); ex1.reOuterClass().outA = 2; } class Ex1 extends Son1Class { // 内部类获取到外部类的引用 TestC reOuterClass() { return TestC.this; } // 内部类更改外部类变量 void changeNum() { outA = 2; } } class Ex2 extends Son2Class {} } class Son1Class { int num; void sonFunc() {} } class Son2Class { int num; void sonFunc() {} } 局部内部类 作用域很小，只在定义区域有效，用于实现某些私有的功能</description>
     </item>
     
     <item>
       <title>C语言写项目的注意事项</title>
-      <link>https://yuyoung32.github.io/post/c%E8%AF%AD%E8%A8%80%E5%86%99%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</link>
+      <link>http://example.org/post/c%E8%AF%AD%E8%A8%80%E5%86%99%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</link>
       <pubDate>Sat, 01 May 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/c%E8%AF%AD%E8%A8%80%E5%86%99%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</guid>
-      <description></description>
+      <guid>http://example.org/post/c%E8%AF%AD%E8%A8%80%E5%86%99%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/</guid>
+      <description>项目架构 C语言可以用 .h文件来区分层次，类似于Java的接口与包，可以将不同功能模块、不同层次的代码给分开，然后用 include进行导入。但仍需注意以下几点：
+函数如果没有预定义，无法使用，也就是说如果没有形如 void func();的短的预定义，函数调用仍然区分前后，即前面书写的代码不能调用后面的。 .h文件不能循环调用，即在 a.h里include了 b.h则b.h里不能再includea.h。 C语言是面向过程的语言，有的时候可以声明全局变量而不使用指针，当所有函数需要传入同一个指针的时候即可以设为全局变量，这样会更为优雅。 具体细节 C语言只能返回单个值，要改变数组等只能传入数组指针，通常会同时传入数组大小。
+void Change(int num[], int size){ num[0] = 1; num[1] = 2; num[size] = size; } 注意静态定义的值属于函数的堆空间，函数结束即销毁，不能将指针返回到外部进行使用，需要使用动态分配malloc()。如下例子：
+int *Set(){ int num[10]; /* * 尝试返回数组地址。出错 * Address of stack memory associated with local variable &amp;#39;num&amp;#39; returned */ return num;// 尝试返回数组地址，出错 } 多次输入使用scanf()时，由于std缓冲区的存在，时刻要注意上次输入的多余的空格或换行，常用getchar()进行抛弃。这是个大坑。
+使用fscanf(f,&amp;quot;%s&amp;quot;,str);读取读取字符串数据时遇到空格&amp;rsquo; &amp;lsquo;; 制表符&amp;rsquo;\t&amp;rsquo;; 新行符&amp;rsquo;\n&amp;rsquo;会停止读入，算作一个字符串，若要读取完整的一行数据，可以使用格式控制%[^\n]%*c读取一行。
+格式控制说明：%[ ]表示读取指定字符集的文本，例如%[0-9]表示仅读取数字，遇到非数字字符就停止；%[a-zA-Z]表示读取字符，遇到非字母字符就停止）。第一个字符是&amp;rsquo;^&amp;rsquo;，表示反向读取，读取指定字符集以外的文本，遇到指定字符集就停止。*表示忽略读取的字符，就是说读取指定的字符但不保存到变量中。
+注意引用的问题，函数传入指针，一切操作都会对其造成改变，如果不期望改变他只需要读取，可以在传入变量时加入const，这样如果尝试在函数内改变，则IDE会有error。尤其是在处理栈和队列时，想要临时展示其中数据，进行出栈操作进行读取数据，则其他函数再调用时就会为空，这种读取全部操作可以考虑通过栈内数组进行访问，或者复制栈。
+void Read(const Stack stack){ while(stack.pos != 0){ // 此处会清空栈，需要注意 Pop(stack); } } 关于字符文件的读写</description>
     </item>
     
   </channel>

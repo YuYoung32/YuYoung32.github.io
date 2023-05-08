@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>vue on YuYoung&#39;s Blog</title>
+    <link>http://example.org/categories/vue/</link>
+    <description>Recent content in vue on YuYoung&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sat, 25 Mar 2023 16:03:50 +0800</lastBuildDate><atom:link href="http://example.org/categories/vue/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>vue&#43;前端速通</title>
+      <link>http://example.org/post/vue_%E5%89%8D%E7%AB%AF%E9%80%9F%E9%80%9A/</link>
+      <pubDate>Sat, 25 Mar 2023 16:03:50 +0800</pubDate>
+      
+      <guid>http://example.org/post/vue_%E5%89%8D%E7%AB%AF%E9%80%9F%E9%80%9A/</guid>
+      <description>前端小知识 CSS Display(显示) 与 Visibility（可见性
+CSS 盒子模型 CSS 盒子模型
+CSS 选择器 p 标签选择
+.p 类选择
+#p id选择
+[tag=value] 属性选择器
+组合选择器被称为 组合器（Combinators）。一共有4种组合器：
+&amp;rsquo; &amp;lsquo; 后代组合器（Descendant combinator）
+&amp;rsquo;&amp;gt;&amp;rsquo; 直接子代组合器（Child combinator）
+&amp;rsquo;~&amp;rsquo; 一般兄弟组合器（General sibling combinator）
+&amp;rsquo;+&amp;rsquo; 紧邻兄弟组合器（Adjacent sibling combinator）
+CSS position CSS Position(定位)
+1、absolute(绝对定位)，其位置相对于最近已定位的父元素，如果元素没有已定位的父元素那么它的位置相对于。因此absolute应该放在某个容器内，并且只有这一个元素。否则会相互重叠。 2、static(默认的静态定位)，即没有定位，遵循正常的文档流对象，静态定位的元素不受top、left、right、bottom影响。 3、relative(相对定位)，其位置相对其正常时的位置。 relative只能根据上一个relative进行位置改变，若上一个是absolute则直接叠加在上一个上面。相对定位元素经常被用来作为绝对定位元素的容器块。 考虑一个父元素static元素作为容器，而其内有一个子元素relative元素改变left等位置，那么这个子元素会根据定位，而不是父元素，链接相对定位内的绝对定位CSS-Tricks - CSS-Tricks。因此absolute元素如果需要改变定位父元素不为static。 4、fixed，元素的位置相对于浏览器窗口，是固定位置。即使窗口是滚动的它也不会移动。 5、sticky(粘性定位)，基于用户滚动位置来定位，在未滚动出目标区域时，它的行为就像position:relative;它的表现就像 position:fixed;，它会固定在目标位置。元素定位表现为在跨越特定阈值前为相对定位，之后为固定定位。这个特定阈值指的是 top, right, bottom 或 left 之一，换言之，指定 top, right, bottom 或 left 四个阈值其中之一，才可使粘性定位生效。否则其行为与相对定位相同。 一些和position配合使用的属性，在position为static时无效。
+属性 说明 值 bottom 定义了定位元素下外边距边界与其包含块下边界之间的偏移，向上推 auto *length % *inherit left 定义了定位元素左外边距边界与其包含块左边界之间的偏移。 auto *length % *inherit right 定义了定位元素右外边距边界与其包含块右边界之间的偏移。 auto *length % *inherit top 定义了一个定位元素的上外边距边界与其包含块上边界之间的偏移。 auto *length % *inherit CSS display 块级元素(block)特性：</description>
+    </item>
+    
+  </channel>
+</rss>

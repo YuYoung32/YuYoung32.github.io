@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>linux on YuYoung&#39;s Blog</title>
+    <link>http://example.org/categories/linux/</link>
+    <description>Recent content in linux on YuYoung&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 01 Mar 2023 16:05:28 +0800</lastBuildDate><atom:link href="http://example.org/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>编译安装ZSH和Oh-my-zsh</title>
+      <link>http://example.org/post/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85zsh%E5%92%8Coh-my-zsh/</link>
+      <pubDate>Wed, 01 Mar 2023 16:05:28 +0800</pubDate>
+      
+      <guid>http://example.org/post/%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85zsh%E5%92%8Coh-my-zsh/</guid>
+      <description>配置舒服的Linux终端: zsh编译安装和安装oh-my-zsh 在此针对有些实在不能安装新版ZSH的服务器</description>
+    </item>
+    
+    <item>
+      <title>Linux自用脚本</title>
+      <link>http://example.org/post/%E8%87%AA%E7%94%A8shell%E8%84%9A%E6%9C%AC/</link>
+      <pubDate>Wed, 01 Mar 2023 15:52:19 +0800</pubDate>
+      
+      <guid>http://example.org/post/%E8%87%AA%E7%94%A8shell%E8%84%9A%E6%9C%AC/</guid>
+      <description>定时任务与发送邮件 功能：输入某个进程名称，当进程结束后向指定邮箱发送邮件。
+使用：./watch-and-mail.sh processname
+需要自定义：
+1. `mailx`的配置文件，4行内容1. 最后一行的接受邮件地址，you@example.com#!/bin/bash #需要安装mailx然后配置文件 #vim /etc/mail.rc ## 添加以下 #set from=x@126.com #set smtp=smtp.126.com #set smtp-auth-user=x@126.com #授权码 #set smtp-auth-password=x # 检查参数是否为空 if [ -z &amp;#34;$1&amp;#34; ]; then echo &amp;#34;Usage: $0 &amp;lt;process_name&amp;gt;&amp;#34; exit 1 fi # 获取进程名 process_name=&amp;#34;$1&amp;#34; # 检查进程是否存在 if ! pgrep &amp;#34;$process_name&amp;#34; &amp;gt;/dev/null; then echo &amp;#34;Process &amp;#39;$process_name&amp;#39; not found.&amp;#34; exit 1 else echo &amp;#34;Process &amp;#39;$process_name&amp;#39; found.&amp;#34; echo &amp;#34;pid: $(pgrep -f $process_name)&amp;#34; echo &amp;#34;waiting for process to finish.</description>
+    </item>
+    
+    <item>
+      <title>云服务器Linux&#43;Clash科学上网</title>
+      <link>http://example.org/post/linux&#43;clash%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</link>
+      <pubDate>Wed, 01 Mar 2023 14:43:16 +0800</pubDate>
+      
+      <guid>http://example.org/post/linux&#43;clash%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</guid>
+      <description>1. 下载Clash for Linux到Linux主机上 获取Clash文件
+方法1，下载网址Releases · Dreamacro/clash (github.com)，选择自己的系统的包，然后上传到服务器上。
+方法2，使用wget命令.
+wget https://github.com/Dreamacro/clash/releases/download/v1.13.0/clash-linux-amd64-v3-v1.13.0.gz 然后解压得到binaries，重命名一下。
+gzip -d clash-linux-amd64-v3-v1.13.0.gz mv clash-linux-amd64-v1.10.0 clash 添加执行权限。
+chmod +x clash 2. 添加配置文件 创建配置文件目录，Clash会自动读取这个文件里的配置。
+mkdir ~/.config/clash 接下来向~/.config/clash添加config.yaml和Country.mmdb。前者是节点配置文件，后者是GeoLite2 data created by MaxMind。
+添加config.yaml。
+从Clash for Windows里可以找到自己机场的配置文件，右键Show in folder，把这个文件（有可能是.yml后缀，二者格式完全相同）重命名为config.yaml，并上传至~/.config/clash。 添加Country.mmdb。
+首次运行clash，Clash会自行下载，下载速度虽然慢，但是一般不会出错的下载完成。 手动下载Releases · Dreamacro/maxmind-geoip (github.com)，然后上传至~/.config/clash。 3. 运行 在刚才有clash的目录下运行，不出意外的话应该显示：
+clash INFO[0000] Start initial compatible provider xx INFO[0000] Mixed(http+socks) proxy listening at: 127.0.0.1:7890 INFO[0000] RESTful API listening at: [::]:9090 除此之外，还要开启系统代理：
+export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.</description>
+    </item>
+    
+  </channel>
+</rss>

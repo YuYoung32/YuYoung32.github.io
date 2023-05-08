@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>java on YuYoung&#39;s Blog</title>
+    <link>http://example.org/categories/java/</link>
+    <description>Recent content in java on YuYoung&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sat, 12 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://example.org/categories/java/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Java各种内部类解析</title>
+      <link>http://example.org/post/java%E5%90%84%E7%A7%8D%E7%B1%BB%E8%A7%A3%E6%9E%90/</link>
+      <pubDate>Sat, 12 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/post/java%E5%90%84%E7%A7%8D%E7%B1%BB%E8%A7%A3%E6%9E%90/</guid>
+      <description>内部类 Java Class是一种行为规范，它不只是可以定义在packge中，还可以定义在方法里，分支结构里&amp;hellip;
+按照定义的位置可以分为：
+成员内部类 packge 局部内部类 方法、分支结构 成员内部类 成员内部类定义在外部大的Class内。成员内部类的特点：
+既拥有自己独立的变量和方法，又可以获取到外部类的变量和方法，也能获取到外部类的引用 可以让多个内部类以不同的方式实现同一个接口，或者继承不同的类，实现多继承 创建内部类对象并不依赖于外部类对象的创建 其他类都不能访问到内部类，提供了更好的封装 public class TestC { int outA = 1; public static void main(String[] args) { TestC testC = new TestC(); Ex1 ex1 = testC.new Ex1(); Ex2 ex2 = testC.new Ex2(); // 外部类改变内部类的值（继承来的） ex1.num = 1; ex2.num = 2; ex1.sonFunc(); ex2.sonFunc(); ex1.reOuterClass().outA = 2; } class Ex1 extends Son1Class { // 内部类获取到外部类的引用 TestC reOuterClass() { return TestC.this; } // 内部类更改外部类变量 void changeNum() { outA = 2; } } class Ex2 extends Son2Class {} } class Son1Class { int num; void sonFunc() {} } class Son2Class { int num; void sonFunc() {} } 局部内部类 作用域很小，只在定义区域有效，用于实现某些私有的功能</description>
+    </item>
+    
+  </channel>
+</rss>

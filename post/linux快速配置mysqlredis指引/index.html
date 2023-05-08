@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Hugo 0.111.3">
+  <title> Linux快速配置MySQL&amp;Redis指引 | YuYoung&#39;s Blog </title>
+  <meta name="description" content="YuYoung的博客">
+  <link rel="stylesheet" href="http://example.org/css/simpleness.css">
+  <link rel="canonical" href="http://example.org/post/linux%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AEmysqlredis%E6%8C%87%E5%BC%95/">
+  <link rel="alternate" type="application/rss+xml" href="" title="YuYoung&#39;s Blog">
+  
+  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+  
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6QCN1ZG6DB"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-6QCN1ZG6DB', { 'anonymize_ip': false });
+}
+</script>
+
+  
+</head>
+<body class="container">
+  <nav class="navigation">
+  <div class="nav-left">
+    
+    <div class="nav-item nav-title">
+      <a href="http://example.org/"> YuYoung&#39;s Blog</a>
+    </div>
+    <div class="nav-item nav-menu">
+      
+      <a href="/"> Home</a>
+      
+      <a href="/about/"> About</a>
+      
+    </div>
+  </div>
+  <div class="nav-item nav-right fontawesome">
+    
+    
+    <a href="https://github.com/YuYoung32" target="_blank">
+      <i title="GitHub" class="fab fa-github"></i>
+    </a>
+    
+    
+    <a href="http://example.org/index.xml" target="_blank">
+      <i title="RSS" class="fas fa-rss"></i>
+    </a>
+    
+  </div>
+</nav>
+
+  
+<article class="post">
+  <header class="post-header">
+    <h1 style="text-align: center;" >Linux快速配置MySQL&amp;Redis指引</h1>
+    <div class="post-metadata">
+    
+      <time datetime="2023-04-23T15:56:47&#43;08:00">April 23, 2023</time> &nbsp; 
+    
+    
+    
+    
+    
+    
+      <i class="fas fa-folder"></i>
+      
+      <a href="/categories/%E8%BF%90%E7%BB%B4">运维</a>
+      &nbsp;
+      
+    
+    </div>
+  </header>
+
+  
+  <div class="post-toc">
+    <div class="post-toc-title">-目录-</div>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#安装与配置mysql">安装与配置MySQL</a>
+      <ul>
+        <li><a href="#安装">安装</a></li>
+        <li><a href="#修改与设置root密码">修改与设置root密码</a></li>
+        <li><a href="#设置外网可访问">设置外网可访问</a></li>
+      </ul>
+    </li>
+    <li><a href="#安装和配置redis">安装和配置Redis</a>
+      <ul>
+        <li><a href="#安装-1">安装</a></li>
+        <li><a href="#修改与设置密码">修改与设置密码</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+  
+
+  <div class="post-text">
+    <h2 id="安装与配置mysql">安装与配置MySQL</h2>
+<h3 id="安装">安装</h3>
+<p>ubuntu</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>apt update
+</span></span><span style="display:flex;"><span>apt install mysql-server
+</span></span><span style="display:flex;"><span>systemctl start mysql
+</span></span><span style="display:flex;"><span>systemctl status mysql
+</span></span></code></pre></div><h3 id="修改与设置root密码">修改与设置root密码</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mysql -u root -p
+</span></span></code></pre></div><p>进入MySQL命令行后</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ALTER USER <span style="color:#e6db74">&#39;root&#39;</span>@<span style="color:#e6db74">&#39;localhost&#39;</span> IDENTIFIED WITH mysql_native_password BY <span style="color:#e6db74">&#39;yourpassword&#39;</span>;
+</span></span><span style="display:flex;"><span>FLUSH PRIVILEGES;
+</span></span><span style="display:flex;"><span>exit;
+</span></span></code></pre></div><p>再次使用<code>mysql -u root -p</code>进入验证密码是否已经更改。</p>
+<h3 id="设置外网可访问">设置外网可访问</h3>
+<p><strong>修改配置文件</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vim /etc/mysql/mysql.conf.d/mysqld.cnf
+</span></span></code></pre></div><p>修改端口【可选】，修改防止简单被猜到。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>port            = 23306
+</span></span></code></pre></div><p>修改绑定IP为全部网卡。</p>
+<p>注释掉<code>bind-address</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>#bind-address           = 127.0.0.1
+</span></span></code></pre></div><p>重启服务</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>systemctl restart mysql
+</span></span></code></pre></div><p>查看是否成功</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>netstat -an | grep <span style="color:#ae81ff">23306</span>
+</span></span></code></pre></div><p><strong>修改权限</strong></p>
+<p>登陆</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-mysql" data-lang="mysql"><span style="display:flex;"><span>mysql <span style="color:#f92672">-</span>u root <span style="color:#f92672">-</span>p
+</span></span><span style="display:flex;"><span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">use</span> mysql;
+</span></span></code></pre></div><p>查询</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-mysql" data-lang="mysql"><span style="display:flex;"><span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#66d9ef">user</span>,host <span style="color:#66d9ef">from</span> <span style="color:#66d9ef">user</span>;
+</span></span></code></pre></div><p>修改</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-mysql" data-lang="mysql"><span style="display:flex;"><span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">update</span> <span style="color:#66d9ef">user</span> <span style="color:#66d9ef">set</span> host<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;%&#39;</span> <span style="color:#66d9ef">where</span> <span style="color:#66d9ef">user</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;root&#39;</span>;
+</span></span><span style="display:flex;"><span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">flush</span> <span style="color:#66d9ef">privileges</span>;
+</span></span></code></pre></div><h2 id="安装和配置redis">安装和配置Redis</h2>
+<h3 id="安装-1">安装</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>apt install redis-server
+</span></span></code></pre></div><p>检测是否运行</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>systemctl status redis
+</span></span><span style="display:flex;"><span>redis-cli -v <span style="color:#75715e"># 输出版本号</span>
+</span></span></code></pre></div><h3 id="修改与设置密码">修改与设置密码</h3>
+<ol>
+<li>
+<p>打开 Redis 配置文件：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>vim /etc/redis/redis.conf
+</span></span></code></pre></div></li>
+<li>
+<p>设置为服务器的 IP 地址或设置为 <code>0.0.0.0</code>，以允许任何来源的连接。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>bind 127.0.0.1
+</span></span></code></pre></div></li>
+<li>
+<p>检查 <code>protected-mode</code> 设置。将 <code>protected-mode</code> 设置为 <code>no</code>，以允许 Redis 接受所有连接。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>protected-mode no
+</span></span></code></pre></div></li>
+<li>
+<p>检查 <code>port</code> 设置。可以更改端口号。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>port 6379
+</span></span></code></pre></div></li>
+<li>
+<p>持久性存储。将 Redis 配置为启用持久性存储，则需要设置 <code>save</code> 设置。以下设置表示如果有一个键被修改，则将写入磁盘，等待 900 秒后再次检查该条件。如果条件再次成立，则再次写入磁盘，等待 300 秒后再次检查该条件。这样的设置保证了即使服务器意外关闭，也不会丢失超过 5 分钟的数据。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>save 900 1
+</span></span><span style="display:flex;"><span>save 300 10
+</span></span><span style="display:flex;"><span>save 60 10000
+</span></span></code></pre></div></li>
+<li>
+<p>设置最大存储和驱逐策略</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>maxmemory-policy allkeys-lru
+</span></span><span style="display:flex;"><span>maxmemory 1gb
+</span></span></code></pre></div><p>其中驱逐策略为</p>
+<ul>
+<li><code>noeviction</code>: 不删除任何缓存，当内存不足时，Redis 可能会报错或者发生崩溃。</li>
+<li><code>allkeys-lru</code>: Redis 会检查所有的 key，并将最近最少使用的 key 删除。</li>
+<li><code>volatile-lru</code>: Redis 只检查设置了过期时间的 key，并将最近最少使用的 key 删除。</li>
+<li><code>allkeys-random</code>: Redis 随机选择 key 并删除。</li>
+<li><code>volatile-random</code>: Redis 随机选择设置了过期时间的 key 并删除。</li>
+<li><code>volatile-ttl</code>: Redis 会检查设置了过期时间的 key，并根据 TTL（time-to-live）值从小到大进行排序，然后将 TTL 较小的 key 删除，以便为新的 key 腾出空间。</li>
+<li><code>volatile-lfu</code>: Redis 对设置了过期时间的 key 按照 LFU（Least Frequently Used，最少使用次数）算法进行淘汰。</li>
+</ul>
+</li>
+<li>
+<p>开启密码，设置 <code>requirepass</code> 。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>requirepass yourpasswordhere
+</span></span></code></pre></div></li>
+<li>
+<p>保存并关闭配置文件。</p>
+</li>
+<li>
+<p>重启 Redis 服务：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>systemctl restart redis.service
+</span></span></code></pre></div></li>
+</ol>
+<p>redis-cli测试</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>redis-cli -h &lt;hostname&gt; -p &lt;port&gt; -a &lt;password&gt;
+</span></span><span style="display:flex;"><span>set mykey myvalue
+</span></span></code></pre></div>
+  </div>
+
+  <footer class="post-footer">
+    
+
+    
+
+    
+    
+  </footer>
+  
+  <div class="comments">
+  <div class="comments">
+
+
+
+</div>
+  </div>
+</article>
+
+  <div class="foot">
+  
+  &copy; 2019 - 2023 &#183;
+  <a href="/"> YuYoung&#39;s Blog </a> &nbsp;&nbsp;
+  <a href="#"><i class="fas fa-chevron-up"></i></a>
+</div>
+</body>
+  <script src="/js/lazyload.min.js"></script>
+<script>
+  var lazyImage = new LazyLoad({container: document.getElementById('article')});
+</script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous"></script>
+<script>
+    (function() {
+        var $toc = $('#TableOfContents');
+        if ($toc.length > 0) {
+            var $window = $(window);
+
+            function onScroll(){
+                var currentScroll = $window.scrollTop();
+                var h = $('.post-text h1, .post-text h2, .post-text h3, .post-text h4, .post-text h5, .post-text h6');
+                var id = "";
+                h.each(function (i, e) {
+                    e = $(e);
+                    if (e.offset().top - 10 <= currentScroll) {
+                        id = e.attr('id');
+                    }
+                });
+                var active = $toc.find('a.active');
+                if (active.length == 1 && active.eq(0).attr('href') == '#' + id) return true;
+
+                active.each(function (i, e) {
+                    $(e).removeClass('active').siblings('ul').hide();
+                });
+                $toc.find('a[href="#' + id + '"]').parentsUntil('#TableOfContents').each(function (i, e) {
+                    $(e).children('a').addClass('active').siblings('ul').show();
+                });
+            }
+
+            $window.on('scroll', onScroll);
+            $(document).ready(function() {
+                $toc.find('a').parent('li').find('ul').hide();
+                onScroll();
+                document.getElementsByClassName('post-toc')[0].style.display = '';
+            });
+        }
+    })();
+</script>
+
+
+</html>

@@ -1,108 +1,19 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="zh">
   <head>
-    
-    <script type="application/ld+json">
-
-{  
-  "@context":"http://schema.org",
-  "@type":"Website",
-  "@id":"https:\/\/yuyoung32.github.io",
-  "author": {
-    "@type": "Person",
-    "name": "YuYoung",
-    
-    "image": "https://s1.ax1x.com/2022/04/09/LPwdFs.jpg"
-    
-  },
-  "name":"YuYoung的博客",
-  "description":"",
-  "url":"https:\/\/yuyoung32.github.io\/post\/ipspoofingwindows\/",
-  "keywords":"[]"
-}
-
-</script>
-    <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.96.0 with theme Tranquilpeak 0.5.3-BETA">
-<meta name="author" content="YuYoung">
-<meta name="keywords" content="">
-<meta name="description" content="">
-
-
-<meta property="og:description" content="">
-<meta property="og:type" content="article">
-<meta property="og:title" content="IP spoofing 在Windows上的实践">
-<meta name="twitter:title" content="IP spoofing 在Windows上的实践">
-<meta property="og:url" content="https://yuyoung32.github.io/post/ipspoofingwindows/">
-<meta property="twitter:url" content="https://yuyoung32.github.io/post/ipspoofingwindows/">
-<meta property="og:site_name" content="YuYoung的博客">
-<meta property="og:description" content="">
-<meta name="twitter:description" content="">
-<meta property="og:locale" content="zh-cn">
-
-  
-    <meta property="article:published_time" content="2022-06-25T13:31:10">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Hugo 0.111.3">
+  <title> IP spoofing 在Windows上的实践 | YuYoung&#39;s Blog </title>
+  <meta name="description" content="YuYoung的博客">
+  <link rel="stylesheet" href="http://example.org/css/simpleness.css">
+  <link rel="canonical" href="http://example.org/post/ipspoofingwindows/">
+  <link rel="alternate" type="application/rss+xml" href="" title="YuYoung&#39;s Blog">
   
   
-    <meta property="article:modified_time" content="2022-06-25T13:31:10">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
   
   
-  
-    
-      <meta property="article:section" content="网络编程">
-    
-  
-  
-    
-      <meta property="article:tag" content="C&#43;&#43;">
-    
-      <meta property="article:tag" content="Windows">
-    
-  
-
-
-<meta name="twitter:card" content="summary">
-
-
-
-
-
-
-
-  <meta property="og:image" content="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg">
-  <meta property="twitter:image" content="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg">
-
-
-
-
-
-  <meta property="og:image" content="https://s1.ax1x.com/2022/07/25/jvB6K0.png">
-  <meta property="twitter:image" content="https://s1.ax1x.com/2022/07/25/jvB6K0.png">
-
-
-    <title>IP spoofing 在Windows上的实践</title>
-
-    <link rel="icon" href="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg">
-    
-
-    
-
-    <link rel="canonical" href="https://yuyoung32.github.io/post/ipspoofingwindows/">
-
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
-    
-    
-    <link rel="stylesheet" href="https://yuyoung32.github.io/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
-    
-    
-
-    
-      
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-6QCN1ZG6DB"></script>
 <script>
 var doNotTrack = false;
@@ -114,166 +25,64 @@ if (!doNotTrack) {
 }
 </script>
 
+  
+</head>
+<body class="container">
+  <nav class="navigation">
+  <div class="nav-left">
     
-    
-  </head>
-
-  <body>
-    <div id="blog">
-      <header id="header" data-behavior="5">
-  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
-  <div class="header-title">
-    <a class="header-title-link" href="https://yuyoung32.github.io/" aria-label="去首页">YuYoung的博客</a>
+    <div class="nav-item nav-title">
+      <a href="http://example.org/"> YuYoung&#39;s Blog</a>
+    </div>
+    <div class="nav-item nav-menu">
+      
+      <a href="/"> Home</a>
+      
+      <a href="/about/"> About</a>
+      
+    </div>
   </div>
-  
-    
-      <a class="header-right-picture "
-         href="https://yuyoung32.github.io/#about" aria-label="打开链接: /#about">
+  <div class="nav-item nav-right fontawesome">
     
     
-    
-      
-        <img class="header-picture" src="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg" alt="作者的图片" />
-      
-    
+    <a href="https://github.com/YuYoung32" target="_blank">
+      <i title="GitHub" class="fab fa-github"></i>
     </a>
-  
-</header>
-
-      <nav id="sidebar" data-behavior="5">
-  <div class="sidebar-container">
     
-      <div class="sidebar-profile">
-        <a href="https://yuyoung32.github.io/#about" aria-label="阅读有关作者的更多信息">
-          <img class="sidebar-profile-picture" src="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg" alt="作者的图片" />
-        </a>
-        <h4 class="sidebar-profile-name">YuYoung</h4>
-        
-          <h5 class="sidebar-profile-bio">每天多进步一点</h5>
-        
-      </div>
     
-    <ul class="sidebar-buttons">
-      
-  <li class="sidebar-button">
-    
-      <a class="sidebar-button-link " href="https://yuyoung32.github.io/" title="Home">
-    
-      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
-      
-      <span class="sidebar-button-desc">首页</span>
+    <a href="http://example.org/index.xml" target="_blank">
+      <i title="RSS" class="fas fa-rss"></i>
     </a>
-  </li>
-
-  <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://yuyoung32.github.io/tags" title="Tags">
-    
-      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
-      
-      <span class="sidebar-button-desc">标签</span>
-    </a>
-  </li>
-
-  <li class="sidebar-button">
-    
-      <a class="sidebar-button-link " href="https://yuyoung32.github.io/archives" title="Archives">
-    
-      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
-      
-      <span class="sidebar-button-desc">归档</span>
-    </a>
-  </li>
-
-  <li class="sidebar-button">
-    
-      <a class="sidebar-button-link " href="https://yuyoung32.github.io/#about" title="About">
-    
-      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
-      
-      <span class="sidebar-button-desc">关于</span>
-    </a>
-  </li>
-
-
-    </ul>
-    <ul class="sidebar-buttons">
-      
-  <li class="sidebar-button">
-    
-      <a class="sidebar-button-link " href="https://github.com/yuyoung32" target="_blank" rel="noopener" title="GitHub">
-    
-      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
-      
-      <span class="sidebar-button-desc">GitHub</span>
-    </a>
-  </li>
-
-
-    </ul>
-    <ul class="sidebar-buttons">
-      
-  <li class="sidebar-button">
-    
-      <a class="sidebar-button-link " href="https://yuyoung32.github.io/index.xml" title="RSS">
-    
-      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
-      
-      <span class="sidebar-button-desc">RSS</span>
-    </a>
-  </li>
-
-
-    </ul>
   </div>
 </nav>
 
+  
+<article class="post">
+  <header class="post-header">
+    <h1 style="text-align: center;" >IP spoofing 在Windows上的实践</h1>
+    <div class="post-metadata">
+    
+      <time datetime="2022-06-25T13:31:10&#43;08:00">June 25, 2022</time> &nbsp; 
+    
+    
+    
+    
+    
+    
+      <i class="fas fa-folder"></i>
       
+      <a href="/categories/%E7%BD%91%E7%BB%9C">网络</a>
+      &nbsp;
+      
+    
+    </div>
+  </header>
 
-      <div id="main" data-behavior="5"
-        class="
-               hasCoverMetaIn
-               ">
-        <article class="post" id="top">
-          
-          
-            <div class="post-header main-content-wrap text-left">
   
-    <h1 class="post-title">
-      IP spoofing 在Windows上的实践
-    </h1>
-  
-  
-  <div class="postShorten-meta post-meta">
-    
-      <time datetime="2022-06-25T13:31:10&#43;08:00">
-        
-  
-  
-  
-  
-    2022年6月25日
-  
-
-      </time>
-    
-    
-  
-  
-    <span>发布在</span>
-    
-      <a class="category-link" href="https://yuyoung32.github.io/categories/%e7%bd%91%e7%bb%9c%e7%bc%96%e7%a8%8b">网络编程</a>
-    
-  
-
-  </div>
-
-</div>
-          
-          <div class="post-content markdown">
-            <div class="main-content-wrap">
-              <h1 id="table-of-contents">目录</h1>
-<nav id="TableOfContents">
+  <div class="post-toc">
+    <div class="post-toc-title">-目录-</div>
+    <nav id="TableOfContents">
   <ul>
     <li><a href="#什么是ip-spoofing">什么是IP spoofing？</a></li>
     <li><a href="#遇到的问题">遇到的问题</a></li>
@@ -293,10 +102,13 @@ if (!doNotTrack) {
     </li>
   </ul>
 </nav>
+  </div>
+  
 
-<h2 id="什么是ip-spoofing">什么是IP spoofing？</h2>
+  <div class="post-text">
+    <h2 id="什么是ip-spoofing">什么是IP spoofing？</h2>
 <p>通常情况下，在网络上发包，程序员只需要考虑应用层数据和选择传输层协议，网络层及更底层的数据由操作系统填充。但是在某些情况下（善意的或恶意的），程序员想要手动改变在发送层的srcIP，这种手动改变IP头的srcIP的行为称为IP欺骗（IP spoofing）。</p>
-<p><img src="https://yuyoung32.github.io/IPSpoofingWindows.assets/transmit_data.jpeg" alt="transmit_data.JPG"></p>
+<p><img src="/IPSpoofingWindows.assets/transmit_data.jpeg" alt="transmit_data.JPG"></p>
 <h2 id="遇到的问题">遇到的问题</h2>
 <p>现在需要测试某软件网络包解析性能，需要模拟发出具有不同源IP和负载数据的UDP包，不同负载数据很容易做到，但是改变源IP则不简单。为了高性能以及方便的使用，需要这个程序使用C++编写并可以原生跑在Windows系统上。</p>
 <p>对于这种定制化需求，我们很容易想到使用socket编程，也就是使用raw socket。</p>
@@ -337,7 +149,7 @@ if (!doNotTrack) {
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>sendto(sock, sendBuf, <span style="color:#66d9ef">sizeof</span>(ipHeader) <span style="color:#f92672">+</span> <span style="color:#66d9ef">sizeof</span>(tcpHeader));
 </span></span></code></pre></div><p>虽然以上代码可以在非server版的Windows上运行，且不会报任何错误，但是在任务管理器的网络一栏发送速率表现为0，并且Wireshark抓取不到任何包，只有高的CPU占用率。如果发送成功，应该会显示有较大的流量通过。</p>
 <p>原因微软为了安全原因进行了限制，具体见下图<a href="https://docs.microsoft.com/zh-cn/windows/win32/winsock/tcp-ip-raw-sockets-2">官网</a></p>
-<p><img src="https://yuyoung32.github.io/IPSpoofingWindows.assets/image2022-6-28_16-34-24.png" alt="原始套接字限制"></p>
+<p><img src="/IPSpoofingWindows.assets/image2022-6-28_16-34-24.png" alt="原始套接字限制"></p>
 <p>表达的意思就是只有Windows Server可以使用raw发送自定义IP的包，<strong>普通版的Windows不能发自定义IP的包</strong>。可以看到Windows只有古早版本（Windows XP SP2之前)和server可以自由的使用raw socket。</p>
 <p>那么怎样才能实现我们的需求呢，大概有以下几种方式：</p>
 <ol>
@@ -387,7 +199,7 @@ if (!doNotTrack) {
 <h2 id="实现方法">实现方法</h2>
 <h3 id="在windows-server-2016上运行">在Windows Server 2016上运行</h3>
 <p>这里使用虚拟机，把本机Windows 10之前可以跑但是抓不到包的程序<strong>直接拷贝</strong>到装了Windows Server 2016虚拟机上，运行后可以抓到包。</p>
-<p><img src="https://yuyoung32.github.io/IPSpoofingWindows.assets/Winserver%E6%B5%8B%E8%AF%95.png" alt="Winserver测试"></p>
+<p><img src="/IPSpoofingWindows.assets/Winserver%E6%B5%8B%E8%AF%95.png" alt="Winserver测试"></p>
 <blockquote>
 <p>小插曲</p>
 <p>相同程序运行在没有装Visual Studio 2019版本及以上时Windows Server系统会报错：找不到vcruntime140.dll，这时需要把编译程序的机器上的“C:\Windows\System32”和“C:\Windows\SysWOW64“里的vcruntime140.dll复制到运行机器对应的目录里，然后在命令行里运行 regsvr32 vcruntime140.dll 即可解决。</p>
@@ -397,9 +209,9 @@ if (!doNotTrack) {
 <h3 id="在windows10上运行">在Windows10上运行</h3>
 <p>在Windows上通过<code>pcap.h</code>实现。</p>
 <p>什么是WinPcap？</p>
-<p><img src="https://yuyoung32.github.io/IPSpoofingWindows.assets/image2022-6-29_9-30-41.png" alt="Winpacp"></p>
+<p><img src="/IPSpoofingWindows.assets/image2022-6-29_9-30-41.png" alt="Winpacp"></p>
 <p>具体操作流程就是下载winpcap库的dll和头文件，然后在项目里包含这两个文件，winpcap<a href="https://www.winpcap.org/">官网</a>有完整的<a href="https://www.winpcap.org/docs/docs_412/html/main.html">文档</a>可以参考，此处不再赘述。通过构造以太网帧头、IP头、UDP头最后通过win pcap发送包，最后在本机Windows10系统上跑，结果如下：</p>
-<p><img src="https://yuyoung32.github.io/IPSpoofingWindows.assets/image2022-6-30_9-53-55.png" alt="Win10测试"></p>
+<p><img src="/IPSpoofingWindows.assets/image2022-6-30_9-53-55.png" alt="Win10测试"></p>
 <blockquote>
 <p>小知识</p>
 <p>大名鼎鼎的Wireshark也使用的是Winpcap库，在安装Wireshark时通常会一并安装Winpcap。</p>
@@ -408,7 +220,7 @@ if (!doNotTrack) {
 <h3 id="为什么通过winpcap可以在win10上自由的使用socket和系统的winsockh有何区别">为什么通过winpcap可以在Win10上自由的使用Socket？和系统的Winsock.h有何区别？</h3>
 <p>根据官网文档<a href="https://www.winpcap.org/docs/docs_412/html/group__internals.html">WinPcap: WinPcap internals</a></p>
 <p>可以知道：实际上winpcap库实现了一个网卡驱动程序，相当于绕过了系统本身的驱动，直接去操控网卡的收发。</p>
-<p><img src="https://yuyoung32.github.io/IPSpoofingWindows.assets/internals-arch.gif" alt="img"></p>
+<p><img src="/IPSpoofingWindows.assets/internals-arch.gif" alt="img"></p>
 <h3 id="可以通过winpcap发送组播包其他包吗">可以通过winpcap发送组播包/其他包吗？</h3>
 <p>在<a href="https://www.winpcap.org/docs/docs_412/html/main.html">文档</a>中有这样一段话：</p>
 <blockquote>
@@ -419,227 +231,78 @@ if (!doNotTrack) {
 <h3 id="在win10上通过winpcap发包的性能如何">在Win10上通过winpcap发包的性能如何？</h3>
 <p>在本机Windows10、i5-8500、16GB RAM、1Gbps网卡上使用winpcap的<code>pcap_sendpacket</code>函数<strong>连续发送</strong>大小为700Bytes的UDP包，网卡发送速率为140-150Mbps。测试程序CPU占用10-20。同时运行7个测试程序可以跑满网卡传输速率（1Gbps)。</p>
 <p>性能瓶颈在于CPU和网卡性能以及程序的发包数量。CPU和网卡性能越高，单位时间内发包数量越少，最大发送速率越大。总的来说就是减小写入网卡时的中断时间。优化方法是可以换更高性能的电脑，或者可以使用winpcap的发送队列函数<code>pcap_sendqueue_transmit</code>，一次性写入很多包然后合并发送。因为<code>pcap_sendpacket</code>使用简单且性能已经满足需求，发送队列功能未测试。</p>
-              
 
-
-            </div>
-          </div>
-          <div id="post-footer" class="post-footer main-content-wrap">
-            
-            
-<div class="post-actions-wrap">
-  <nav >
-    <ul class="post-actions post-action-nav">
-      
-        <li class="post-action">
-          
-            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/" data-tooltip="SOCKET编程与复用" aria-label="下一篇: SOCKET编程与复用">
-          
-              <i class="fa fa-angle-left"></i>
-              <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
-            </a>
-        </li>
-        <li class="post-action">
-          
-            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/golang%E5%B0%8F%E7%9F%A5%E8%AF%86/" data-tooltip="Golang小知识" aria-label="上一篇: Golang小知识">
-          
-              <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
-              <i class="fa fa-angle-right"></i>
-            </a>
-        </li>
-      
-    </ul>
-  </nav>
-<ul class="post-actions post-action-share" >
-  
-    <li class="post-action hide-lg hide-md hide-sm">
-      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="分享这个帖子">
-        <i class="fa fa-share-alt" aria-hidden="true"></i>
-      </a>
-    </li>
-    
-  
-  
-  <li class="post-action">
-    
-      <a class="post-action-btn btn btn--default" href="#top" aria-label="回到顶部">
-      <i class="fa fa-arrow-up" aria-hidden="true"></i>
-    
-    </a>
-  </li>
-</ul>
-</div>
-
-
-            
-  
-
-
-          </div>
-        </article>
-        <footer id="footer" class="main-content-wrap">
-  <span class="copyrights">
-    &copy; 2023 YuYoung. All Rights Reserved
-  </span>
-</footer>
-
-      </div>
-      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
-        
-<div class="post-actions-wrap">
-  <nav >
-    <ul class="post-actions post-action-nav">
-      
-        <li class="post-action">
-          
-            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/" data-tooltip="SOCKET编程与复用" aria-label="下一篇: SOCKET编程与复用">
-          
-              <i class="fa fa-angle-left"></i>
-              <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
-            </a>
-        </li>
-        <li class="post-action">
-          
-            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/golang%E5%B0%8F%E7%9F%A5%E8%AF%86/" data-tooltip="Golang小知识" aria-label="上一篇: Golang小知识">
-          
-              <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
-              <i class="fa fa-angle-right"></i>
-            </a>
-        </li>
-      
-    </ul>
-  </nav>
-<ul class="post-actions post-action-share" >
-  
-    <li class="post-action hide-lg hide-md hide-sm">
-      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="分享这个帖子">
-        <i class="fa fa-share-alt" aria-hidden="true"></i>
-      </a>
-    </li>
-    
-  
-  
-  <li class="post-action">
-    
-      <a class="post-action-btn btn btn--default" href="#top" aria-label="回到顶部">
-      <i class="fa fa-arrow-up" aria-hidden="true"></i>
-    
-    </a>
-  </li>
-</ul>
-</div>
-
-
-      </div>
-      
-
-    </div>
-    
-    <div id="about">
-  <div id="about-card">
-    <div id="about-btn-close">
-      <i class="fa fa-times"></i>
-    </div>
-    
-      <img id="about-card-picture" src="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg" alt="作者的图片" />
-    
-    <h4 id="about-card-name">YuYoung</h4>
-    
-      <div id="about-card-bio">每天多进步一点</div>
-    
-    
-      <div id="about-card-job">
-        <i class="fa fa-briefcase"></i>
-        <br/>
-        学生
-      </div>
-    
-    
-      <div id="about-card-location">
-        <i class="fa fa-map-marker-alt"></i>
-        <br/>
-        杭州
-      </div>
-    
   </div>
+
+  <footer class="post-footer">
+    
+
+    
+
+    
+    
+  </footer>
+  
+  <div class="comments">
+  <div class="comments">
+
+
+
 </div>
+  </div>
+</article>
 
-    
-
-    
+  <div class="foot">
   
-    <div id="cover" style="background-image:url('https://s1.ax1x.com/2022/04/09/LPwmee.jpg');"></div>
-  
-
-
-    
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-
-<script src="https://yuyoung32.github.io/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
-
-
-  
-    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
-  
-
-  
-    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
-  
-
-  
-    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
-  
-
-  
-    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
-  
-
-  
-    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
-  
-
-  
-    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
-  
-
-  
-    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
-  
-
-  
-    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
-  
-
-  
-    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
-  
-
-  
-    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
-  
-
-
+  &copy; 2019 - 2023 &#183;
+  <a href="/"> YuYoung&#39;s Blog </a> &nbsp;&nbsp;
+  <a href="#"><i class="fas fa-chevron-up"></i></a>
+</div>
+</body>
+  <script src="/js/lazyload.min.js"></script>
 <script>
-$(document).ready(function() {
-  hljs.configure({ classPrefix: '', useBR: false });
-  $('pre.code-highlight > code, pre > code').each(function(i, block) {
-    if (!$(this).hasClass('codeblock')) {
-      $(this).addClass('codeblock');
-    }
-    hljs.highlightBlock(block);
-  });
-});
+  var lazyImage = new LazyLoad({container: document.getElementById('article')});
 </script>
 
 
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous"></script>
+<script>
+    (function() {
+        var $toc = $('#TableOfContents');
+        if ($toc.length > 0) {
+            var $window = $(window);
 
-    
-  </body>
+            function onScroll(){
+                var currentScroll = $window.scrollTop();
+                var h = $('.post-text h1, .post-text h2, .post-text h3, .post-text h4, .post-text h5, .post-text h6');
+                var id = "";
+                h.each(function (i, e) {
+                    e = $(e);
+                    if (e.offset().top - 10 <= currentScroll) {
+                        id = e.attr('id');
+                    }
+                });
+                var active = $toc.find('a.active');
+                if (active.length == 1 && active.eq(0).attr('href') == '#' + id) return true;
+
+                active.each(function (i, e) {
+                    $(e).removeClass('active').siblings('ul').hide();
+                });
+                $toc.find('a[href="#' + id + '"]').parentsUntil('#TableOfContents').each(function (i, e) {
+                    $(e).children('a').addClass('active').siblings('ul').show();
+                });
+            }
+
+            $window.on('scroll', onScroll);
+            $(document).ready(function() {
+                $toc.find('a').parent('li').find('ul').hide();
+                onScroll();
+                document.getElementsByClassName('post-toc')[0].style.display = '';
+            });
+        }
+    })();
+</script>
+
+
 </html>
-

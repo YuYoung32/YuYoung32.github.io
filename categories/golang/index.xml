@@ -1,19 +1,101 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Golang on YuYoung的博客</title>
-    <link>https://yuyoung32.github.io/categories/golang/</link>
-    <description>Recent content in Golang on YuYoung的博客</description>
+    <title>golang on YuYoung&#39;s Blog</title>
+    <link>http://example.org/categories/golang/</link>
+    <description>Recent content in golang on YuYoung&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Fri, 01 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://yuyoung32.github.io/categories/golang/index.xml" rel="self" type="application/rss+xml" />
+    <language>zh</language>
+    <lastBuildDate>Fri, 01 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://example.org/categories/golang/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Golang小知识</title>
-      <link>https://yuyoung32.github.io/post/golang%E5%B0%8F%E7%9F%A5%E8%AF%86/</link>
+      <link>http://example.org/post/golang%E5%B0%8F%E7%9F%A5%E8%AF%86/</link>
       <pubDate>Fri, 01 Apr 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://yuyoung32.github.io/post/golang%E5%B0%8F%E7%9F%A5%E8%AF%86/</guid>
-      <description></description>
+      <guid>http://example.org/post/golang%E5%B0%8F%E7%9F%A5%E8%AF%86/</guid>
+      <description>内建接口 内建接口，builtin-interface，是go包内的接口，你可以实现它，这样go的官方库比如fmt在调用时就会使用你实现的方法。
+Stringer 类似于Java的toString，打印自身信息，很多包如fmt通过这个打印信息。
+type Stringer interface { String() string } package main import &amp;#34;fmt&amp;#34; type Person struct { Name string Age int } func (p Person) String() string { return fmt.Sprintf(&amp;#34;%v (%v years)&amp;#34;, p.Name, p.Age) } func main() { a := Person{&amp;#34;Arthur Dent&amp;#34;, 42} z := Person{&amp;#34;Zaphod Beeblebrox&amp;#34;, 9001} // 在pirint时会自动调用你自己实现的 fmt.Println(a, z) } error error是一个接口类型，实现error接口的struct可以作为error返回，可以做到错误包含指定的信息。fmt在打印错误时也会调用这个。
+type error interface { Error() string } package main import ( &amp;#34;fmt&amp;#34; ) type MyError struct { name string } // 只有实现了接口，该struct才能作为接口类型返回 func (mr MyError) Error() string { return mr.</description>
+    </item>
+    
+    <item>
+      <title>Golang-内置container包</title>
+      <link>http://example.org/post/golang-%E5%86%85%E7%BD%AEcontainer%E5%8C%85/</link>
+      <pubDate>Fri, 25 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/post/golang-%E5%86%85%E7%BD%AEcontainer%E5%8C%85/</guid>
+      <description>Go常见数据结构包container Heap container/heap
+首先需要实现这这个接口（包含5个方法），heap实现并维护小顶堆（大根堆）或者说是优先队列。
+type Interface interface { sort.Interface Push(x interface{}) // 向末尾添加元素 Pop() interface{} // 从末尾删除元素 } //sort.Interface type Interface interface { Len() int Less(i, j int) bool Swap(i, j int) } 简单例子
+package main import ( &amp;#34;container/heap&amp;#34; &amp;#34;fmt&amp;#34; ) type myHeap []int func (m myHeap) Len() int { return len(m) } func (m myHeap) Less(i, j int) bool { return m[i] &amp;lt; m[j] } func (m myHeap) Swap(i, j int) { m[i], m[j] = m[j], m[i] } //指针接收！ func (m *myHeap) Push(x interface{}) { //heap包会自动对最后一个进行堆排序 *m = append(*m, x.</description>
+    </item>
+    
+    <item>
+      <title>Golang-常见中间件</title>
+      <link>http://example.org/post/golang-%E5%B8%B8%E8%A7%81%E4%B8%AD%E9%97%B4%E4%BB%B6/</link>
+      <pubDate>Tue, 22 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/post/golang-%E5%B8%B8%E8%A7%81%E4%B8%AD%E9%97%B4%E4%BB%B6/</guid>
+      <description>SemVer https://semver.org/lang/zh-CN/
+semantic versioning 语义化版本信息，根据版号判断信息
+v(major).(minor).(patch)
+v0.1.0, v1.2.3, or v1.5.0-rc.1
+Go Module https://github.com/golang/go/wiki/Modules
+Summarizing the relationship between repositories, modules, and packages:
+A repository contains one or more Go modules. Each module contains one or more Go packages. Each package consists of one or more Go source files in a single directory. go.mod go.mod是在一系列源码的根目录上，定义了一个module.
+A module is defined by a tree of Go source files with a go.mod file in the tree&amp;rsquo;s root directory.</description>
+    </item>
+    
+    <item>
+      <title>Golang-反射，静态类型与动态类型</title>
+      <link>http://example.org/post/golang-%E5%8F%8D%E5%B0%84%E9%9D%99%E6%80%81%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</link>
+      <pubDate>Tue, 25 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/post/golang-%E5%8F%8D%E5%B0%84%E9%9D%99%E6%80%81%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</guid>
+      <description>反射，静态类型与动态类型 原理 https://segmentfault.com/a/1190000022931452
+静态和动态是对于接口来说的
+每个接口变量，实际上都是由一 pair 对（type 和 data）组合而成，pair 对中记录着实际变量的值和类型
+根据接口是否包含方法，可以将接口分为 iface 和 eface
+iface结构
+eface结构，itab指针里的静态类型为空
+实践 https://i6448038.github.io/2020/02/15/golang-reflection/
+应用规则
+//接口数据 =====》 反射对象
+Reflection goes from interface value to reflection object. //反射对象 ===&amp;gt; 接口数据
+Reflection goes from reflection object to interface value. // 倘若数据可更改，可通过反射对象来修改它
+To modify a reflection object, the value must be settable. 可通过这两个反射函数看到接口i的类型和值（动态类型，数据指针指向内容）
+reflect.TypeOf(x) reflect.ValueOf(x) 实例1
+//静态类型,i的静态类型是interface{}，此时i没有动态类型 var i interface{} //动态类型，此时i的动态类型是string，因为a实现了空interface i=&amp;#34;OK&amp;#34; 实例2
+type User struct { Name string } type UserFun interface { GetName() } func (u User) GetName() { } func main() { var user UserFun user = User{&amp;#34;Tom&amp;#34;} //不加上这句话打印显示 &amp;lt;nil&amp;gt; &amp;lt;invalid reflect.</description>
+    </item>
+    
+    <item>
+      <title>Golang-从比较到动态类型</title>
+      <link>http://example.org/post/golang-%E4%BB%8E%E6%AF%94%E8%BE%83%E5%88%B0%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</link>
+      <pubDate>Sun, 23 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/post/golang-%E4%BB%8E%E6%AF%94%E8%BE%83%E5%88%B0%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B/</guid>
+      <description>比较 结构体 结构体的比较，有几个需要注意的地方：
+结构体只能比较是否相等，但是不能比较大小； 想同类型的结构体才能进行比较，结构体是否相同不但与属性类型有关，还与属性顺序相关； 如果struct的所有成员都可以比较，则该struct就可以通过==或!=进行比较是否相同，比较时逐个项进行比较，如果每一项都相等，则两个结构体才相等，否则不相等； 那有什么是可以比较的呢？
+常见的有bool、数值型、字符、指针、数组等，同时注意数组需要大小相同，否则还是不能比较 不能比较的有
+slice、map、函数 interface 两个interface比较，需要静态类型相同或其中一个是空interface并且动态类型可比较且相同(comparable and equal)才可以。
+对于静态类型来说，需要比较的是他们interface包含的方法，当包含的方法相同时则可以进行下一步的动态类型比较，否则，编译器报错。 注意1，这里不需要他们的名字相同，只需要他们包含的方法相同 注意2，空interface(包括interface{}和没有方法的空interface)是可以进行比较的，编译器不会报错。但此时结果无非就是双方都空true或者任意一方不空false
+对于动态类型来说,需要可比较且相同(comparable and equal)，如果不可比较则会在运行时panic，如果不相同则false。
+package main import &amp;#34;fmt&amp;#34; type Person struct { first string last string age int } type MyEInterface interface { } type MyIInterface1 interface { Func1() } type MyIInterface2 interface { Func1() } type MyIInterface3 interface { Func3() } func (p Person) Func1() { } func (p Person) Func3() { } func main() { var e MyEInterface var i1 MyIInterface1 = Person{&amp;#34;John&amp;#34;, &amp;#34;Doe&amp;#34;, 30} var i2 MyIInterface1 = Person{&amp;#34;John&amp;#34;, &amp;#34;Doe&amp;#34;, 32} var i3 MyIInterface2 = Person{&amp;#34;John&amp;#34;, &amp;#34;Doe&amp;#34;, 32} //var i4 MyIInterface3 = Person{&amp;#34;John&amp;#34;, &amp;#34;Doe&amp;#34;, 30} var x1 interface{} var x2 interface{} = []int{3, 5} var x3 interface{} = []int{3, 5} a := i1 == i2 //静态类型相同(interface包含方法都为空),动态类型不同 false b := x2 == x3 //静态类型相同(interface包含方法都为空),动态类型不能比较 panic c := e == x1 //静态类型相同(interface包含方法都为空),动态类型相同(包含数据都为空) true d := i2 == i3 //静态类型相同(interface包含方法完全一样),动态类型相同 true //f := i2 == i4 //静态类型不同,panic g := x1 == i1 //静态类型不同但是其中一个是空interface所以可以比较,动态类型可以比较 false h := e == i1 //同上 false fmt.</description>
+    </item>
+    
+    <item>
+      <title>从Java到Golang-对interface的理解</title>
+      <link>http://example.org/post/golang-%E5%AF%B9interface%E7%9A%84%E7%90%86%E8%A7%A3/</link>
+      <pubDate>Sun, 03 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/post/golang-%E5%AF%B9interface%E7%9A%84%E7%90%86%E8%A7%A3/</guid>
+      <description>If it walks like a duck, swims like a duck, and quacks like a duck, then it probably is a duck.
+如果一个东西走路、游泳、叫声都像鸭子，那么它大概就是一只鸭子。
+对interface的理解 interface的实现 ​	在JAVA里，interface定义了一个类的行为标准，里面可以包含不可变换的实体，例如没有函数体的函数或者不可改变的值比如final变量。一旦一个类implement这个interface，那么就要将这个interface的全部方法都实现。这样在工程上的好处是，解决了多继承问题（JAVA不能实现多继承，本质上是因为多个class之间的可变实体如同名变量，同名方法不同方法体会冲突），更高程度上抽象了一个类，只要知道这个类实现了什么接口，就可以调用接口的方法。在这个过程中不需要知道类中的具体实现，把函数注释写在接口的文件即可，保护了类。
+​	在golang里，struct（类）定义了一系列的属性，并没有定义方法。如果这个struct想要有方法，就需要以func (cat Cat) func(input Type) output Type{ body }的形式给出，最开头的(cat Cat)即代表是这个CatStruct（类）的方法，它被称为receiver。这时一个struct如果实现了这个接口里定义的所有方法，可以称为实现了这个接口，就如一个东西做了很多鸭子做的事情那么它就是一只鸭子。注意这里面没有显式的说明某某struct实现某interface，只要全实现了，才能说明实现了这个interface。比如：
+package main import ( &amp;#34;fmt&amp;#34; ) type Animal interface { eat() } type Cat struct { name string } // 这里Cat实现了Animal接口的全部方法，即Cat实现了Animal接口 func (cat Cat) eat() { fmt.Println(cat.name + &amp;#34;eat&amp;#34;) } func main() { // 常规调用 var cat Cat cat = Cat{name: &amp;#34;wu&amp;#34;} cat.</description>
     </item>
     
   </channel>

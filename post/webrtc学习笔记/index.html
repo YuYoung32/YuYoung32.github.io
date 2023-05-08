@@ -1,106 +1,19 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="zh">
   <head>
-    
-    <script type="application/ld+json">
-
-{  
-  "@context":"http://schema.org",
-  "@type":"Website",
-  "@id":"https:\/\/yuyoung32.github.io",
-  "author": {
-    "@type": "Person",
-    "name": "YuYoung",
-    
-    "image": "https://s1.ax1x.com/2022/04/09/LPwdFs.jpg"
-    
-  },
-  "name":"YuYoung的博客",
-  "description":"",
-  "url":"https:\/\/yuyoung32.github.io\/post\/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\/",
-  "keywords":"[RTC, STUN, TURN, RTP, ICE, SRTP]"
-}
-
-</script>
-    <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.96.0 with theme Tranquilpeak 0.5.3-BETA">
-<meta name="author" content="YuYoung">
-<meta name="keywords" content="RTC, STUN, TURN, RTP, ICE, SRTP">
-<meta name="description" content="">
-
-
-<meta property="og:description" content="">
-<meta property="og:type" content="article">
-<meta property="og:title" content="webRTC学习笔记">
-<meta name="twitter:title" content="webRTC学习笔记">
-<meta property="og:url" content="https://yuyoung32.github.io/post/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
-<meta property="twitter:url" content="https://yuyoung32.github.io/post/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
-<meta property="og:site_name" content="YuYoung的博客">
-<meta property="og:description" content="">
-<meta name="twitter:description" content="">
-<meta property="og:locale" content="zh-cn">
-
-  
-    <meta property="article:published_time" content="2022-07-29T12:51:14">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Hugo 0.111.3">
+  <title> webRTC学习笔记 | YuYoung&#39;s Blog </title>
+  <meta name="description" content="YuYoung的博客">
+  <link rel="stylesheet" href="http://example.org/css/simpleness.css">
+  <link rel="canonical" href="http://example.org/post/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+  <link rel="alternate" type="application/rss+xml" href="" title="YuYoung&#39;s Blog">
   
   
-    <meta property="article:modified_time" content="2022-07-29T12:51:14">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
   
   
-  
-    
-      <meta property="article:section" content="网络编程">
-    
-  
-  
-    
-      <meta property="article:tag" content="RTC">
-    
-  
-
-
-<meta name="twitter:card" content="summary">
-
-
-
-
-
-
-
-  <meta property="og:image" content="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg">
-  <meta property="twitter:image" content="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg">
-
-
-
-
-
-  <meta property="og:image" content="https://s1.ax1x.com/2022/07/29/vPFgzj.png">
-  <meta property="twitter:image" content="https://s1.ax1x.com/2022/07/29/vPFgzj.png">
-
-
-    <title>webRTC学习笔记</title>
-
-    <link rel="icon" href="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg">
-    
-
-    
-
-    <link rel="canonical" href="https://yuyoung32.github.io/post/webrtc%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
-
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
-    
-    
-    <link rel="stylesheet" href="https://yuyoung32.github.io/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
-    
-    
-
-    
-      
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-6QCN1ZG6DB"></script>
 <script>
 var doNotTrack = false;
@@ -112,166 +25,64 @@ if (!doNotTrack) {
 }
 </script>
 
+  
+</head>
+<body class="container">
+  <nav class="navigation">
+  <div class="nav-left">
     
-    
-  </head>
-
-  <body>
-    <div id="blog">
-      <header id="header" data-behavior="5">
-  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
-  <div class="header-title">
-    <a class="header-title-link" href="https://yuyoung32.github.io/" aria-label="去首页">YuYoung的博客</a>
+    <div class="nav-item nav-title">
+      <a href="http://example.org/"> YuYoung&#39;s Blog</a>
+    </div>
+    <div class="nav-item nav-menu">
+      
+      <a href="/"> Home</a>
+      
+      <a href="/about/"> About</a>
+      
+    </div>
   </div>
-  
-    
-      <a class="header-right-picture "
-         href="https://yuyoung32.github.io/#about" aria-label="打开链接: /#about">
+  <div class="nav-item nav-right fontawesome">
     
     
-    
-      
-        <img class="header-picture" src="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg" alt="作者的图片" />
-      
-    
+    <a href="https://github.com/YuYoung32" target="_blank">
+      <i title="GitHub" class="fab fa-github"></i>
     </a>
-  
-</header>
-
-      <nav id="sidebar" data-behavior="5">
-  <div class="sidebar-container">
     
-      <div class="sidebar-profile">
-        <a href="https://yuyoung32.github.io/#about" aria-label="阅读有关作者的更多信息">
-          <img class="sidebar-profile-picture" src="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg" alt="作者的图片" />
-        </a>
-        <h4 class="sidebar-profile-name">YuYoung</h4>
-        
-          <h5 class="sidebar-profile-bio">每天多进步一点</h5>
-        
-      </div>
     
-    <ul class="sidebar-buttons">
-      
-  <li class="sidebar-button">
-    
-      <a class="sidebar-button-link " href="https://yuyoung32.github.io/" title="Home">
-    
-      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
-      
-      <span class="sidebar-button-desc">首页</span>
+    <a href="http://example.org/index.xml" target="_blank">
+      <i title="RSS" class="fas fa-rss"></i>
     </a>
-  </li>
-
-  <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://yuyoung32.github.io/tags" title="Tags">
-    
-      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
-      
-      <span class="sidebar-button-desc">标签</span>
-    </a>
-  </li>
-
-  <li class="sidebar-button">
-    
-      <a class="sidebar-button-link " href="https://yuyoung32.github.io/archives" title="Archives">
-    
-      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
-      
-      <span class="sidebar-button-desc">归档</span>
-    </a>
-  </li>
-
-  <li class="sidebar-button">
-    
-      <a class="sidebar-button-link " href="https://yuyoung32.github.io/#about" title="About">
-    
-      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
-      
-      <span class="sidebar-button-desc">关于</span>
-    </a>
-  </li>
-
-
-    </ul>
-    <ul class="sidebar-buttons">
-      
-  <li class="sidebar-button">
-    
-      <a class="sidebar-button-link " href="https://github.com/yuyoung32" target="_blank" rel="noopener" title="GitHub">
-    
-      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
-      
-      <span class="sidebar-button-desc">GitHub</span>
-    </a>
-  </li>
-
-
-    </ul>
-    <ul class="sidebar-buttons">
-      
-  <li class="sidebar-button">
-    
-      <a class="sidebar-button-link " href="https://yuyoung32.github.io/index.xml" title="RSS">
-    
-      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
-      
-      <span class="sidebar-button-desc">RSS</span>
-    </a>
-  </li>
-
-
-    </ul>
   </div>
 </nav>
 
+  
+<article class="post">
+  <header class="post-header">
+    <h1 style="text-align: center;" >webRTC学习笔记</h1>
+    <div class="post-metadata">
+    
+      <time datetime="2022-07-29T12:51:14&#43;08:00">July 29, 2022</time> &nbsp; 
+    
+    
+    
+    
+    
+    
+      <i class="fas fa-folder"></i>
       
+      <a href="/categories/%E7%BD%91%E7%BB%9C">网络</a>
+      &nbsp;
+      
+    
+    </div>
+  </header>
 
-      <div id="main" data-behavior="5"
-        class="
-               hasCoverMetaIn
-               ">
-        <article class="post" id="top">
-          
-          
-            <div class="post-header main-content-wrap text-left">
   
-    <h1 class="post-title">
-      webRTC学习笔记
-    </h1>
-  
-  
-  <div class="postShorten-meta post-meta">
-    
-      <time datetime="2022-07-29T12:51:14&#43;08:00">
-        
-  
-  
-  
-  
-    2022年7月29日
-  
-
-      </time>
-    
-    
-  
-  
-    <span>发布在</span>
-    
-      <a class="category-link" href="https://yuyoung32.github.io/categories/%e7%bd%91%e7%bb%9c%e7%bc%96%e7%a8%8b">网络编程</a>
-    
-  
-
-  </div>
-
-</div>
-          
-          <div class="post-content markdown">
-            <div class="main-content-wrap">
-              <h1 id="table-of-contents">目录</h1>
-<nav id="TableOfContents">
+  <div class="post-toc">
+    <div class="post-toc-title">-目录-</div>
+    <nav id="TableOfContents">
   <ul>
     <li><a href="#前言">前言</a></li>
     <li><a href="#ice">ICE</a>
@@ -306,8 +117,11 @@ if (!doNotTrack) {
     </li>
   </ul>
 </nav>
+  </div>
+  
 
-<h2 id="前言">前言</h2>
+  <div class="post-text">
+    <h2 id="前言">前言</h2>
 <p>在网络上传输数据，最原始的方式就是C-S通信。CS模式固然可靠，适合绝大部分场景。但是对于音视频尤其是<strong>及时音视频</strong>来说，CS模式需要服务器做中转<strong>延迟过高</strong>，而且服务器也没必要知道传输的数据流不需要承载这个负荷。</p>
 <p>所以需要点对点直连，即p2p通信，直接连接收发双方。既然是通信，收发双方就需要知道对方的地址。通常来说二者通过<a href="#ice">ICE</a>来交换地址。本机对外的IP如何获取？有以下几种方式：</p>
 <ol>
@@ -318,9 +132,9 @@ if (!doNotTrack) {
 <p>实现以上二者知道对方地址的过程叫做ICE。ICE是一种方法而不是协议，ICE通过STUN或TURN收集双方信息，然后进行交换。收集信息的过程可能比较崎岖，但ICE的最终目的就是让二者能够通信。在获取通信方式的以上3种方法里，ICE会根据优先级1&gt;2&gt;3向双方提供信息，其中3就类似于类似于传统CS模式所以优先级最低。</p>
 <p>以上获取对方IP地址进行连接只是第一步，接下来需要传输媒体信息（SDP），传输媒体信息使用<a href="#srtp%E5%92%8Csrtcp">SRTP</a>和<a href="#srtp%E5%92%8Csrtcp">RTCP</a>，当然传输媒体信息前需要进行<a href="#sdp%E5%8D%8F%E5%95%86">SDP协商</a>以确认音视频信息。</p>
 <p>大致流程如下</p>
-<p><img src="https://yuyoung32.github.io/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/image-20220729194022071.png" alt="大致流程"></p>
+<p><img src="/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/image-20220729194022071.png" alt="大致流程"></p>
 <p>详细流程如下</p>
-<p><img src="https://yuyoung32.github.io/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/peer-connection.png" alt="详细流程"></p>
+<p><img src="/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/peer-connection.png" alt="详细流程"></p>
 <h2 id="ice">ICE</h2>
 <p>交互式连接建立（Interactive Connectivity Establishment）</p>
 <h3 id="ice做什么">ICE做什么</h3>
@@ -344,17 +158,17 @@ if (!doNotTrack) {
 <h3 id="rtp">RTP</h3>
 <p><strong>即时传输协议</strong>（Real-time Transport Protocol或简写RTP），是一个建立在UDP上的应用层协议。</p>
 <p>其头部如下：</p>
-<p><img src="https://yuyoung32.github.io/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/v2-20bee66ddbd5661fa76c23f19cd9c53f_720w.jpg" alt="rtp头"></p>
+<p><img src="/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/v2-20bee66ddbd5661fa76c23f19cd9c53f_720w.jpg" alt="rtp头"></p>
 <p>其中，Timestamp和SSRC字段比较重要，Timestamp标志了这一帧的事件，用于一帧由多个包组成时的同步，SSRC标志了唯一源。</p>
 <h3 id="rtcp">RTCP</h3>
 <p><strong>实时传输控制协议</strong>（Real-time Transport Control Protocol或RTP Control Protocol或简写<strong>RTCP</strong>）是<a href="https://zh.m.wikipedia.org/wiki/%E5%AE%9E%E6%97%B6%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE">实时传输协议</a>（RTP）的一个姐妹协议。RTCP并不传输媒体数据，只是用来传输统计数据。</p>
-<p><img src="https://yuyoung32.github.io/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/image-20220729230418141.png" alt="RTCP位置"></p>
+<p><img src="/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/image-20220729230418141.png" alt="RTCP位置"></p>
 <h3 id="srtp和srtcp">SRTP和SRTCP</h3>
 <p><strong>安全实时传输协议</strong>（Secure Real-time Transport Protocol），是建立在DTLS上的RTP。</p>
 <p>DTLS：</p>
 <p>Data Transport Layer Security。UDP的TLS。</p>
 <p>四次握手：hello-&gt;hello resp+认证信息-&gt;解析认证信息+加密套件-&gt;按照加密套件发送信息</p>
-<p><img src="https://yuyoung32.github.io/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/image-20220729231328598.png" alt="image-20220729231328598"></p>
+<p><img src="/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/image-20220729231328598.png" alt="image-20220729231328598"></p>
 <p>DTLS要解决的问题：</p>
 <ul>
 <li>
@@ -370,13 +184,13 @@ if (!doNotTrack) {
 <li>保证数据安全</li>
 <li>保证数据完整性</li>
 </ul>
-<p><img src="https://yuyoung32.github.io/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/image-20220729231137536.png" alt="SRTP"></p>
+<p><img src="/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/image-20220729231137536.png" alt="SRTP"></p>
 <p>SRTP就是把RTP的payload进行加密。</p>
 <h2 id="stun和turn">STUN和TURN</h2>
 <h3 id="什么是stun">什么是STUN</h3>
 <p><strong>Session Traversal Utilities for NAT</strong>，它允许位于NAT（或多重NAT）后的客户端找出自己的公网地址。 这些信息被用来在两个同时处于NAT路由器之后的主机之间建立UDP通信。RTP协议是使用UDP分组在Internet上传输音频和/或视频数据的。 不幸的是，由于通信的两个末端往往位于NAT之后，因此用传统的方法是无法建立连接的。 这也就是STUN发挥作用的地方。STUN是一个建立在UDP上的应用层协议。</p>
 <p>20字节头部+0个及其以上个Attribute。每个属性是一个TLV编码。</p>
-<p><img src="https://yuyoung32.github.io/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/image-20220729231452838.png" alt="STUN头"></p>
+<p><img src="/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/image-20220729231452838.png" alt="STUN头"></p>
 <table>
 <thead>
 <tr>
@@ -431,20 +245,20 @@ if (!doNotTrack) {
 </li>
 </ol>
 <h3 id="stun工作原理">STUN工作原理</h3>
-<p><img src="https://yuyoung32.github.io/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/image-20220729231809462.png" alt="工作原理"></p>
+<p><img src="/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/image-20220729231809462.png" alt="工作原理"></p>
 <h2 id="sdp协商">SDP协商</h2>
 <p>Session Description Protocol，信息格式的描述标准类似于json。本机音视频和解码信息，通过信令服务器发送，让双方知晓。</p>
 <p>SDP协商过程：</p>
-<p><img src="https://yuyoung32.github.io/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/image-20220729231940156.png" alt="SDP协商过程"></p>
+<p><img src="/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/image-20220729231940156.png" alt="SDP协商过程"></p>
 <p>webRTC SDP组成：</p>
-<p><img src="https://yuyoung32.github.io/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/image-20220729232002539.png" alt="webRTC协商"></p>
+<p><img src="/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/image-20220729232002539.png" alt="webRTC协商"></p>
 <h2 id="多人音视频架构">多人音视频架构</h2>
 <h3 id="mesh">Mesh</h3>
 <p>互相1对1，但是人数多的时候对网络要求很大。</p>
-<p><img src="https://yuyoung32.github.io/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/image-20220729194843630.png" alt="Mesh"></p>
+<p><img src="/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/image-20220729194843630.png" alt="Mesh"></p>
 <h3 id="multipoint-conferencing-unit">Multipoint Conferencing Unit</h3>
 <p>节省带宽，混和视频信号对CPU消耗严重。相当于实时剪辑视频。</p>
-<p><img src="https://yuyoung32.github.io/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/image-20220729194926932.png" alt="MCU"></p>
+<p><img src="/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/image-20220729194926932.png" alt="MCU"></p>
 <h3 id="selective-forwarding-unit">Selective Forwarding Unit</h3>
 <p>服务端直接转发流。对带宽要求高。</p>
 <p>为了降低对带宽的要求，可以：</p>
@@ -452,228 +266,79 @@ if (!doNotTrack) {
 <li>直接降低码流，降低分辨率</li>
 <li>SVC，分层（核心层拓展层边缘层）一层比一层清晰、</li>
 </ol>
-<p><img src="https://yuyoung32.github.io/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/image-20220729195644862.png" alt="SFU"></p>
-              
+<p><img src="/webRTC%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.assets/image-20220729195644862.png" alt="SFU"></p>
 
-
-            </div>
-          </div>
-          <div id="post-footer" class="post-footer main-content-wrap">
-            
-            
-<div class="post-actions-wrap">
-  <nav >
-    <ul class="post-actions post-action-nav">
-      
-        <li class="post-action">
-          
-            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/c&#43;&#43;%E5%B0%8F%E7%9F%A5%E8%AF%86/" data-tooltip="C&#43;&#43;小知识" aria-label="下一篇: C&#43;&#43;小知识">
-          
-              <i class="fa fa-angle-left"></i>
-              <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
-            </a>
-        </li>
-        <li class="post-action">
-          
-            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/" data-tooltip="SOCKET编程与复用" aria-label="上一篇: SOCKET编程与复用">
-          
-              <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
-              <i class="fa fa-angle-right"></i>
-            </a>
-        </li>
-      
-    </ul>
-  </nav>
-<ul class="post-actions post-action-share" >
-  
-    <li class="post-action hide-lg hide-md hide-sm">
-      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="分享这个帖子">
-        <i class="fa fa-share-alt" aria-hidden="true"></i>
-      </a>
-    </li>
-    
-  
-  
-  <li class="post-action">
-    
-      <a class="post-action-btn btn btn--default" href="#top" aria-label="回到顶部">
-      <i class="fa fa-arrow-up" aria-hidden="true"></i>
-    
-    </a>
-  </li>
-</ul>
-</div>
-
-
-            
-  
-
-
-          </div>
-        </article>
-        <footer id="footer" class="main-content-wrap">
-  <span class="copyrights">
-    &copy; 2023 YuYoung. All Rights Reserved
-  </span>
-</footer>
-
-      </div>
-      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
-        
-<div class="post-actions-wrap">
-  <nav >
-    <ul class="post-actions post-action-nav">
-      
-        <li class="post-action">
-          
-            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/c&#43;&#43;%E5%B0%8F%E7%9F%A5%E8%AF%86/" data-tooltip="C&#43;&#43;小知识" aria-label="下一篇: C&#43;&#43;小知识">
-          
-              <i class="fa fa-angle-left"></i>
-              <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
-            </a>
-        </li>
-        <li class="post-action">
-          
-            <a class="post-action-btn btn btn--default tooltip--top" href="https://yuyoung32.github.io/post/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/" data-tooltip="SOCKET编程与复用" aria-label="上一篇: SOCKET编程与复用">
-          
-              <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
-              <i class="fa fa-angle-right"></i>
-            </a>
-        </li>
-      
-    </ul>
-  </nav>
-<ul class="post-actions post-action-share" >
-  
-    <li class="post-action hide-lg hide-md hide-sm">
-      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="分享这个帖子">
-        <i class="fa fa-share-alt" aria-hidden="true"></i>
-      </a>
-    </li>
-    
-  
-  
-  <li class="post-action">
-    
-      <a class="post-action-btn btn btn--default" href="#top" aria-label="回到顶部">
-      <i class="fa fa-arrow-up" aria-hidden="true"></i>
-    
-    </a>
-  </li>
-</ul>
-</div>
-
-
-      </div>
-      
-
-    </div>
-    
-    <div id="about">
-  <div id="about-card">
-    <div id="about-btn-close">
-      <i class="fa fa-times"></i>
-    </div>
-    
-      <img id="about-card-picture" src="https://s1.ax1x.com/2022/04/09/LPwdFs.jpg" alt="作者的图片" />
-    
-    <h4 id="about-card-name">YuYoung</h4>
-    
-      <div id="about-card-bio">每天多进步一点</div>
-    
-    
-      <div id="about-card-job">
-        <i class="fa fa-briefcase"></i>
-        <br/>
-        学生
-      </div>
-    
-    
-      <div id="about-card-location">
-        <i class="fa fa-map-marker-alt"></i>
-        <br/>
-        杭州
-      </div>
-    
   </div>
+
+  <footer class="post-footer">
+    
+
+    
+
+    
+    
+  </footer>
+  
+  <div class="comments">
+  <div class="comments">
+
+
+
 </div>
+  </div>
+</article>
 
-    
-
-    
+  <div class="foot">
   
-    <div id="cover" style="background-image:url('https://s1.ax1x.com/2022/04/09/LPwmee.jpg');"></div>
-  
-
-
-    
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-
-<script src="https://yuyoung32.github.io/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
-
-
-  
-    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
-  
-
-  
-    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
-  
-
-  
-    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
-  
-
-  
-    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
-  
-
-  
-    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
-  
-
-  
-    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
-  
-
-  
-    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
-  
-
-  
-    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
-  
-
-  
-    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
-  
-
-  
-    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
-  
-
-
+  &copy; 2019 - 2023 &#183;
+  <a href="/"> YuYoung&#39;s Blog </a> &nbsp;&nbsp;
+  <a href="#"><i class="fas fa-chevron-up"></i></a>
+</div>
+</body>
+  <script src="/js/lazyload.min.js"></script>
 <script>
-$(document).ready(function() {
-  hljs.configure({ classPrefix: '', useBR: false });
-  $('pre.code-highlight > code, pre > code').each(function(i, block) {
-    if (!$(this).hasClass('codeblock')) {
-      $(this).addClass('codeblock');
-    }
-    hljs.highlightBlock(block);
-  });
-});
+  var lazyImage = new LazyLoad({container: document.getElementById('article')});
 </script>
 
 
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous"></script>
+<script>
+    (function() {
+        var $toc = $('#TableOfContents');
+        if ($toc.length > 0) {
+            var $window = $(window);
 
-    
-  </body>
+            function onScroll(){
+                var currentScroll = $window.scrollTop();
+                var h = $('.post-text h1, .post-text h2, .post-text h3, .post-text h4, .post-text h5, .post-text h6');
+                var id = "";
+                h.each(function (i, e) {
+                    e = $(e);
+                    if (e.offset().top - 10 <= currentScroll) {
+                        id = e.attr('id');
+                    }
+                });
+                var active = $toc.find('a.active');
+                if (active.length == 1 && active.eq(0).attr('href') == '#' + id) return true;
+
+                active.each(function (i, e) {
+                    $(e).removeClass('active').siblings('ul').hide();
+                });
+                $toc.find('a[href="#' + id + '"]').parentsUntil('#TableOfContents').each(function (i, e) {
+                    $(e).children('a').addClass('active').siblings('ul').show();
+                });
+            }
+
+            $window.on('scroll', onScroll);
+            $(document).ready(function() {
+                $toc.find('a').parent('li').find('ul').hide();
+                onScroll();
+                document.getElementsByClassName('post-toc')[0].style.display = '';
+            });
+        }
+    })();
+</script>
+
+
 </html>
-

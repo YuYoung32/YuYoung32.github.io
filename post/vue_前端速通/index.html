@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Hugo 0.111.3">
+  <title> vue&#43;前端速通 | YuYoung&#39;s Blog </title>
+  <meta name="description" content="YuYoung的博客">
+  <link rel="stylesheet" href="http://example.org/css/simpleness.css">
+  <link rel="canonical" href="http://example.org/post/vue_%E5%89%8D%E7%AB%AF%E9%80%9F%E9%80%9A/">
+  <link rel="alternate" type="application/rss+xml" href="" title="YuYoung&#39;s Blog">
+  
+  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+  
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6QCN1ZG6DB"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-6QCN1ZG6DB', { 'anonymize_ip': false });
+}
+</script>
+
+  
+</head>
+<body class="container">
+  <nav class="navigation">
+  <div class="nav-left">
+    
+    <div class="nav-item nav-title">
+      <a href="http://example.org/"> YuYoung&#39;s Blog</a>
+    </div>
+    <div class="nav-item nav-menu">
+      
+      <a href="/"> Home</a>
+      
+      <a href="/about/"> About</a>
+      
+    </div>
+  </div>
+  <div class="nav-item nav-right fontawesome">
+    
+    
+    <a href="https://github.com/YuYoung32" target="_blank">
+      <i title="GitHub" class="fab fa-github"></i>
+    </a>
+    
+    
+    <a href="http://example.org/index.xml" target="_blank">
+      <i title="RSS" class="fas fa-rss"></i>
+    </a>
+    
+  </div>
+</nav>
+
+  
+<article class="post">
+  <header class="post-header">
+    <h1 style="text-align: center;" >vue&#43;前端速通</h1>
+    <div class="post-metadata">
+    
+      <time datetime="2023-03-25T16:03:50&#43;08:00">March 25, 2023</time> &nbsp; 
+    
+    
+    
+    
+    
+    
+      <i class="fas fa-folder"></i>
+      
+      <a href="/categories/vue">vue</a>
+      &nbsp;
+      
+    
+    </div>
+  </header>
+
+  
+  <div class="post-toc">
+    <div class="post-toc-title">-目录-</div>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#前端小知识">前端小知识</a>
+      <ul>
+        <li><a href="#css-盒子模型">CSS 盒子模型</a></li>
+        <li><a href="#css-选择器">CSS 选择器</a></li>
+        <li><a href="#css-position">CSS position</a></li>
+        <li><a href="#css-display">CSS display</a></li>
+        <li><a href="#css-伪类">CSS 伪类</a></li>
+        <li><a href="#js-promise">JS Promise</a></li>
+        <li><a href="#js-module">JS Module</a></li>
+      </ul>
+    </li>
+    <li><a href="#vue-选项式api">VUE-选项式API</a>
+      <ul>
+        <li><a href="#父组件向传子组件传递数据">父组件向传子组件传递数据</a></li>
+        <li><a href="#子组件向父组件传递数据">子组件向父组件传递数据</a></li>
+        <li><a href="#状态函数">状态函数</a></li>
+        <li><a href="#生命周期函数">生命周期函数</a></li>
+        <li><a href="#组件插空">组件插空</a></li>
+      </ul>
+    </li>
+    <li><a href="#vue-router路由">vue-router路由</a>
+      <ul>
+        <li><a href="#第一步定义路由">第一步：定义路由</a></li>
+        <li><a href="#第二步在mainjs中使用使用路由">第二步，在main.js中使用使用路由</a></li>
+        <li><a href="#通过js代码控制路由编程式导航">通过js代码控制路由（编程式导航）</a></li>
+        <li><a href="#使用js从网络获取数据">使用js从网络获取数据</a></li>
+      </ul>
+    </li>
+    <li><a href="#vuex">VUEX</a>
+      <ul>
+        <li><a href="#定义">定义</a></li>
+        <li><a href="#使用">使用</a></li>
+      </ul>
+    </li>
+    <li><a href="#vue-bug排除">VUE bug排除</a>
+      <ul>
+        <li><a href="#栈溢出">栈溢出</a></li>
+        <li><a href="#网页刷新后没有东西但是服务器重新编译后重连后出现">网页刷新后没有东西，但是服务器重新编译后重连后出现</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+  
+
+  <div class="post-text">
+    <h2 id="前端小知识">前端小知识</h2>
+<p><a href="https://www.runoob.com/css/css-display-visibility.html">CSS Display(显示) 与 Visibility（可见性</a></p>
+<h3 id="css-盒子模型">CSS 盒子模型</h3>
+<p><a href="https://www.runoob.com/css/css-boxmodel.html">CSS 盒子模型</a></p>
+<h3 id="css-选择器">CSS 选择器</h3>
+<p>p 标签选择</p>
+<p>.p 类选择</p>
+<p>#p id选择</p>
+<p>[tag=value] 属性选择器</p>
+<p>组合选择器被称为 <strong>组合器（Combinators）</strong>。一共有4种组合器：</p>
+<p><strong>&rsquo; &lsquo;</strong> 后代组合器（Descendant combinator）</p>
+<p><strong>&rsquo;&gt;&rsquo;</strong> 直接子代组合器（Child combinator）</p>
+<p><strong>&rsquo;~&rsquo;</strong> 一般兄弟组合器（General sibling combinator）</p>
+<p><strong>&rsquo;+&rsquo;</strong> 紧邻兄弟组合器（Adjacent sibling combinator）</p>
+<h3 id="css-position">CSS position</h3>
+<p><a href="https://www.runoob.com/css/css-positioning.html">CSS Position(定位)</a></p>
+<ul>
+<li>1、<strong>absolute(绝对定位)</strong>，其位置相对于<strong>最近已定位的父元素</strong>，如果元素没有已定位的父元素那么它的位置相对于<!-- raw HTML omitted -->。因此absolute应该<strong>放在某个容器内</strong>，并且只有这一个元素。否则会相互重叠。</li>
+<li>2、<strong>static(默认的静态定位)</strong>，即没有定位，遵循正常的文档流对象，静态定位的元素不受top、left、right、bottom影响。</li>
+<li>3、<strong>relative(相对定位)</strong>，其位置<strong>相对其正常时的位置</strong>。</li>
+<li>relative只能根据上一个relative进行位置改变，若上一个是absolute则直接叠加在上一个上面。相对定位元素经常<strong>被用来作为绝对定位元素的容器块</strong>。</li>
+<li>考虑一个父元素static元素作为容器，而其内有一个子元素relative元素改变left等位置，那么这个子元素会根据<!-- raw HTML omitted -->定位，而不是父元素，链接<a href="https://css-tricks.com/absolute-positioning-inside-relative-positioning/">相对定位内的绝对定位CSS-Tricks - CSS-Tricks</a>。因此absolute元素如果需要改变定位父元素不为static。</li>
+<li>4、<strong>fixed</strong>，元素的位置相对于浏览器窗口，是固定位置。即使窗口是滚动的它也不会移动。</li>
+<li>5、<strong>sticky(粘性定位)</strong>，基于用户滚动位置来定位，在未滚动出目标区域时，它的行为就像position:relative;它的表现就像 position:fixed;，它会固定在目标位置。元素定位表现为在跨越特定阈值前为相对定位，之后为固定定位。这个特定阈值指的是 top, right, bottom 或 left 之一，换言之，指定 top, right, bottom 或 left 四个阈值其中之一，才可使粘性定位生效。否则其行为与相对定位相同。</li>
+</ul>
+<p>一些和position配合使用的属性，在position为static时无效。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">属性</th>
+<th style="text-align:left">说明</th>
+<th style="text-align:left">值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><a href="https://www.runoob.com/cssref/pr-pos-bottom.html">bottom</a></td>
+<td style="text-align:left">定义了定位元素下外边距边界与其包含块下边界之间的偏移，向上推</td>
+<td style="text-align:left">auto *length % *inherit</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.runoob.com/cssref/pr-pos-left.html">left</a></td>
+<td style="text-align:left">定义了定位元素左外边距边界与其包含块左边界之间的偏移。</td>
+<td style="text-align:left">auto *length % *inherit</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.runoob.com/cssref/pr-pos-right.html">right</a></td>
+<td style="text-align:left">定义了定位元素右外边距边界与其包含块右边界之间的偏移。</td>
+<td style="text-align:left">auto *length % *inherit</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.runoob.com/cssref/pr-pos-top.html">top</a></td>
+<td style="text-align:left">定义了一个定位元素的上外边距边界与其包含块上边界之间的偏移。</td>
+<td style="text-align:left">auto *length % *inherit</td>
+</tr>
+</tbody>
+</table>
+<h3 id="css-display">CSS display</h3>
+<p><strong>块级元素(block)特性：</strong></p>
+<ul>
+<li>总是独占一行，表现为另起一行开始，而且其后的元素也必须另起一行显示;</li>
+<li>宽度(width)、高度(height)、内边距(padding)和外边距(margin)都可控制;</li>
+</ul>
+<p><strong>内联元素(inline)特性：</strong></p>
+<ul>
+<li>和相邻的内联元素在同一行;</li>
+<li>宽度(width)、高度(height)、内边距的top/bottom(padding-top/padding-bottom)和外边距的top/bottom(margin-top/margin-bottom)都<strong>不可改变</strong>，就是里面文字或图片的大小;</li>
+</ul>
+<p><strong>块级元素主要有：</strong></p>
+<ul>
+<li>address , blockquote , center , dir , div , dl , fieldset , form , h1 , h2 , h3 , h4 , h5 , h6 , hr , isindex , menu , noframes , noscript , ol , p , pre , table , ul , li</li>
+</ul>
+<p><strong>内联元素主要有：</strong></p>
+<ul>
+<li>a , abbr , acronym , b , bdo , big , br , cite , code , dfn , em , font , i , img , input , kbd , label , q , s , samp , select , small , span , strike , strong , sub , sup ,textarea , tt , u , var</li>
+</ul>
+<p><strong>可变元素(根据上下文关系确定该元素是块元素还是内联元素)：</strong></p>
+<ul>
+<li>applet ,button ,del ,iframe , ins ,map ,object , script</li>
+</ul>
+<p><strong>CSS中块级、内联元素的应用：</strong></p>
+<p>利用CSS我们可以摆脱上面表格里HTML标签归类的限制，自由地在不同标签/元素上应用我们需要的属性。</p>
+<p>主要用的CSS样式有以下三个：</p>
+<ul>
+<li>display:block &ndash; 显示为块级元素</li>
+<li>display:inline &ndash; 显示为内联元素</li>
+<li>display:inline-block &ndash; 显示为内联块元素，表现为<strong>同行显示并可修改宽高内外边距等属性</strong></li>
+</ul>
+<p>我们常将所有<!-- raw HTML omitted -->元素加上display:inline-block样式，原本垂直的列表就可以水平显示了。</p>
+<h3 id="css-伪类">CSS 伪类</h3>
+<table>
+<thead>
+<tr>
+<th>选择器</th>
+<th>示例</th>
+<th>示例说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.runoob.com/cssref/sel-before.html">:before</a></td>
+<td>p:before</td>
+<td>在每个<!-- raw HTML omitted -->元素之前插入内容</td>
+</tr>
+<tr>
+<td><a href="https://www.runoob.com/cssref/sel-after.html">:after</a></td>
+<td>p:after</td>
+<td>在每个<!-- raw HTML omitted -->元素之后插入内容</td>
+</tr>
+<tr>
+<td><a href="https://www.runoob.com/cssref/sel-link.html">:link</a></td>
+<td>a:link</td>
+<td>选择所有未访问链接</td>
+</tr>
+<tr>
+<td><a href="https://www.runoob.com/cssref/sel-visited.html">:visited</a></td>
+<td>a:visited</td>
+<td>选择所有访问过的链接</td>
+</tr>
+<tr>
+<td><a href="https://www.runoob.com/cssref/sel-active.html">:active</a></td>
+<td>a:active</td>
+<td>选择正在活动链接</td>
+</tr>
+<tr>
+<td><a href="https://www.runoob.com/cssref/sel-hover.html">:hover</a></td>
+<td>a:hover</td>
+<td>把鼠标放在链接上的状态</td>
+</tr>
+</tbody>
+</table>
+<h3 id="js-promise">JS Promise</h3>
+<p>Promise 是一个 ECMAScript 6 提供的类，目的是更加优雅地书写复杂的异步任务。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promise</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolveCBName</span>, <span style="color:#a6e22e">rejectCBName</span>) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">resolveCB</span>(<span style="color:#ae81ff">42</span>);
+</span></span><span style="display:flex;"><span>}).<span style="color:#a6e22e">then</span>()
+</span></span></code></pre></div><ol>
+<li>
+<p>Promise对象的构造函数，<strong>接收一个函数作为参数，这个函数有两个函数参数</strong>。注意：这两个函数参数仅仅传递<strong>状态</strong>和<strong>参数</strong>，并不对参数本身做任何操作（例如打印、包装）。并且这两个参数的名字随便起名，因为我们不能定义这两个函数参数，这两个参数仅仅为形参名字，这两个函数参数被Promise对象接管。</p>
+</li>
+<li>
+<p>这两个函数参数作用：</p>
+<ol>
+<li>
+<p>传递状态</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promise</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolveCBName</span>, <span style="color:#a6e22e">rejectCBName</span>) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">resolveCBName</span>(); <span style="color:#75715e">//进入then
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">rejectCBName</span>(); <span style="color:#75715e">//之前的状态不可逆转
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;init&#34;</span>) <span style="color:#75715e">//但是后面的代码仍然会执行
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}).<span style="color:#a6e22e">then</span>(() =&gt; {<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;fullfilled&#34;</span>)})
+</span></span><span style="display:flex;"><span>.<span style="color:#66d9ef">catch</span>(() =&gt; {<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;rejected&#34;</span>)})
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//init
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//fullfilled
+</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promise</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolveCBName</span>, <span style="color:#a6e22e">rejectCBName</span>) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//resolveCBName();
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">rejectCBName</span>(); <span style="color:#75715e">//进入catch
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}).<span style="color:#a6e22e">then</span>(() =&gt; {<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;fullfilled&#34;</span>)})
+</span></span><span style="display:flex;"><span>.<span style="color:#66d9ef">catch</span>(() =&gt; {<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;rejected&#34;</span>)})
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//rejected
+</span></span></span></code></pre></div></li>
+<li>
+<p>传递参数</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promise</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolveCBName</span>, <span style="color:#a6e22e">rejectCBName</span>) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">resolveCBName</span>(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>}).<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">msg</span>) =&gt; {<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;fullfilled &#34;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">msg</span>)}) <span style="color:#75715e">//then使用一个值作为参数接收一开始的resolveCBName
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    .<span style="color:#66d9ef">catch</span>((<span style="color:#a6e22e">msg</span>) =&gt; {<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;rejected &#34;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">msg</span>)})
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//fullfilled 1
+</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promise</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolveCBName</span>, <span style="color:#a6e22e">rejectCBName</span>) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//resolveCBName(1);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">rejectCBName</span>(<span style="color:#ae81ff">2</span>);
+</span></span><span style="display:flex;"><span>}).<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">msg</span>) =&gt; {<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;fullfilled &#34;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">msg</span>)})
+</span></span><span style="display:flex;"><span>.<span style="color:#66d9ef">catch</span>((<span style="color:#a6e22e">msg</span>) =&gt; {<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;rejected &#34;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">msg</span>)})
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//rejected 2
+</span></span></span></code></pre></div></li>
+</ol>
+</li>
+<li>
+<p>注意，在传入的函数中，必须显式调用resolveCBName或rejectCBName，否则运行完构造函数参数后直接退出。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promise</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolveCBName</span>, <span style="color:#a6e22e">rejectCBName</span>) =&gt; {
+</span></span><span style="display:flex;"><span>}).<span style="color:#a6e22e">then</span>(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;fullfilled&#34;</span>)
+</span></span><span style="display:flex;"><span>}).<span style="color:#66d9ef">catch</span>(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;rejected&#34;</span>)
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//打印为空
+</span></span></span></code></pre></div></li>
+<li>
+<p>链式调用时，后面的使用return表示接受或者throw表示拒绝，亦或者新建Promise对象。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promise</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolveCBName</span>, <span style="color:#a6e22e">rejectCBName</span>) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">resolveCBName</span>()
+</span></span><span style="display:flex;"><span>}).<span style="color:#a6e22e">then</span>(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span><span style="color:#75715e">//或者不写return,默认返回,都是表示接受
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}).<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">msg</span>) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;fullfilled &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">msg</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">throw</span> <span style="color:#e6db74">&#34;2&#34;</span>
+</span></span><span style="display:flex;"><span>}).<span style="color:#66d9ef">catch</span>((<span style="color:#a6e22e">msg</span>) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;rejected &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">msg</span>)
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//fullfilled 1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//rejected 2
+</span></span></span></code></pre></div><p>新建Promise对象</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promise</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolveCBName</span>, <span style="color:#a6e22e">rejectCBName</span>) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">resolveCBName</span>()
+</span></span><span style="display:flex;"><span>}).<span style="color:#a6e22e">then</span>(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolveCBName</span>, <span style="color:#a6e22e">rejectCBName</span>) =&gt; {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">resolveCBName</span>(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    })
+</span></span><span style="display:flex;"><span>}).<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">msg</span>) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;fullfilled &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">msg</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolveCBName</span>, <span style="color:#a6e22e">rejectCBName</span>) =&gt; {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">rejectCBName</span>(<span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>    })
+</span></span><span style="display:flex;"><span>}).<span style="color:#66d9ef">catch</span>((<span style="color:#a6e22e">msg</span>) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;rejected &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">msg</span>)
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//fullfilled 1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//rejected 2
+</span></span></span></code></pre></div></li>
+<li>
+<p>实际上，<code>catch(msg)</code> 是 <code>then(null, msg)</code> 的缩略形式。二者是等同地位的。then的两个参数分别代表接受和拒绝。可以使用then而不使用catch。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promise</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolveCBName</span>, <span style="color:#a6e22e">rejectCBName</span>) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">resolveCBName</span>()
+</span></span><span style="display:flex;"><span>}).<span style="color:#a6e22e">then</span>(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">throw</span> <span style="color:#e6db74">&#34;2&#34;</span>
+</span></span><span style="display:flex;"><span>}).<span style="color:#a6e22e">then</span>(
+</span></span><span style="display:flex;"><span>    (<span style="color:#a6e22e">msg</span>) =&gt; {<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;fullfilled &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">msg</span>)}, 
+</span></span><span style="display:flex;"><span>    (<span style="color:#a6e22e">msg</span>) =&gt; {<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;rejected &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">msg</span>)
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//rejected 2
+</span></span></span></code></pre></div><p>如果我们省略了 <code>then</code> 方法的第二个参数，那么在 Promise 对象被拒绝时会抛出一个未捕获的错误。因此，在使用 <code>then</code> 方法时，建议<strong>始终提供第二个参数以处理拒绝情况</strong>，或者<strong>在链式调用中使用 <code>catch</code> 方法来处理拒绝情况</strong>。</p>
+</li>
+</ol>
+<h3 id="js-module">JS Module</h3>
+<p>js的模块机制经历了以下几个阶段：</p>
+<ul>
+<li>模块模式（Module Pattern）：这是最早的一种模拟模块系统的方法，使用立即执行函数表达式（IIFE）来创建一个私有作用域，然后通过返回一个对象来暴露需要公开的变量或函数。这种方法依赖于闭包和函数作用域。</li>
+<li>CommonJS：这是Node.js使用的一种模块系统，使用require()函数来同步地加载一个模块，并使用module.exports或exports对象来导出一个模块。这种方法依赖于文件系统和运行时环境。</li>
+<li>AMD：这是一种异步加载模块的方法，主要用于浏览器端。使用define()函数来定义一个模块，并使用require()函数来异步地加载一个或多个依赖模块。这种方法依赖于回调函数和网络请求。</li>
+<li>UMD：这是一种兼容CommonJS和AMD两种规范的通用方法，可以在不同的环境中运行。使用define()函数来检测当前环境，并根据不同情况选择合适的加载方式。</li>
+<li>ES6 Modules：这是目前最新和最推荐的一种原生支持的模块系统，使用import和export关键字来导入或导出一个模块，并且支持静态分析和按需加载。这种方法依赖于语言层面提供的特性。</li>
+</ul>
+<h4 id="模块模式">模块模式</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// 模块模式
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">foo</span> <span style="color:#f92672">=</span> (<span style="color:#66d9ef">function</span> () {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sayName</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">name</span>) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">`Hey, my name is </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">name</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>);
+</span></span><span style="display:flex;"><span>  };
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 暴露公开的变量或函数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">callSayName</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">name</span>) =&gt; <span style="color:#a6e22e">sayName</span>(<span style="color:#a6e22e">name</span>),
+</span></span><span style="display:flex;"><span>  };
+</span></span><span style="display:flex;"><span>})();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//使用
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">foo</span>.<span style="color:#a6e22e">callSayName</span>(<span style="color:#e6db74">&#39;name&#39;</span>)
+</span></span></code></pre></div><h4 id="commonjs">CommonJS</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// CommonJS
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 导出一个模块
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">a</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">b</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 或者
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">exports</span>.<span style="color:#a6e22e">a</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">exports</span>.<span style="color:#a6e22e">b</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 导入一个模块
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">foo</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#34;./foo.js&#34;</span>);
+</span></span></code></pre></div><h4 id="es6-modules">ES6 Modules</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// ES6 Modules
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">defaultExport</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;module-name&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#66d9ef">default</span> <span style="color:#a6e22e">as</span> <span style="color:#a6e22e">alias</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;module-name&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">as</span> <span style="color:#a6e22e">name</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;module-name&#34;</span>; <span style="color:#75715e">//作为命名空间 使用：name.doThings();
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">export1</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;module-name&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">export1</span> <span style="color:#a6e22e">as</span> <span style="color:#a6e22e">alias1</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;module-name&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">export1</span>, <span style="color:#a6e22e">export2</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;module-name&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">export1</span>, <span style="color:#a6e22e">export2</span> <span style="color:#a6e22e">as</span> <span style="color:#a6e22e">alias2</span>, <span style="color:#75715e">/* … */</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;module-name&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//同时导入default和其他，default必须放在前面
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">defaultExport</span>, { <span style="color:#a6e22e">export1</span>, <span style="color:#75715e">/* … */</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;module-name&#34;</span>;  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">defaultExport</span>, <span style="color:#f92672">*</span> <span style="color:#a6e22e">as</span> <span style="color:#a6e22e">name</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;module-name&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#e6db74">&#34;module-name&#34;</span>; <span style="color:#75715e">//作为副作用引入
+</span></span></span></code></pre></div><h2 id="vue-选项式api">VUE-选项式API</h2>
+<h3 id="父组件向传子组件传递数据">父组件向传子组件传递数据</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">TestPage</span> <span style="color:#f92672">:</span><span style="color:#a6e22e">msg</span><span style="color:#f92672">=</span><span style="color:#a6e22e">msg</span> <span style="color:#f92672">@injectMsg</span><span style="color:#e6db74">=&#34;getChildMsg&#34;</span> <span style="color:#a6e22e">ref</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;testRef&#34;</span>&gt;&lt;/<span style="color:#f92672">TestPage</span>&gt;
+</span></span></code></pre></div><h4 id="props">props</h4>
+<p>是单向的，响应式的</p>
+<p>在父组件vue文件template中，声明</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">ChildPage</span> <span style="color:#a6e22e">v</span><span style="color:#f92672">-bind</span><span style="color:#f92672">:</span><span style="color:#a6e22e">childValName</span><span style="color:#f92672">=</span><span style="color:#a6e22e">passedValue</span>&gt;&lt;/<span style="color:#f92672">hildPage</span>&gt;
+</span></span></code></pre></div><p>在子组件vue文件script中，声明</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>  <span style="color:#a6e22e">props</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//提前定义接受的变量
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">msg</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> String,
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;nihao&#39;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// required: true
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
+</span></span><span style="display:flex;"><span>  },
+</span></span></code></pre></div><h4 id="provideinject">provide/inject</h4>
+<p>是单向的，响应式的</p>
+<p>在父组件vue文件script中，声明</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>  <span style="color:#a6e22e">provide</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">pmsg</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">obj</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span></code></pre></div><p>在子组件vue文件script中，声明</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>  <span style="color:#a6e22e">inject</span><span style="color:#f92672">:</span>[<span style="color:#e6db74">&#39;pmsg&#39;</span>]
+</span></span></code></pre></div><h4 id="refs不推荐">$refs，不推荐</h4>
+<p>父组件可以通过 $refs 获取子组件实例，然后调用子组件的方法或访问子组件的属性。</p>
+<p>在父组件vue文件template中，声明</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">child-component</span> <span style="color:#a6e22e">ref</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;child&#34;</span>&gt;<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/child-component&gt;</span>
+</span></span></code></pre></div><p>在父组件vue文件script中，声明</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">$refs</span>.<span style="color:#a6e22e">child</span>.<span style="color:#a6e22e">childData</span>
+</span></span></code></pre></div><h3 id="子组件向父组件传递数据">子组件向父组件传递数据</h3>
+<h4 id="emit">$emit</h4>
+<p>子组件注册事件，父组件监听，调用回调函数。</p>
+<p>在子组件vue文件script中，声明</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">methods</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//发送父亲
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">sendParent</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span> () {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//定义事件，等待父监听
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">$emit</span>(<span style="color:#e6db74">&#39;injectMsg&#39;</span>, <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">name</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>},
+</span></span></code></pre></div><p>在父组件vue文件template中，声明</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">ChildPage</span> <span style="color:#a6e22e">v</span><span style="color:#f92672">-on:injectMsg</span><span style="color:#e6db74">=&#34;getChildData&#34;</span>&gt;&lt;/<span style="color:#f92672">ChildPage</span>&gt;
+</span></span></code></pre></div><p>在父组件vue文件script中，声明</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">methods</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//接收孩子，收到孩子返回的信息
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">getChildData</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">value</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">msg</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">value</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>},
+</span></span></code></pre></div><p>使用v-on监听这个事件名称，监听到后就调用某个函数，这个函数的入参是子组件提供的。</p>
+<h4 id="同refsrefs不推荐">同<a href="#$refs%EF%BC%8C%E4%B8%8D%E6%8E%A8%E8%8D%90">$refs</a></h4>
+<p>调用子组件的回调函数，子组件的回调函数里返回子组件数据</p>
+<h3 id="状态函数">状态函数</h3>
+<p><a href="https://cn.vuejs.org/api/options-state.html">状态选项 | Vue.js (vuejs.org)</a></p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>computed</strong></td>
+<td><strong>计算属性，根据现有的数据计算出衍生出的数据</strong></td>
+</tr>
+<tr>
+<td><strong>watch</strong></td>
+<td><strong>监听数据变化，执行对应的回调函数</strong></td>
+</tr>
+<tr>
+<td>$watch</td>
+<td>与 watch 类似，但是是实例方法，可以直接在组件实例上调用</td>
+</tr>
+<tr>
+<td>$nextTick</td>
+<td>在下次 DOM 更新周期之后执行回调函数</td>
+</tr>
+<tr>
+<td>$refs</td>
+<td>访问组件实例或 DOM 元素</td>
+</tr>
+<tr>
+<td><strong>provide/inject</strong></td>
+<td><strong>父组件向子组件注入依赖</strong></td>
+</tr>
+<tr>
+<td><strong>props</strong></td>
+<td><strong>父组件向子组件传递数据</strong></td>
+</tr>
+<tr>
+<td>$emit</td>
+<td>子组件向父组件触发事件</td>
+</tr>
+<tr>
+<td>$on</td>
+<td>父组件监听子组件触发的事件</td>
+</tr>
+</tbody>
+</table>
+<p>以下是这些状态函数的功能说明：</p>
+<ol>
+<li>computed：计算属性，根据现有的数据计算出衍生出的数据，当计算所依赖的数据发生变化时会自动重新计算。</li>
+<li>watch：监听数据变化，执行对应的回调函数，可以监听单个数据的变化，也可以监听多个数据的变化。</li>
+<li>$watch：与 watch 类似，但是是实例方法，可以直接在组件实例上调用，用法与 watch 相同。</li>
+<li>$nextTick：在下次 DOM 更新周期之后执行回调函数，通常用于在修改数据后更新 DOM 后执行一些操作。</li>
+<li>$refs：访问组件实例或 DOM 元素，通过 ref 属性注册，可以在组件实例上使用 $refs 访问。</li>
+<li>provide/inject：父组件向子组件注入依赖，提供了一种依赖注入的方式，让子组件可以访问父组件的数据或方法。</li>
+<li>props：父组件向子组件传递数据，通过在子组件上绑定 props 属性来实现。</li>
+<li>$emit：子组件向父组件触发事件，可以传递数据，父组件可以在子组件上绑定自定义事件并在回调函数中接收数据。</li>
+<li>$on：父组件监听子组件触发的事件，用于接收子组件触发的自定义事件，并执行对应的回调函数。</li>
+</ol>
+<h3 id="生命周期函数">生命周期函数</h3>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>函数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>创建阶段</td>
+<td>beforeCreate</td>
+<td>实例刚被创建，数据观测（data observer）和事件机制（event/watcher）均未初始化</td>
+</tr>
+<tr>
+<td></td>
+<td>created</td>
+<td>实例已经创建完成，数据观测（data observer）已经初始化，但是还未挂载（mount）</td>
+</tr>
+<tr>
+<td></td>
+<td>beforeMount</td>
+<td>实例即将被挂载到页面上</td>
+</tr>
+<tr>
+<td></td>
+<td>mounted</td>
+<td>实例已经被挂载到页面上，此时实例的元素可以访问到</td>
+</tr>
+<tr>
+<td>更新阶段</td>
+<td>beforeUpdate</td>
+<td>组件更新之前调用，此时虚拟 DOM 并未重新渲染</td>
+</tr>
+<tr>
+<td></td>
+<td>updated</td>
+<td>组件更新完成之后调用，此时虚拟 DOM 已经重新渲染</td>
+</tr>
+<tr>
+<td>销毁阶段</td>
+<td>beforeUnmount</td>
+<td>实例即将被销毁，此时实例还可以访问</td>
+</tr>
+<tr>
+<td></td>
+<td>unmounted</td>
+<td>实例已经被销毁，此时实例上的所有东西都不可访问</td>
+</tr>
+</tbody>
+</table>
+<h3 id="组件插空">组件插空</h3>
+<p>子组件可以预留一些空位，父组件进行填入。</p>
+<p>在子组件vue文件template中，声明</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">slot</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;s1&#34;</span> <span style="color:#a6e22e">v</span><span style="color:#f92672">-bind</span><span style="color:#f92672">:</span><span style="color:#a6e22e">numlist</span><span style="color:#f92672">=</span><span style="color:#a6e22e">numlist</span>&gt;&lt;/<span style="color:#f92672">slot</span>&gt;
+</span></span></code></pre></div><p>在父组件vue文件template中，声明</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">SlotContent</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">template</span> <span style="color:#a6e22e">v</span><span style="color:#f92672">-slot:s1</span><span style="color:#e6db74">=&#34;slotMsg&#34;</span>&gt;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">slotContent</span><span style="color:#f92672">:</span> {{ <span style="color:#a6e22e">slotMsg</span>.<span style="color:#a6e22e">numlist</span> }}
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">template</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">SlotContent</span>&gt;
+</span></span></code></pre></div><p>具名插空v-slot:name。对于数据，子组件使用v-bind绑定子组件数据，父组件使用一个自己定义的变量，再通过这个变量访问子组件数据。</p>
+<h2 id="vue-router路由">vue-router路由</h2>
+<h3 id="第一步定义路由">第一步：定义路由</h3>
+<p>使用js模块机制，可以单独定义在router.js</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">createRouter</span>, <span style="color:#a6e22e">createWebHashHistory</span>, <span style="color:#a6e22e">createWebHistory</span>} <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;vue-router&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//预先导入组件与加载，不是&#34;懒加载&#34;。懒加载在只有使用时才加载，提升性能，是建议的方式。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">Sidebar</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;../views/Sidebar.vue&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 定义一些路由
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 每个路由都需要映射到一个组件。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//router是一个数组格式，里面是路由对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">routes</span> <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    {<span style="color:#75715e">//重定向路由
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/&#39;</span>, 
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">redirect</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/home&#39;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    {<span style="color:#75715e">//没什么特别的路由，path指定路径，component指定组件
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/home&#39;</span>, 
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">component</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">Home</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">#</span><span style="color:#ae81ff">1</span>      <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/user/:id&#39;</span>,<span style="color:#75715e">//动态路由，匹配/user/123 见例1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">#</span><span style="color:#ae81ff">2</span>      <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;user&#39;</span>,	<span style="color:#75715e">//名字，用于跳转时指定名字 见例2
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#a6e22e">component</span><span style="color:#f92672">:</span> () =&gt; <span style="color:#66d9ef">import</span>(<span style="color:#e6db74">&#39;../views/User.vue&#39;</span>), <span style="color:#75715e">//懒加载
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">#</span><span style="color:#ae81ff">3</span>      <span style="color:#a6e22e">props</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>, <span style="color:#75715e">//用于绑定path里的参数和组件里的props组件 见例3
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#a6e22e">beforeEnter</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">to</span>, <span style="color:#a6e22e">from</span>, <span style="color:#a6e22e">next</span>) =&gt; { <span style="color:#75715e">//每路守卫，根据来源和去向信息进行访问拦截
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#75715e">// console.log(to, from)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#a6e22e">next</span>()
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">#</span><span style="color:#ae81ff">4</span>      <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/user/:id*&#39;</span>, <span style="color:#75715e">//正则匹配，匹配/user?id=1234，query形式，见例4
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#a6e22e">component</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">NotFound</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/:path(.*)*&#39;</span>, <span style="color:#75715e">//正则匹配，()表示path匹配的字符串，括号后表示对整个参数的正则，使用?、+、*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#a6e22e">component</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">NotFound</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/parent&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">alias</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/father&#39;</span>, <span style="color:#75715e">//别名
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#a6e22e">component</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">Parent</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">children</span><span style="color:#f92672">:</span> [ <span style="color:#75715e">//路由分组，只是路由关系，并不决定组件之间的关系，组件跳转仍需写全路径例如/parent/st1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;st1&#39;</span>, <span style="color:#75715e">//相当于/parent/st1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#a6e22e">component</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">ST1</span>
+</span></span><span style="display:flex;"><span>            },
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;st2&#39;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">component</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">ST2</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        ]
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/onshow&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">#</span><span style="color:#ae81ff">5</span>      <span style="color:#a6e22e">components</span><span style="color:#f92672">:</span> {	<span style="color:#75715e">//components复数，表示同一路径下将要显示多个组件，见例5
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">OnShow</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">Topbar</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">Topbar</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">Sidebar</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">Sidebar</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 创建路由实例并传递 routes 配置
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">router</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">createRouter</span>({
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// history函数。createWebHashHistory，createWebHistory
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">history</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">createWebHistory</span>(),
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">routes</span>, <span style="color:#75715e">// 刚才定义的数组
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//全球守卫
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">beforeEach</span>((<span style="color:#a6e22e">to</span>, <span style="color:#a6e22e">from</span>, <span style="color:#a6e22e">next</span>) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// console.log(to, from)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">next</span>()
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//导出
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#a6e22e">router</span>;
+</span></span></code></pre></div><h4 id="例1-使用动态路由">例1 使用动态路由</h4>
+<p>父组件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">router-link</span> <span style="color:#a6e22e">to</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/user/123&#34;</span>&gt;<span style="color:#a6e22e">Go</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">User</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/router-link&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">router-view</span>&gt;<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/router-view&gt;</span>
+</span></span></code></pre></div><p>需要显示的组件，获取id=123</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span><span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">$route</span>.<span style="color:#a6e22e">params</span>.<span style="color:#a6e22e">id</span>
+</span></span></code></pre></div><h4 id="例2-使用具名路由--params-实现动态路由">例2 使用具名路由 + params 实现动态路由</h4>
+<p>父组件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span><span style="color:#75715e">&lt;!--</span><span style="color:#a6e22e">使用path后就不能再使用params</span>,<span style="color:#a6e22e">因此params必须搭配name</span>,<span style="color:#a6e22e">等同于</span><span style="color:#f92672">/</span><span style="color:#a6e22e">user</span><span style="color:#f92672">/</span><span style="color:#ae81ff">123</span><span style="color:#f92672">--&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">router-link</span> <span style="color:#f92672">:to</span><span style="color:#e6db74">=&#34;{name:&#39;user&#39;,params:{id:&#39;123&#39;}}&#34;</span>&gt;<span style="color:#a6e22e">Go</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">User</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/router-link&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">router-view</span>&gt;<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/router-view&gt;</span>
+</span></span></code></pre></div><p>需要显示的组件，获取id=123</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span><span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">$route</span>.<span style="color:#a6e22e">params</span>.<span style="color:#a6e22e">id</span>
+</span></span></code></pre></div><h4 id="例3-使用props-实现动态路由">例3 使用props 实现动态路由</h4>
+<p>父组件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">router-link</span> <span style="color:#a6e22e">to</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/user/123&#34;</span>&gt;<span style="color:#a6e22e">Go</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">User</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/router-link&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">router-view</span>&gt;<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/router-view&gt;</span>
+</span></span></code></pre></div><p>需要显示的组件，获取id=123，在script中指定props，相当于父子组件的props，可在当前组件通过this.id直接访问</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">props</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#39;id&#39;</span>]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h4 id="例4-使用具名路由--query-实现动态路由">例4 使用具名路由 + query 实现动态路由</h4>
+<p>父组件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">router-link</span> <span style="color:#f92672">:to</span><span style="color:#e6db74">=&#34;{path:&#39;/user&#39;,query:{id:&#39;123&#39;}}&#34;</span>&gt;<span style="color:#a6e22e">Go</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">User</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/router-link&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">router-view</span>&gt;<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/router-view&gt;</span>
+</span></span></code></pre></div><p>需要显示的组件，获取id=123</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">$route</span>.<span style="color:#a6e22e">query</span>.<span style="color:#a6e22e">id</span>
+</span></span></code></pre></div><h4 id="例5-实现多组件一页面">例5 实现多组件一页面</h4>
+<p>父组件需要显示的位置，这个router-view位置是和router-link位置绑定的</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">router-view</span>&gt;<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/router-view&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">router-view</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Topbar&#34;</span>&gt;<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/router-view&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">router-view</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Sidebar&#34;</span>&gt;<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/router-view&gt;</span>
+</span></span></code></pre></div><p>需要显示的组件无需特殊处理。</p>
+<h3 id="第二步在mainjs中使用使用路由">第二步，在main.js中使用使用路由</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">app</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">createApp</span>(<span style="color:#a6e22e">App</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">use</span>(<span style="color:#a6e22e">router</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">mount</span>(<span style="color:#e6db74">&#39;#app&#39;</span>)
+</span></span></code></pre></div><h3 id="通过js代码控制路由编程式导航">通过js代码控制路由（编程式导航）</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// route是当前活跃的路由的对象，router是全局的路由对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">$router</span>.<span style="color:#a6e22e">push</span>(<span style="color:#e6db74">&#39;/parent&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 等同于
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">$router</span>.<span style="color:#a6e22e">push</span>({<span style="color:#a6e22e">path</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#39;/parent&#39;</span>})
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 使用name才能带参数，使用path不能带params
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">$router</span>.<span style="color:#a6e22e">push</span>({<span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;user&#39;</span>, <span style="color:#a6e22e">params</span><span style="color:#f92672">:</span> {<span style="color:#a6e22e">id</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1234</span>}})
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 带query,等同于 /parent/?id=1234, 还可以使用replace替代当前，不会在history里留下记录
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">$router</span>.<span style="color:#a6e22e">push</span>({<span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/user&#39;</span>, <span style="color:#a6e22e">query</span><span style="color:#f92672">:</span> {<span style="color:#a6e22e">id</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1234</span>}, <span style="color:#a6e22e">replace</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>})
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//前进正数，后退负数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">$router</span>.<span style="color:#a6e22e">go</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+</span></span></code></pre></div><h3 id="使用js从网络获取数据">使用js从网络获取数据</h3>
+<p>这里创建了一个存储池。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">reactive</span>} <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#34;vue&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">axios</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;axios&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">store</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">state</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">reactive</span>({<span style="color:#a6e22e">msg</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;helloworld&#34;</span>}),
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">updateMsg</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span> () {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">msg</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;nihao&#39;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">updateFromNet1</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span> () {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//原生fetch
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://localhost:8080&#39;</span>).<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">res</span>) =&gt; {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">json</span>()
+</span></span><span style="display:flex;"><span>        }).<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">res</span>) =&gt; {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">msg</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">name</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">updateFromNet2</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span> () {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//三方库axios
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#a6e22e">axios</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#39;http://localhost:8080&#39;</span>).<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">res</span>) =&gt; {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">msg</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">name</span>
+</span></span><span style="display:flex;"><span>        })
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#a6e22e">store</span>
+</span></span></code></pre></div><p>利用reactive绑定对象，在App.vue父组件和相关子组件中可以利用<a href="#provide/inject">provide/inject</a>，快捷传递响应式数据。</p>
+<h2 id="vuex">VUEX</h2>
+<p>出现原因：大型软件数据流过于复杂，这里集中管理。</p>
+<p>vuex具有五个概念。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">组件</th>
+<th style="text-align:left">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">state</td>
+<td style="text-align:left">存储应用的状态数据，可以被所有组件访问</td>
+</tr>
+<tr>
+<td style="text-align:left">getters</td>
+<td style="text-align:left">计算或过滤state中的数据，可以被所有组件使用</td>
+</tr>
+<tr>
+<td style="text-align:left">mutations</td>
+<td style="text-align:left">同步修改state中的数据，只能通过commit触发</td>
+</tr>
+<tr>
+<td style="text-align:left">actions</td>
+<td style="text-align:left">异步修改state中的数据，可以包含任意逻辑，只能通过dispatch触发</td>
+</tr>
+<tr>
+<td style="text-align:left">modules</td>
+<td style="text-align:left">将store分割成多个模块，每个模块有自己的state、getters、mutations和actions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="定义">定义</h3>
+<p><strong>首先使用JS模块化定义。</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">//store/index.js
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">createStore</span>} <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;vuex&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">axios</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;axios&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">moduleA</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;./aStore&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#a6e22e">createStore</span>({
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">state</span><span style="color:#f92672">:</span> { <span style="color:#75715e">//单一状态，基本数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#a6e22e">count</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">fatherName</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;Bob&#39;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">getters</span><span style="color:#f92672">:</span> {<span style="color:#75715e">//相当于computed选项,对state的进一步计算
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#a6e22e">getCount</span>(<span style="color:#a6e22e">state</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;计数：&#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">count</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//第二个参数代表自身
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#a6e22e">getDescripCount</span>(<span style="color:#a6e22e">state</span>, <span style="color:#a6e22e">getters</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;Descrip &#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">getters</span>.<span style="color:#a6e22e">getCount</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">mutations</span><span style="color:#f92672">:</span> {<span style="color:#75715e">//使用这个里面的函数改变数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">//必须通过this.$store.commit(&#39;funName&#39;, payload)触发
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">//首个参数必须是state，第二个是args集成到一个对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#a6e22e">increment</span>(<span style="color:#a6e22e">state</span>, <span style="color:#a6e22e">payload</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">count</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">payload</span>.<span style="color:#a6e22e">inc</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">changeName</span>(<span style="color:#a6e22e">state</span>, <span style="color:#a6e22e">payload</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">fatherName</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">payload</span>.<span style="color:#a6e22e">args</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">payload</span>.<span style="color:#a6e22e">name</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">actions</span><span style="color:#f92672">:</span> {<span style="color:#75715e">//Action 提交的是 mutation，而不是直接变更状态。Action 可以包含任意异步操作。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">//必须通过this.$store.dispatch(&#39;funName&#39;, args)触发,本质上是对调用mutation的封装
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">//类似mutations的state参数, context是当前store对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#a6e22e">getLastNameAndChange</span>(<span style="color:#a6e22e">context</span>, <span style="color:#a6e22e">args</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://localhost:8081&#39;</span>)
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">res</span>) =&gt; {
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">json</span>()
+</span></span><span style="display:flex;"><span>                })
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">res</span>) =&gt; {
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e">//必须使用mutation
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                    <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">commit</span>(<span style="color:#e6db74">&#39;changeName&#39;</span>, {<span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">args</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">args</span>})
+</span></span><span style="display:flex;"><span>                })
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">getLastName</span>() {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">axios</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#39;http://localhost:8081&#39;</span>).<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">res</span>) =&gt; {
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">name</span>)
+</span></span><span style="display:flex;"><span>            })
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">modules</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">moduleA</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>})
+</span></span></code></pre></div><p><strong>vuex模块，aStore.js</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">state</span><span style="color:#f92672">:</span> {<span style="color:#75715e">//通过$store.state.moduleA.age获取,多加了一个模块名称
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#a6e22e">age</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">14</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">getters</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//state: 当前节点的, getters: 当前节点的,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">//rootState: 根节点的, rootGetters: 根节点的
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#a6e22e">getAllInfo</span>(<span style="color:#a6e22e">state</span>, <span style="color:#a6e22e">getters</span>, <span style="color:#a6e22e">rootState</span>, <span style="color:#a6e22e">rootGetters</span>) {<span style="color:#75715e">//直接通过$store.getters.getAllInfo,不需要多加
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">age</span>.<span style="color:#a6e22e">toString</span>() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">rootState</span>.<span style="color:#a6e22e">count</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">rootGetters</span>.<span style="color:#a6e22e">getDescripCount</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">mutations</span><span style="color:#f92672">:</span> {<span style="color:#75715e">//直接通过$store.commit(&#39;updateAge&#39;)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#a6e22e">updateAge</span>(<span style="color:#a6e22e">state</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">age</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">19</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">actions</span><span style="color:#f92672">:</span> {}<span style="color:#75715e">//直接通过$store.dispatch(&#39;funcName&#39;)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>然后在main.js中use即可。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">createApp</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;vue&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">App</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;./App.vue&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">router</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;./router&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">store</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;./store&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">createApp</span>(<span style="color:#a6e22e">App</span>).<span style="color:#a6e22e">use</span>(<span style="color:#a6e22e">store</span>).<span style="color:#a6e22e">use</span>(<span style="color:#a6e22e">router</span>).<span style="color:#a6e22e">mount</span>(<span style="color:#e6db74">&#39;#app&#39;</span>)
+</span></span></code></pre></div><h3 id="使用">使用</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">template</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;home&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span>&gt;{{ <span style="color:#a6e22e">$store</span>.<span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">count</span> }}&lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span>&gt;{{ <span style="color:#a6e22e">count</span> }}&lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span>&gt;{{ <span style="color:#a6e22e">$store</span>.<span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">fatherName</span> }}&lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span>&gt; {{ <span style="color:#a6e22e">$store</span>.<span style="color:#a6e22e">getters</span>.<span style="color:#a6e22e">getCount</span> }}&lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span>&gt; {{ <span style="color:#a6e22e">$store</span>.<span style="color:#a6e22e">getters</span>.<span style="color:#a6e22e">getDescripCount</span> }}&lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>       <span style="color:#75715e">&lt;!--</span><span style="color:#a6e22e">使用dispatch调用action</span><span style="color:#f92672">--&gt;</span>
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">button</span> <span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">click</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$store.dispatch(&#39;getLastNameAndChange&#39;, &#39;John&#39;)&#34;</span>&gt;<span style="color:#a6e22e">change</span> <span style="color:#a6e22e">father</span> <span style="color:#a6e22e">name</span>&lt;/<span style="color:#f92672">button</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">button</span> <span style="color:#f92672">@click</span><span style="color:#e6db74">=&#34;$store.dispatch(&#39;getLastName&#39;)&#34;</span>&gt;<span style="color:#a6e22e">get</span> <span style="color:#a6e22e">last</span> <span style="color:#a6e22e">name</span> <span style="color:#a6e22e">in</span> <span style="color:#a6e22e">console</span>&lt;/<span style="color:#f92672">button</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span>&gt;{{ <span style="color:#a6e22e">$store</span>.<span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">moduleA</span>.<span style="color:#a6e22e">age</span> }}&lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span>&gt;{{ <span style="color:#a6e22e">$store</span>.<span style="color:#a6e22e">getters</span>.<span style="color:#a6e22e">getAllInfo</span> }}&lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>       <span style="color:#75715e">&lt;!--</span><span style="color:#a6e22e">使用commit调用mutation</span><span style="color:#f92672">--&gt;</span>
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">button</span> <span style="color:#f92672">@click</span><span style="color:#e6db74">=&#34;$store.commit(&#39;updateAge&#39;)&#34;</span>&gt;<span style="color:#a6e22e">update</span> <span style="color:#a6e22e">age</span>&lt;/<span style="color:#f92672">button</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">template</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// @ is an alias to /src
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">mapState</span>} <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;vuex&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;HomeView&#39;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">computed</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 必须使用computed才能使得vuex的state和getter响应式
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">otherFunc</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span> () {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// //使用mapState 通过别名映射
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// ...mapState({
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//       //count1: state =&gt; state.count
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//       count1: &#39;count&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//     }),
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//直接使用原来的名字
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    ...<span style="color:#a6e22e">mapState</span>([<span style="color:#e6db74">&#39;count&#39;</span>])
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span></code></pre></div><h2 id="vue-bug排除">VUE bug排除</h2>
+<h3 id="栈溢出">栈溢出</h3>
+<ul>
+<li>watch中修改监控的变量</li>
+<li>watch直接监控ref，解决：放到箭头函数里</li>
+</ul>
+<h3 id="网页刷新后没有东西但是服务器重新编译后重连后出现">网页刷新后没有东西，但是服务器重新编译后重连后出现</h3>
+<ul>
+<li>异步关系错乱</li>
+</ul>
+
+  </div>
+
+  <footer class="post-footer">
+    
+
+    
+
+    
+    
+  </footer>
+  
+  <div class="comments">
+  <div class="comments">
+
+
+
+</div>
+  </div>
+</article>
+
+  <div class="foot">
+  
+  &copy; 2019 - 2023 &#183;
+  <a href="/"> YuYoung&#39;s Blog </a> &nbsp;&nbsp;
+  <a href="#"><i class="fas fa-chevron-up"></i></a>
+</div>
+</body>
+  <script src="/js/lazyload.min.js"></script>
+<script>
+  var lazyImage = new LazyLoad({container: document.getElementById('article')});
+</script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous"></script>
+<script>
+    (function() {
+        var $toc = $('#TableOfContents');
+        if ($toc.length > 0) {
+            var $window = $(window);
+
+            function onScroll(){
+                var currentScroll = $window.scrollTop();
+                var h = $('.post-text h1, .post-text h2, .post-text h3, .post-text h4, .post-text h5, .post-text h6');
+                var id = "";
+                h.each(function (i, e) {
+                    e = $(e);
+                    if (e.offset().top - 10 <= currentScroll) {
+                        id = e.attr('id');
+                    }
+                });
+                var active = $toc.find('a.active');
+                if (active.length == 1 && active.eq(0).attr('href') == '#' + id) return true;
+
+                active.each(function (i, e) {
+                    $(e).removeClass('active').siblings('ul').hide();
+                });
+                $toc.find('a[href="#' + id + '"]').parentsUntil('#TableOfContents').each(function (i, e) {
+                    $(e).children('a').addClass('active').siblings('ul').show();
+                });
+            }
+
+            $window.on('scroll', onScroll);
+            $(document).ready(function() {
+                $toc.find('a').parent('li').find('ul').hide();
+                onScroll();
+                document.getElementsByClassName('post-toc')[0].style.display = '';
+            });
+        }
+    })();
+</script>
+
+
+</html>
