@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Hugo 0.111.3">
+  <title> C&#43;&#43;的引用与重载解析 | YuYoung&#39;s Blog </title>
+  <meta name="description" content="YuYoung的博客">
+  <link rel="stylesheet" href="https://yuyoung32.github.io/css/simpleness.css">
+  <link rel="canonical" href="https://yuyoung32.github.io/post/c&#43;&#43;%E5%BC%95%E7%94%A8%E4%B8%8E%E9%87%8D%E8%BD%BD%E8%A7%A3%E6%9E%90/">
+  <link rel="alternate" type="application/rss+xml" href="" title="YuYoung&#39;s Blog">
+  
+  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+  
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6QCN1ZG6DB"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-6QCN1ZG6DB', { 'anonymize_ip': false });
+}
+</script>
+
+  
+</head>
+<body class="container">
+  <nav class="navigation">
+  <div class="nav-left">
+    
+    <div class="nav-item nav-title">
+      <a href="https://yuyoung32.github.io/"> YuYoung&#39;s Blog</a>
+    </div>
+    <div class="nav-item nav-menu">
+      
+      <a href="/"> Home</a>
+      
+      <a href="/about/"> About</a>
+      
+    </div>
+  </div>
+  <div class="nav-item nav-right fontawesome">
+    
+    
+    <a href="https://github.com/YuYoung32" target="_blank">
+      <i title="GitHub" class="fab fa-github"></i>
+    </a>
+    
+    
+    <a href="https://yuyoung32.github.io/index.xml" target="_blank">
+      <i title="RSS" class="fas fa-rss"></i>
+    </a>
+    
+  </div>
+</nav>
+
+  
+<article class="post">
+  <header class="post-header">
+    <h1 style="text-align: center;" >C&#43;&#43;的引用与重载解析</h1>
+    <div class="post-metadata">
+    
+      <time datetime="2023-05-16T18:04:01&#43;08:00">May 16, 2023</time> &nbsp; 
+    
+    
+    
+    
+    
+    
+      <i class="fas fa-folder"></i>
+      
+      <a href="/categories/c&#43;&#43;">c&#43;&#43;</a>
+      &nbsp;
+      
+    
+    </div>
+  </header>
+
+  
+  <div class="post-toc">
+    <div class="post-toc-title">-目录-</div>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#左右值和左右值引用">左右值和左右值引用</a>
+      <ul>
+        <li><a href="#左右值之分">左右值之分</a></li>
+        <li><a href="#引用坍缩规则reference-collapsing">引用坍缩规则（Reference Collapsing）</a></li>
+        <li><a href="#rvalue的生命期延长规则">rvalue的生命期延长规则</a></li>
+      </ul>
+    </li>
+    <li><a href="#重载解析">重载解析</a>
+      <ul>
+        <li><a href="#重载的重要机制函数名称修饰">重载的重要机制：函数名称修饰</a></li>
+        <li><a href="#重载要求">重载要求</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+  
+
+  <div class="post-text">
+    <p>本文讲述了C++的左右值和左右值和左右值引用，以及它们在重载解析当中的顺序。</p>
+<h2 id="左右值和左右值引用">左右值和左右值引用</h2>
+<h3 id="左右值之分">左右值之分</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>   expression
+</span></span><span style="display:flex;"><span>    |       \
+</span></span><span style="display:flex;"><span>  glvalue  rvalue
+</span></span><span style="display:flex;"><span>  /     \  /     \
+</span></span><span style="display:flex;"><span>lvalue  xvalue  prvalue
+</span></span></code></pre></div><p>广义左值glvalue，都是可以有标识符的。广义右值rvalue，都是可移动（std::move）的。xvalue属于这两者，既可以移动又可以有标识符。</p>
+<p><strong>左值lvalue：</strong> 可以取地址，有名字的，非临时的就是左值。non-const左值可以放在“=”的左侧。</p>
+<ol>
+<li>
+<p>变量int a的a，引用int&amp; a的a，数组元素int arr[]的arr[i]，左值对象的成员</p>
+</li>
+<li>
+<p>返回左值引用的表达式/函数，例如，++x，x=1，函数返回值如下</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span><span style="color:#f92672">&amp;</span> square(<span style="color:#66d9ef">int</span><span style="color:#f92672">&amp;</span> number) {
+</span></span><span style="display:flex;"><span>    number <span style="color:#f92672">=</span> number <span style="color:#f92672">*</span> number; <span style="color:#75715e">// 修改参数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> number; <span style="color:#75715e">// 返回左值引用
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> number <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>;
+</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;number: &#34;</span> <span style="color:#f92672">&lt;&lt;</span> number <span style="color:#f92672">&lt;&lt;</span> endl; <span style="color:#75715e">// 输出：number: 5
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    square(number) <span style="color:#f92672">=</span> <span style="color:#ae81ff">25</span>; <span style="color:#75715e">// 可以在左侧赋值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;number: &#34;</span> <span style="color:#f92672">&lt;&lt;</span> number <span style="color:#f92672">&lt;&lt;</span> endl; <span style="color:#75715e">// 输出：number: 25
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+<li>
+<p>特殊：字符串字面量，如&quot;hello world!&quot;，但是字符串字面量是const类型不可修改</p>
+</li>
+</ol>
+<p><strong>纯右值prvalue：</strong> 不能取地址，没有名字的，临时的就是右值。不可以放在“=”的左侧。</p>
+<ol>
+<li>除字符串字面量外的字面量，如true</li>
+<li>返回非引用的表达式/函数</li>
+<li>临时对象</li>
+<li>lambda表达式</li>
+</ol>
+<p><strong>将亡值xvalue</strong>，Expiring Value：不可以放在“=”的左侧。通常出现在以下三种情况：</p>
+<ol>
+<li>
+<p>将要被移动的对象</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>std<span style="color:#f92672">::</span>string s1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello&#34;</span>;
+</span></span><span style="display:flex;"><span>std<span style="color:#f92672">::</span>string s2 <span style="color:#f92672">=</span> std<span style="color:#f92672">::</span>move(s1);    <span style="color:#75715e">// 使用std::move()将s1移动到s2中，此时s1就成为了一个xvalue。
+</span></span></span></code></pre></div></li>
+<li>
+<p>强制类型转换表达式（static_cast、dynamic_cast、reinterpret_cast、const_cast）的结果，其中源类型和目标类型都是右值引用类型，并且在此过程中发生了一次类型转换</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Base</span> { <span style="color:#75715e">/*...*/</span> };
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Derived</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> Base { <span style="color:#75715e">/*...*/</span> };
+</span></span><span style="display:flex;"><span>Derived d;
+</span></span><span style="display:flex;"><span>Base<span style="color:#f92672">&amp;&amp;</span> b <span style="color:#f92672">=</span> <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span>Base<span style="color:#f92672">&amp;&amp;&gt;</span>(d);    <span style="color:#75715e">// 在进行类型转换时，d被转换为一个右值引用类型的Base对象，并且在此过程中发生了一次类型转换，因此b成为了一个xvalue。
+</span></span></span></code></pre></div></li>
+<li>
+<p>函数返回值为右值引用类型</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>std<span style="color:#f92672">::</span>string<span style="color:#f92672">&amp;&amp;</span> foo() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> std<span style="color:#f92672">::</span>string{<span style="color:#e6db74">&#34;world&#34;</span>};    <span style="color:#75715e">// 返回一个右值引用，由于返回的对象是临时创建的，因此它将在函数返回后被销毁，因此该返回值是一个xvalue。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>std<span style="color:#f92672">::</span>string s <span style="color:#f92672">=</span> foo();    <span style="color:#75715e">// 调用foo()函数，将右值引用赋值给s，此时s成为了一个xvalue。
+</span></span></span></code></pre></div></li>
+<li>
+<p>右值引用类型的变量</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>std<span style="color:#f92672">::</span>string<span style="color:#f92672">&amp;&amp;</span> s <span style="color:#f92672">=</span> std<span style="color:#f92672">::</span>string{<span style="color:#e6db74">&#34;world&#34;</span>};    <span style="color:#75715e">// 在声明变量时，将一个右值引用绑定到一个临时创建的std::string对象上，此时s成为了一个xvalue。
+</span></span></span></code></pre></div></li>
+</ol>
+<p><strong>左值引用：</strong> 相当于指针指向某个左值，取了左值的地址。就是说左值引用要求右边的值可以取地址，若不能取地址可以像这样<code>const int&amp; a = 1;</code>，这样做实际是创建临时变量。</p>
+<p><strong>右值引用：</strong> 相当于指针指向某个右值，右值没有地址意味着创建了临时变量来存储。类似于左值引用使用const，但是使用了const无法修改，这里可以修改。</p>
+<p>为何会有左右值？引用实际上就是简化了指针，或者说内存标识符。为了精确控制内存生命周期，避免没必要的内存拷贝。</p>
+<p>例如：在深拷贝时，直接将传入的右值内存拿过来，因为右值是临时创建的，不可能再用。可移动对象在“<strong>需要拷贝且被拷贝者之后不再被需要</strong>”的场景，可以使用 <code>std::move</code> 将左值转换成右值，提升性能。而<code>std::forward&lt;T&gt;(rlValue)</code>会保持rlValue的引用型。</p>
+<h3 id="引用坍缩规则reference-collapsing">引用坍缩规则（Reference Collapsing）</h3>
+<p>左右值引用的本身仍然是左值。</p>
+<p>因此在函数传参、模板等情况。会遭遇引用组合的问题。</p>
+<table>
+<thead>
+<tr>
+<th>声明</th>
+<th>传入</th>
+<th>内部解析为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T&amp;</td>
+<td>&amp;</td>
+<td>T&amp;</td>
+</tr>
+<tr>
+<td>T&amp;</td>
+<td>&amp;&amp;</td>
+<td>T&amp;</td>
+</tr>
+<tr>
+<td>T&amp;&amp;（转发引用）</td>
+<td>&amp;</td>
+<td>T&amp;</td>
+</tr>
+<tr>
+<td>T&amp;&amp;</td>
+<td>&amp;&amp;</td>
+<td>T&amp;&amp;</td>
+</tr>
+</tbody>
+</table>
+<p>声明一个转发引用可以把引用性完整传递过去，在模板中是有用的。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> func(T <span style="color:#f92672">&amp;&amp;</span>t) {
+</span></span><span style="display:flex;"><span>    foo(std<span style="color:#f92672">::</span>forward<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span>(t));
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="rvalue的生命期延长规则">rvalue的生命期延长规则</h3>
+<p>一个prvalue被绑定到一个引用上，则生命周期会被延长到<strong>这个引用的生命周期</strong>。xvalue生命周期不会被这样延长，语句结束即结束。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyClass</span> {
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>string s;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    MyClass <span style="color:#f92672">&amp;&amp;</span>m <span style="color:#f92672">=</span> std<span style="color:#f92672">::</span>move(MyClass());
+</span></span><span style="display:flex;"><span>    m.s <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 对于一个右值引用，我们无法确定它指向的对象是否是持久的。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 临时对象 MyClass() 是在表达式中创建的，它的生命周期只存在于这个表达式中，一旦表达式结束，它就会被销毁，
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 因此绑定到这个对象上的右值引用也就变得无效了。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 此时的赋值是未定义行为。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="重载解析">重载解析</h2>
+<h3 id="重载的重要机制函数名称修饰">重载的重要机制：函数名称修饰</h3>
+<p>函数的名字修饰（Decorated Name）就是编译器在编译期间创建的一个字符串，用来<strong>指明函数的定义或原型</strong>。</p>
+<p>LINK程序或其他工具有时需要指定函数的名字修饰来定位函数的正确位置。 多数情况下程序员并不需要知道函数的名字修饰，LINK程序或其他工具会自动区分他们。</p>
+<p>当然，在某些情况下需要指定函数的名字修饰，例如在C++程序中， 为了让LINK程序或其他工具能够匹配到正确的函数名字，就必须为<strong>重载函数和一些特殊的函数</strong>（如构造函数和析构函数）指定名字装饰。</p>
+<p>另一种需要指定函数的名字修饰的情况是在<strong>汇编程序</strong>中调用C或C++的函数。如果函数名字，调用约定，返回值类型或函数参数有任何改变，原来的名字修饰就不再有效，必须指定新的名字修饰。C和C++程序的函数在内部使用不同的名字修饰方式，所以需要在C编译的库里额外声明<code>extern C</code>。</p>
+<p><a href="https://www.cnblogs.com/eyeszjwang/articles/2303686.html">C++ 编译器的函数名修饰规则</a></p>
+<h3 id="重载要求">重载要求</h3>
+<p>函数重载的函数签名要求：<strong>不同个数</strong>形参，或形参<strong>类型不同</strong>，<strong>返回值不要求</strong>（因为在入口时需要知道使用哪个函数而不是结束时知道）。</p>
+<p>注意：</p>
+<ul>
+<li>在类成员函数中：函数类型的const和非const（后置const）可以作为区分点</li>
+<li>引用和非引用不可作为区分点，但是const引用和非const引用是可以作为区分的</li>
+</ul>
+<p>代码示例如下：</p>
+<p>预备部分</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">C</span> {
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//因为编译器MSVC,g++,clang++对 T和T的任何引用(不论是否为const成员函数) 都是视作相同的, 会造成ambiguous call error, 这里对它注释掉
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//void func(T a) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//std::cout &lt;&lt; &#34;T a&#34; &lt;&lt; std::endl;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//不同类型可以作为重载依据, 假设不同于T的类型为float
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">void</span> func(<span style="color:#66d9ef">float</span> a) {
+</span></span><span style="display:flex;"><span>        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;float a&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">func</span>(T a, T b) {
+</span></span><span style="display:flex;"><span>        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;T a, T b&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//出错, 返回值不可作为依据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//T func(T a) {};
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/************引用相关****************/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">func</span>(T <span style="color:#f92672">&amp;</span>a) {
+</span></span><span style="display:flex;"><span>        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;T&amp; a&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">func</span>(T <span style="color:#f92672">*</span>a) {
+</span></span><span style="display:flex;"><span>        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;T&amp; a&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">func</span>(T <span style="color:#f92672">&amp;&amp;</span>a) {
+</span></span><span style="display:flex;"><span>        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;T&amp;&amp; a&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/************const相关****************/</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// const函数可以作为重载依据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">func</span>(T a) <span style="color:#66d9ef">const</span> {
+</span></span><span style="display:flex;"><span>        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;T a, func const&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// const+值传递不能作为重载依据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//void func(const T a) {}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// const+引用可以作为重载依据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">func</span>(<span style="color:#66d9ef">const</span> T <span style="color:#f92672">&amp;</span>a) {
+</span></span><span style="display:flex;"><span>        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;const T &amp;a&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">func</span>(<span style="color:#66d9ef">const</span> T <span style="color:#f92672">&amp;&amp;</span>a) {
+</span></span><span style="display:flex;"><span>        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;const T &amp;a&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Trivial</span> {
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NonTrivial</span> {
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>string s;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>T <span style="color:#f92672">&amp;&amp;</span>createRR() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> std<span style="color:#f92672">::</span>move(T());
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>T create() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">T</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>实验部分</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">constAndNonConstFuncInvoke</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> C<span style="color:#f92672">&lt;</span>Trivial<span style="color:#f92672">&gt;</span> c;
+</span></span><span style="display:flex;"><span>    Trivial t;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 因为const成员函数仅仅有1个, 所以不会出现ambiguous call error, 倘若有多个const成员函数, 则会出现ambiguous call error
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    c.func(t);          <span style="color:#75715e">//T a, func const
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">trivialTest</span>() {
+</span></span><span style="display:flex;"><span>    C<span style="color:#f92672">&lt;</span>Trivial<span style="color:#f92672">&gt;</span> c;
+</span></span><span style="display:flex;"><span>    Trivial a <span style="color:#f92672">=</span> Trivial();
+</span></span><span style="display:flex;"><span>    Trivial b <span style="color:#f92672">=</span> Trivial();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> Trivial ca1 <span style="color:#f92672">=</span> Trivial();
+</span></span><span style="display:flex;"><span>    Trivial <span style="color:#66d9ef">const</span> ca2 <span style="color:#f92672">=</span> Trivial();
+</span></span><span style="display:flex;"><span>    Trivial <span style="color:#f92672">&amp;</span>ra <span style="color:#f92672">=</span> a;
+</span></span><span style="display:flex;"><span>    Trivial <span style="color:#f92672">*</span>pa <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>a;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    c.func(a);          <span style="color:#75715e">//T&amp; a
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    c.func(ra);         <span style="color:#75715e">//T&amp; a
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    c.func(pa);         <span style="color:#75715e">//T&amp; a
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    c.func(std<span style="color:#f92672">::</span>forward<span style="color:#f92672">&lt;</span>Trivial<span style="color:#f92672">&gt;</span>(a));       <span style="color:#75715e">//T&amp;&amp; a
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    c.func(std<span style="color:#f92672">::</span>move(b));                   <span style="color:#75715e">//T&amp;&amp; a
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    c.func(create<span style="color:#f92672">&lt;</span>Trivial<span style="color:#f92672">&gt;</span>());              <span style="color:#75715e">//T&amp;&amp; a
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    c.func(createRR<span style="color:#f92672">&lt;</span>Trivial<span style="color:#f92672">&gt;</span>());            <span style="color:#75715e">//T&amp;&amp; a
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    c.func(ca1);        <span style="color:#75715e">//const T &amp;a
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    c.func(ca2);        <span style="color:#75715e">//const T &amp;a
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">nonTrivialTest</span>() {
+</span></span><span style="display:flex;"><span>    C<span style="color:#f92672">&lt;</span>NonTrivial<span style="color:#f92672">&gt;</span> c;
+</span></span><span style="display:flex;"><span>    NonTrivial a <span style="color:#f92672">=</span> NonTrivial();
+</span></span><span style="display:flex;"><span>    NonTrivial b <span style="color:#f92672">=</span> NonTrivial();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> NonTrivial ca1 <span style="color:#f92672">=</span> NonTrivial();
+</span></span><span style="display:flex;"><span>    NonTrivial <span style="color:#66d9ef">const</span> ca2 <span style="color:#f92672">=</span> NonTrivial();
+</span></span><span style="display:flex;"><span>    NonTrivial <span style="color:#f92672">&amp;</span>ra <span style="color:#f92672">=</span> a;
+</span></span><span style="display:flex;"><span>    NonTrivial <span style="color:#f92672">*</span>pa <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>a;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    c.func(a);          <span style="color:#75715e">//T&amp; a
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    c.func(ra);         <span style="color:#75715e">//T&amp; a
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    c.func(pa);         <span style="color:#75715e">//T&amp; a
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    c.func(std<span style="color:#f92672">::</span>forward<span style="color:#f92672">&lt;</span>NonTrivial<span style="color:#f92672">&gt;</span>(a));        <span style="color:#75715e">//T&amp;&amp; a
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    c.func(std<span style="color:#f92672">::</span>move(b));                       <span style="color:#75715e">//T&amp;&amp; a
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    c.func(create<span style="color:#f92672">&lt;</span>NonTrivial<span style="color:#f92672">&gt;</span>());               <span style="color:#75715e">//T&amp;&amp; a
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    c.func(createRR<span style="color:#f92672">&lt;</span>NonTrivial<span style="color:#f92672">&gt;</span>());             <span style="color:#75715e">//T&amp;&amp; a
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    c.func(ca1);        <span style="color:#75715e">//const T &amp;a
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    c.func(ca2);        <span style="color:#75715e">//const T &amp;a
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div>
+  </div>
+
+  <footer class="post-footer">
+    
+
+    
+
+    
+    
+  </footer>
+  
+  <div class="comments">
+  <div class="comments">
+
+
+
+</div>
+  </div>
+</article>
+
+  <div class="foot">
+  
+  &copy; 2019 - 2023 &#183;
+  <a href="/"> YuYoung&#39;s Blog </a> &nbsp;&nbsp;
+  <a href="#"><i class="fas fa-chevron-up"></i></a>
+</div>
+</body>
+  <script src="/js/lazyload.min.js"></script>
+<script>
+  var lazyImage = new LazyLoad({container: document.getElementById('article')});
+</script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous"></script>
+<script>
+    (function() {
+        var $toc = $('#TableOfContents');
+        if ($toc.length > 0) {
+            var $window = $(window);
+
+            function onScroll(){
+                var currentScroll = $window.scrollTop();
+                var h = $('.post-text h1, .post-text h2, .post-text h3, .post-text h4, .post-text h5, .post-text h6');
+                var id = "";
+                h.each(function (i, e) {
+                    e = $(e);
+                    if (e.offset().top - 10 <= currentScroll) {
+                        id = e.attr('id');
+                    }
+                });
+                var active = $toc.find('a.active');
+                if (active.length == 1 && active.eq(0).attr('href') == '#' + id) return true;
+
+                active.each(function (i, e) {
+                    $(e).removeClass('active').siblings('ul').hide();
+                });
+                $toc.find('a[href="#' + id + '"]').parentsUntil('#TableOfContents').each(function (i, e) {
+                    $(e).children('a').addClass('active').siblings('ul').show();
+                });
+            }
+
+            $window.on('scroll', onScroll);
+            $(document).ready(function() {
+                $toc.find('a').parent('li').find('ul').hide();
+                onScroll();
+                document.getElementsByClassName('post-toc')[0].style.display = '';
+            });
+        }
+    })();
+</script>
+
+
+</html>

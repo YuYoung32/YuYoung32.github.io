@@ -114,6 +114,7 @@ if (!doNotTrack) {
         <li><a href="#仿函数的适配器">仿函数的适配器</a></li>
       </ul>
     </li>
+    <li><a href="#分配器">分配器</a></li>
   </ul>
 </nav>
   </div>
@@ -552,6 +553,8 @@ if (!doNotTrack) {
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>binder2nd<span style="color:#f92672">&lt;</span>less<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;&gt;</span> b(less<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span>(), <span style="color:#ae81ff">1</span>);
 </span></span><span style="display:flex;"><span>b(<span style="color:#ae81ff">2</span>); <span style="color:#75715e">//2&lt;1 false
 </span></span></span></code></pre></div><p>仿函数适配器都是这个套路，首先向上传递参数类型（为了可能被别人adapter），以便将来算法使用这些类型。然后重载<code>()</code>运算符，在这个重载函数里面做一些操作，再调用传入的仿函数对象的<code>operator()</code>。</p>
+<h2 id="分配器">分配器</h2>
+<p>见<a href="https://www.yuyoung32.com/post/c++%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83%E4%B8%8Eallocator/#gnu%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E5%99%A8%E7%B1%BB%E5%88%AB%E5%8E%9F%E7%90%86%E5%92%8C%E9%80%89%E7%94%A8">C++动态内存分配与allocator | YuYoung&rsquo;s Blog (yuyoung32.com)</a></p>
 
   </div>
 
