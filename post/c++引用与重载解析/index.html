@@ -94,7 +94,7 @@ if (!doNotTrack) {
     <li><a href="#重载解析">重载解析</a>
       <ul>
         <li><a href="#重载的重要机制函数名称修饰">重载的重要机制：函数名称修饰</a></li>
-        <li><a href="#重载要求">重载要求</a></li>
+        <li><a href="#重载的区分点">重载的区分点</a></li>
       </ul>
     </li>
   </ul>
@@ -118,7 +118,7 @@ if (!doNotTrack) {
 <p>变量int a的a，引用int&amp; a的a，数组元素int arr[]的arr[i]，左值对象的成员</p>
 </li>
 <li>
-<p>返回左值引用的表达式/函数，例如，++x，x=1，函数返回值如下</p>
+<p>返回<strong>左值引用</strong>的表达式/函数，例如，++x，x=1，函数返回值如下</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
 </span></span><span style="display:flex;"><span>
@@ -142,11 +142,11 @@ if (!doNotTrack) {
 <p><strong>纯右值prvalue：</strong> 不能取地址，没有名字的，临时的就是右值。不可以放在“=”的左侧。</p>
 <ol>
 <li>除字符串字面量外的字面量，如true</li>
-<li>返回非引用的表达式/函数</li>
+<li><strong>返回非引用的表达式/函数</strong>，例如函数返回了一个类</li>
 <li>临时对象</li>
 <li>lambda表达式</li>
 </ol>
-<p><strong>将亡值xvalue</strong>，Expiring Value：不可以放在“=”的左侧。通常出现在以下三种情况：</p>
+<p><strong>将亡值xvalue</strong>，Expiring Value：不可以放在“=”的左侧。</p>
 <ol>
 <li>
 <p>将要被移动的对象</p>
@@ -161,7 +161,7 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>Base<span style="color:#f92672">&amp;&amp;</span> b <span style="color:#f92672">=</span> <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span>Base<span style="color:#f92672">&amp;&amp;&gt;</span>(d);    <span style="color:#75715e">// 在进行类型转换时，d被转换为一个右值引用类型的Base对象，并且在此过程中发生了一次类型转换，因此b成为了一个xvalue。
 </span></span></span></code></pre></div></li>
 <li>
-<p>函数返回值为右值引用类型</p>
+<p><strong>函数返回值为右值引用类型</strong></p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>std<span style="color:#f92672">::</span>string<span style="color:#f92672">&amp;&amp;</span> foo() {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> std<span style="color:#f92672">::</span>string{<span style="color:#e6db74">&#34;world&#34;</span>};    <span style="color:#75715e">// 返回一个右值引用，由于返回的对象是临时创建的，因此它将在函数返回后被销毁，因此该返回值是一个xvalue。
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
@@ -204,13 +204,13 @@ if (!doNotTrack) {
 <td>T&amp;</td>
 </tr>
 <tr>
-<td>T&amp;&amp;</td>
+<td>T&amp;&amp;（转发引用）</td>
 <td>&amp;&amp;</td>
 <td>T&amp;&amp;</td>
 </tr>
 </tbody>
 </table>
-<p>声明一个转发引用可以把引用性完整传递过去，在模板中是有用的。</p>
+<p>声明一个转发引用可以把引用性完整传递过去，在模板中是有用的，可以不损失引用性。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> func(T <span style="color:#f92672">&amp;&amp;</span>t) {
 </span></span><span style="display:flex;"><span>    foo(std<span style="color:#f92672">::</span>forward<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span>(t));
@@ -236,12 +236,9 @@ if (!doNotTrack) {
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h2 id="重载解析">重载解析</h2>
 <h3 id="重载的重要机制函数名称修饰">重载的重要机制：函数名称修饰</h3>
-<p>函数的名字修饰（Decorated Name）就是编译器在编译期间创建的一个字符串，用来<strong>指明函数的定义或原型</strong>。</p>
-<p>LINK程序或其他工具有时需要指定函数的名字修饰来定位函数的正确位置。 多数情况下程序员并不需要知道函数的名字修饰，LINK程序或其他工具会自动区分他们。</p>
-<p>当然，在某些情况下需要指定函数的名字修饰，例如在C++程序中， 为了让LINK程序或其他工具能够匹配到正确的函数名字，就必须为<strong>重载函数和一些特殊的函数</strong>（如构造函数和析构函数）指定名字装饰。</p>
-<p>另一种需要指定函数的名字修饰的情况是在<strong>汇编程序</strong>中调用C或C++的函数。如果函数名字，调用约定，返回值类型或函数参数有任何改变，原来的名字修饰就不再有效，必须指定新的名字修饰。C和C++程序的函数在内部使用不同的名字修饰方式，所以需要在C编译的库里额外声明<code>extern C</code>。</p>
+<p>函数的名字修饰（Decorated Name）就是编译器在编译期间创建的一个字符串，用来<strong>指明函数的定义或原型</strong>。LINK程序或其他工具有时需要指定函数的名字修饰来定位函数的正确位置。 多数情况下程序员并不需要知道函数的名字修饰，LINK程序或其他工具会自动区分他们。</p>
 <p><a href="https://www.cnblogs.com/eyeszjwang/articles/2303686.html">C++ 编译器的函数名修饰规则</a></p>
-<h3 id="重载要求">重载要求</h3>
+<h3 id="重载的区分点">重载的区分点</h3>
 <p>函数重载的函数签名要求：<strong>不同个数</strong>形参，或形参<strong>类型不同</strong>，<strong>返回值不要求</strong>（因为在入口时需要知道使用哪个函数而不是结束时知道）。</p>
 <p>注意：</p>
 <ul>
@@ -249,13 +246,13 @@ if (!doNotTrack) {
 <li>引用和非引用不可作为区分点，但是const引用和非const引用是可以作为区分的</li>
 </ul>
 <p>代码示例如下：</p>
-<p>预备部分</p>
+<p>定义部分</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">C</span> {
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//因为编译器MSVC,g++,clang++对 T和T的任何引用(不论是否为const成员函数) 都是视作相同的, 会造成ambiguous call error, 这里对它注释掉
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//因为编译器MSVC,g++,clang++对 T和T的任何引用(不论是否为const成员函数) 都是视作相同的, 导致冲突, 会造成ambiguous call error, 这里对它注释掉
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//void func(T a) {
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//std::cout &lt;&lt; &#34;T a&#34; &lt;&lt; std::endl;
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//}
