@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Hugo 0.111.3">
+  <title> gTest和gMock指引 | YuYoung&#39;s Blog </title>
+  <meta name="description" content="YuYoung的博客">
+  <link rel="stylesheet" href="https://yuyoung32.github.io/css/simpleness.css">
+  <link rel="canonical" href="https://yuyoung32.github.io/post/gtest%E5%92%8Cgmock%E6%8C%87%E5%BC%95/">
+  <link rel="alternate" type="application/rss+xml" href="" title="YuYoung&#39;s Blog">
+  
+  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+  
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6QCN1ZG6DB"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-6QCN1ZG6DB', { 'anonymize_ip': false });
+}
+</script>
+
+  
+</head>
+<body class="container">
+  <nav class="navigation">
+  <div class="nav-left">
+    
+    <div class="nav-item nav-title">
+      <a href="https://yuyoung32.github.io/"> YuYoung&#39;s Blog</a>
+    </div>
+    <div class="nav-item nav-menu">
+      
+      <a href="/"> Home</a>
+      
+      <a href="/about/"> About</a>
+      
+    </div>
+  </div>
+  <div class="nav-item nav-right fontawesome">
+    
+    
+    <a href="https://github.com/YuYoung32" target="_blank">
+      <i title="GitHub" class="fab fa-github"></i>
+    </a>
+    
+    
+    <a href="https://yuyoung32.github.io/index.xml" target="_blank">
+      <i title="RSS" class="fas fa-rss"></i>
+    </a>
+    
+  </div>
+</nav>
+
+  
+<article class="post">
+  <header class="post-header">
+    <h1 style="text-align: center;" >gTest和gMock指引</h1>
+    <div class="post-metadata">
+    
+      <time datetime="2023-05-23T19:25:28&#43;08:00">May 23, 2023</time> &nbsp; 
+    
+    
+    
+    
+    
+    
+      <i class="fas fa-folder"></i>
+      
+      <a href="/categories/c&#43;&#43;">c&#43;&#43;</a>
+      &nbsp;
+      
+    
+    </div>
+  </header>
+
+  
+  <div class="post-toc">
+    <div class="post-toc-title">-目录-</div>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#gtest">GTest</a>
+      <ul>
+        <li><a href="#安装">安装</a></li>
+        <li><a href="#测试指引">测试指引</a></li>
+      </ul>
+    </li>
+    <li><a href="#gmock">GMock</a>
+      <ul>
+        <li><a href="#安装-1">安装</a></li>
+        <li><a href="#测试指引-1">测试指引</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+  
+
+  <div class="post-text">
+    <h2 id="gtest">GTest</h2>
+<h3 id="安装">安装</h3>
+<ol>
+<li>
+<p>下载zip</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>https://github.com/google/googletest/releases
+</span></span></code></pre></div></li>
+<li>
+<p>解压到某个目录</p>
+<p>目录树如下</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Root
+</span></span><span style="display:flex;"><span>├─.github
+</span></span><span style="display:flex;"><span>├─ci
+</span></span><span style="display:flex;"><span>├─docs
+</span></span><span style="display:flex;"><span>├─googlemock
+</span></span><span style="display:flex;"><span>│  ├─cmake
+</span></span><span style="display:flex;"><span>│  ├─docs
+</span></span><span style="display:flex;"><span>│  ├─include
+</span></span><span style="display:flex;"><span>│  ├─src
+</span></span><span style="display:flex;"><span>│  └─test
+</span></span><span style="display:flex;"><span>└─googletest
+</span></span><span style="display:flex;"><span>    ├─cmake
+</span></span><span style="display:flex;"><span>    ├─docs
+</span></span><span style="display:flex;"><span>    ├─include //包含此目录
+</span></span><span style="display:flex;"><span>    ├─samples
+</span></span><span style="display:flex;"><span>    ├─src
+</span></span><span style="display:flex;"><span>    └─test
+</span></span></code></pre></div></li>
+<li>
+<p>使用cmake添加以下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cmake" data-lang="cmake"><span style="display:flex;"><span>add_subdirectory(<span style="color:#e6db74">&#34;Root&#34;</span> <span style="color:#e6db74">&#34;gtest&#34;</span>) <span style="color:#75715e"># 作为子项目附属到文件, 子项目在本目录里的文件名为&#34;gtest&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>include_directories(<span style="color:#e6db74">&#34;Root/googletest/include&#34;</span>) <span style="color:#75715e"># 添加头文件路径
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>target_link_libraries(<span style="color:#e6db74">ProjectName</span> <span style="color:#e6db74">gtest</span> <span style="color:#e6db74">gtest_main</span>) <span style="color:#75715e"># 将gtest gtest_main链接到本项目
+</span></span></span></code></pre></div></li>
+<li>
+<p>开始使用</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;gtest/gtest.h&#34;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>TEST(FooSuiteTest, DISABLED_My_Test) {
+</span></span><span style="display:flex;"><span>    GTEST_SKIP();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>argv) {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">::</span>testing<span style="color:#f92672">::</span>InitGoogleTest(<span style="color:#f92672">&amp;</span>argc, argv);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> RUN_ALL_TESTS();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+</ol>
+<h3 id="测试指引">测试指引</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;gtest/gtest.h&#34;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Foo</span> {
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> Bar(<span style="color:#66d9ef">int</span> a, <span style="color:#66d9ef">int</span> b) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> a <span style="color:#f92672">+</span> b;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 定义test fixture 必须继承自testing::Test
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FooTest</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> <span style="color:#f92672">::</span>testing<span style="color:#f92672">::</span>Test {
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">protected</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    FooTest() {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 整个测试套件开始前执行
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">~</span>FooTest() <span style="color:#66d9ef">override</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 整个测试套件结束后执行
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">SetUp</span>() <span style="color:#66d9ef">override</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 套件内的每个测试用例开始前执行
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">TearDown</span>() <span style="color:#66d9ef">override</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 套件内的每个测试用例结束后执行
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 以下可以定义本测试用例共用的成员
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 使用测试套件
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// TEST_F(test_fixture, 测试用例名)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>TEST_F(FooTest, My_Test_F) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> a <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> b <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    Foo f;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 断言
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    EXPECT_EQ(f.Bar(a, b), <span style="color:#ae81ff">2</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 直接使用测试用例
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// TEST(test_suite_name, 测试用例名)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>TEST(FooSuiteTest, My_Test) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> a <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> b <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    Foo f;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 断言
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    EXPECT_EQ(f.Bar(a, b), <span style="color:#ae81ff">2</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/**************************/</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 自定义Predicate
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>testing<span style="color:#f92672">::</span>AssertionResult IsEven(<span style="color:#66d9ef">int</span> n) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> ((n <span style="color:#f92672">%</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> testing<span style="color:#f92672">::</span>AssertionSuccess();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> testing<span style="color:#f92672">::</span>AssertionFailure() <span style="color:#f92672">&lt;&lt;</span> n <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; is odd&#34;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>TEST(FooSuiteTest, My_Predicate_Test) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> a <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> b <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    Foo f;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 断言
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    EXPECT_TRUE(IsEven(f.Bar(a, b)));
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// EXPECT_PRED1(IsEven, f.Bar(a, b)); //同样效果
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/**************************/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 跳过测试
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>TEST(FooSuiteTest, DISABLED_My_Test) {
+</span></span><span style="display:flex;"><span>    GTEST_SKIP(); <span style="color:#75715e">// 跳过本测试用例
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 测试异常
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>TEST(FooSuiteTest, My_Exception_Test) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> a <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> b <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    Foo f;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 断言
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    EXPECT_NO_THROW(f.Bar(a, b));
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 测试记录, 目的是为了更方便的定位
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>TEST(FooSuiteTest, My_Trace_Test) {
+</span></span><span style="display:flex;"><span>    SCOPED_TRACE(<span style="color:#e6db74">&#34;My_Trace_Test&#34;</span>); <span style="color:#75715e">// 用于跟踪测试用例的执行
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>argv) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 解析命令行
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">::</span>testing<span style="color:#f92672">::</span>InitGoogleTest(<span style="color:#f92672">&amp;</span>argc, argv);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> RUN_ALL_TESTS();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>测试模式：Test_Fixture和Test_Suite</strong></p>
+<p>Test_Fixture，是一个用于在多个测试用例之间共享相同状态或者进行初始化和清理操作的类。使用步骤如下：</p>
+<ol>
+<li>自定义的一个Fixture类，这个类必须继承于<code>::testing::Test</code>，在这个类中可以定义使用<code>SetUp()</code>和<code>TearDown()</code>方法为<strong>每个测试用例</strong>进行初始化和清理操作。而这个类的构造函数和析构函数是全部测试开始前的和结束后的工作。在这个类里定义的成员变量/函数会共享实例（而不是为每个测试创建一个实例）。</li>
+<li>使用<strong>TEST_F宏</strong>声明测试，第一个参数使用自己定义的Fixture类名，第二个参数是该测试的名称。</li>
+</ol>
+<p>Test_Suite，一组相关的测试用例的集合，以便可以对它们进行组合测试。使用步骤如下：</p>
+<ol>
+<li>使用<strong>TEST_F宏</strong>声明测试，第一个参数使用自己定义的Suite名，第二个参数是该测试的名称。</li>
+</ol>
+<p><strong>Test_Fixture和Test_Suite的区别？</strong></p>
+<p><code>test fixture</code>的作用是减少重复代码，避免在多个测试用例中重复编写初始化和清理代码。而<code>test suite</code>的作用是将相关的测试用例组合在一起，便于管理和执行。而<code>test fixture</code>也具有<code>test suite</code>的功能，可以这样说<code>test fixture</code>是<code>test suite</code>功能上多了初始化和清理代码。</p>
+<p><strong>使用断言</strong></p>
+<p><code>gtest</code>的断言主要包括以下几种类型：</p>
+<ol>
+<li><code>EXPECT_EQ(val1, val2)</code> / <code>ASSERT_EQ(val1, val2)</code>: 判断两个值是否相等；</li>
+<li><code>EXPECT_NE(val1, val2)</code> / <code>ASSERT_NE(val1, val2)</code>: 判断两个值是否不相等；</li>
+<li><code>EXPECT_TRUE(condition)</code> / <code>ASSERT_TRUE(condition)</code>: 判断条件是否为真；</li>
+<li><code>EXPECT_FALSE(condition)</code> / <code>ASSERT_FALSE(condition)</code>: 判断条件是否为假；</li>
+<li><code>EXPECT_LT(val1, val2)</code> / <code>ASSERT_LT(val1, val2)</code>: 判断val1是否小于val2；</li>
+<li><code>EXPECT_LE(val1, val2)</code> / <code>ASSERT_LE(val1, val2)</code>: 判断val1是否小于等于val2；</li>
+<li><code>EXPECT_GT(val1, val2)</code> / <code>ASSERT_GT(val1, val2)</code>: 判断val1是否大于val2；</li>
+<li><code>EXPECT_GE(val1, val2)</code> / <code>ASSERT_GE(val1, val2)</code>: 判断val1是否大于等于val2；</li>
+<li><code>EXPECT_STREQ(str1, str2)</code> / <code>ASSERT_STREQ(str1, str2)</code>: 判断两个C风格字符串是否相等；</li>
+<li><code>EXPECT_STRNE(str1, str2)</code> / <code>ASSERT_STRNE(str1, str2)</code>: 判断两个C风格字符串是否不相等；</li>
+<li><code>EXPECT_THROW(statement, exception_type)</code> / <code>ASSERT_THROW(statement, exception_type)</code>: 判断一个异常是否被抛出；</li>
+<li><code>EXPECT_NO_THROW(statement)</code> / <code>ASSERT_NO_THROW(statement)</code>: 判断一个语句是否没有抛出异常；</li>
+<li><code>EXPECT_FLOAT_EQ(val1, val2)</code> / <code>ASSERT_FLOAT_EQ(val1, val2)</code>: 判断两个浮点数是否相等；</li>
+<li><code>EXPECT_DOUBLE_EQ(val1, val2)</code> / <code>ASSERT_DOUBLE_EQ(val1, val2)</code>: 判断两个双精度浮点数是否相等；</li>
+<li><code>EXPECT_NEAR(val1, val2, abs_error)</code> / <code>ASSERT_NEAR(val1, val2, abs_error)</code>: 判断两个值的差值是否小于某个误差限制。</li>
+</ol>
+<p>此外还可以自定义自定义Predicate、记录日志等。见链接<a href="http://google.github.io/googletest/advanced.html">Advanced GoogleTest Topics | GoogleTest</a>。</p>
+<h2 id="gmock">GMock</h2>
+<h3 id="安装-1">安装</h3>
+<p>下载和GTest类似，接下来：</p>
+<ol start="3">
+<li>
+<p>使用cmake添加以下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cmake" data-lang="cmake"><span style="display:flex;"><span>add_subdirectory(<span style="color:#e6db74">&#34;Root&#34;</span> <span style="color:#e6db74">&#34;gtest&#34;</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>include_directories(<span style="color:#e6db74">&#34;Root/googletest/include&#34;</span>) <span style="color:#75715e"># 是需要gtest的
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>include_directories(<span style="color:#e6db74">&#34;Root/googlemock/include&#34;</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>target_link_libraries(<span style="color:#e6db74">ProjectName</span> <span style="color:#e6db74">gmock</span> <span style="color:#e6db74">gmock_main</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>target_link_libraries(<span style="color:#e6db74">ProjectName</span> <span style="color:#e6db74">gtest</span> <span style="color:#e6db74">gtest_main</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div></li>
+<li>
+<p>开始使用</p>
+</li>
+</ol>
+<h3 id="测试指引-1">测试指引</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;gmock/gmock.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ICalculator</span> {
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">virtual</span> <span style="color:#f92672">~</span>ICalculator() {}
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">Add</span>(<span style="color:#66d9ef">int</span> a, <span style="color:#66d9ef">int</span> b) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MockCalculator</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> ICalculator {
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    MOCK_METHOD2(Add, <span style="color:#66d9ef">int</span>(<span style="color:#66d9ef">int</span> a, <span style="color:#66d9ef">int</span> b));
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>TEST(MyTestSuite, MyTestCase) {
+</span></span><span style="display:flex;"><span>    MockCalculator mock;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 设置预期
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    EXPECT_CALL(mock, Add(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>))
+</span></span><span style="display:flex;"><span>            .Times(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>            .WillOnce(<span style="color:#f92672">::</span>testing<span style="color:#f92672">::</span>Return(<span style="color:#ae81ff">8</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    EXPECT_EQ(<span style="color:#ae81ff">8</span>, mock.Add(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>)); <span style="color:#75715e">// 这将调用预期行为，返回预期的值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>GMock工作的大致流程</strong></p>
+<ol>
+<li>GMock通过继承需要测试的类，对其中的<strong>虚函数</strong>使用<code>MOCK_METHOD</code>宏来“标记”，要求测试的函数是虚函数。</li>
+<li>使用GTest定义一个测试</li>
+<li>使用<code>EXPECT_CALL</code>宏来设置Mock类的行为，此步骤类似函数定义，规定了需要测试的方法的行为，此步骤是Mock的精髓</li>
+<li>使用断言函数判断是否正确</li>
+</ol>
+<p><strong>设置预期行为</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>EXPECT_CALL(mock, Add(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>))
+</span></span><span style="display:flex;"><span>    .Times(<span style="color:#ae81ff">5</span>)
+</span></span><span style="display:flex;"><span>    .WillOnce(Return(<span style="color:#ae81ff">100</span>))
+</span></span><span style="display:flex;"><span>    .WillOnce(Return(<span style="color:#ae81ff">150</span>))
+</span></span><span style="display:flex;"><span>    .WillRepeatedly(Return(<span style="color:#ae81ff">200</span>));  <span style="color:#75715e">//Add方法会被调用五次，第一次返回100，第二次返回150，然后每次返回200
+</span></span></span></code></pre></div><p>gMock提供了许多函数来设置预期行为。以下是一些常用的函数：</p>
+<ul>
+<li>
+<p><code>EXPECT_CALL(obj, Func(args))</code>：设定某个对象obj的某个成员函数Func在特定参数args下应该被调用</p>
+</li>
+<li>
+<p><code>.Times(n)</code>：设定函数应该被调用的次数，n可以是具体数字，也可以是Matcher对象</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">// 测试 Calculator 对象的 Add 函数是否只被调用一次
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>EXPECT_CALL(obj, Add(_, _)).Times(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>obj.Add(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>);
+</span></span></code></pre></div></li>
+<li>
+<p><code>.WillOnce(action)</code> / <code>.WillRepeatedly(action)</code>: 设定该函数应该返回的值或执行的操作，其中 action 可以是 Return(value)、Throw(exception)、Invoke(function) 等</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">//定义当 Calculator 对象的 Add 函数被调用时应该返回什么值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>EXPECT_CALL(obj, Add(_, _)).WillOnce(Return(<span style="color:#ae81ff">10</span>));
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> obj.Add(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>);
+</span></span><span style="display:flex;"><span>EXPECT_EQ(sum, <span style="color:#ae81ff">10</span>);
+</span></span></code></pre></div></li>
+<li>
+<p><code>.With(matcher)</code>：设定该函数的参数应该满足matcher所指定的条件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">//定义 Calculator 对象的 Add 函数必须传入两个参数，且第二个参数为大于等于 0 的数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>EXPECT_CALL(obj, Add(<span style="color:#ae81ff">2</span>, Ge(<span style="color:#ae81ff">0</span>)));
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> obj.Add(<span style="color:#ae81ff">2</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>);
+</span></span></code></pre></div></li>
+<li>
+<p><code>.After(mock)</code> / <code>.After(delay)</code>：设定该函数调用的时机，要求mock应该已经被满足或delay时间后调用</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">//定义当 Calculator 对象的 Add 函数被调用时应该在 Multiply 函数后面调用
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>EXPECT_CALL(obj, Multiply(_, _)).WillOnce(Return(<span style="color:#ae81ff">6</span>));
+</span></span><span style="display:flex;"><span>EXPECT_CALL(obj, Add(_, _)).After(obj, <span style="color:#f92672">&amp;</span>Calculator<span style="color:#f92672">::</span>Multiply);
+</span></span><span style="display:flex;"><span>obj.Multiply(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> obj.Add(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>);
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e">//定义 Calculator 对象的 Add 函数应该延迟 100ms 后执行
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>EXPECT_CALL(obj, Add(_, _)).After(<span style="color:#ae81ff">100</span>);
+</span></span><span style="display:flex;"><span>std<span style="color:#f92672">::</span>this_thread<span style="color:#f92672">::</span>sleep_for(std<span style="color:#f92672">::</span>chrono<span style="color:#f92672">::</span>milliseconds(<span style="color:#ae81ff">100</span>));
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> obj.Add(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>);
+</span></span></code></pre></div></li>
+</ul>
+<p>更多预期行为，见链接<a href="http://google.github.io/googletest/gmock_for_dummies.html">gMock for Dummies | GoogleTest</a>。</p>
+
+  </div>
+
+  <footer class="post-footer">
+    
+
+    
+
+    
+    
+  </footer>
+  
+  <div class="comments">
+  <div class="comments">
+
+
+
+</div>
+  </div>
+</article>
+
+  <div class="foot">
+  
+  &copy; 2019 - 2023 &#183;
+  <a href="/"> YuYoung&#39;s Blog </a> &nbsp;&nbsp;
+  <a href="#"><i class="fas fa-chevron-up"></i></a>
+</div>
+</body>
+  <script src="/js/lazyload.min.js"></script>
+<script>
+  var lazyImage = new LazyLoad({container: document.getElementById('article')});
+</script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous"></script>
+<script>
+    (function() {
+        var $toc = $('#TableOfContents');
+        if ($toc.length > 0) {
+            var $window = $(window);
+
+            function onScroll(){
+                var currentScroll = $window.scrollTop();
+                var h = $('.post-text h1, .post-text h2, .post-text h3, .post-text h4, .post-text h5, .post-text h6');
+                var id = "";
+                h.each(function (i, e) {
+                    e = $(e);
+                    if (e.offset().top - 10 <= currentScroll) {
+                        id = e.attr('id');
+                    }
+                });
+                var active = $toc.find('a.active');
+                if (active.length == 1 && active.eq(0).attr('href') == '#' + id) return true;
+
+                active.each(function (i, e) {
+                    $(e).removeClass('active').siblings('ul').hide();
+                });
+                $toc.find('a[href="#' + id + '"]').parentsUntil('#TableOfContents').each(function (i, e) {
+                    $(e).children('a').addClass('active').siblings('ul').show();
+                });
+            }
+
+            $window.on('scroll', onScroll);
+            $(document).ready(function() {
+                $toc.find('a').parent('li').find('ul').hide();
+                onScroll();
+                document.getElementsByClassName('post-toc')[0].style.display = '';
+            });
+        }
+    })();
+</script>
+
+
+</html>

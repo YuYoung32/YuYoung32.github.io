@@ -84,9 +84,10 @@ if (!doNotTrack) {
     <div class="post-toc-title">-目录-</div>
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#左右值和左右值引用">左右值和左右值引用</a>
+    <li><a href="#左右值和左右值引用和move">左右值和左右值引用和move</a>
       <ul>
         <li><a href="#左右值之分">左右值之分</a></li>
+        <li><a href="#stdmove">std::move</a></li>
         <li><a href="#引用坍缩规则reference-collapsing">引用坍缩规则（Reference Collapsing）</a></li>
         <li><a href="#rvalue的生命期延长规则">rvalue的生命期延长规则</a></li>
       </ul>
@@ -104,7 +105,7 @@ if (!doNotTrack) {
 
   <div class="post-text">
     <p>本文讲述了C++的左右值和左右值和左右值引用，以及它们在重载解析当中的顺序。</p>
-<h2 id="左右值和左右值引用">左右值和左右值引用</h2>
+<h2 id="左右值和左右值引用和move">左右值和左右值引用和move</h2>
 <h3 id="左右值之分">左右值之分</h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>   expression
 </span></span><span style="display:flex;"><span>    |       \
@@ -175,7 +176,38 @@ if (!doNotTrack) {
 <p><strong>左值引用：</strong> 相当于指针指向某个左值，取了左值的地址。就是说左值引用要求右边的值可以取地址，若不能取地址可以像这样<code>const int&amp; a = 1;</code>，这样做实际是创建临时变量。</p>
 <p><strong>右值引用：</strong> 相当于指针指向某个右值，右值没有地址意味着创建了临时变量来存储。类似于左值引用使用const，但是使用了const无法修改，这里可以修改。</p>
 <p>为何会有左右值？引用实际上就是简化了指针，或者说内存标识符。为了精确控制内存生命周期，避免没必要的内存拷贝。</p>
-<p>例如：在深拷贝时，直接将传入的右值内存拿过来，因为右值是临时创建的，不可能再用。可移动对象在“<strong>需要拷贝且被拷贝者之后不再被需要</strong>”的场景，可以使用 <code>std::move</code> 将左值转换成右值，提升性能。而<code>std::forward&lt;T&gt;(rlValue)</code>会保持rlValue的引用型。</p>
+<h3 id="stdmove">std::move</h3>
+<p>std::move本质是什么？std::move是将对象转换成右值，仅仅是“标记”一下，本身并没有做其他任何操作。标记为右值以便在将来的移动赋值和移动构造中 使用不同于拷贝赋值和拷贝构造的函数，结合函数重载实现了深拷贝和浅拷贝的功能。</p>
+<p><strong>误解：std::move操作改变了资源的所有权</strong></p>
+<p>std::move仅仅是转换为右值，并没有改变其他东西。“改变所有权”这个操作是在移动赋值和移动构造里实现的，具体怎么改变所有权归移动赋值和移动构造所解释。以下介绍“改变所有权”这个操作：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">C</span> {
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> a{};
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">float</span> b{};
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> c{};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>string s;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>p{};
+</span></span><span style="display:flex;"><span>    size_t size{};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    C(C <span style="color:#f92672">&amp;&amp;</span>other) <span style="color:#66d9ef">noexcept</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//以下三个POD类型 都提示使用std::move无效
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        a <span style="color:#f92672">=</span> std<span style="color:#f92672">::</span>move(other.a); <span style="color:#75715e">//Clang-Tidy: Std::move of the expression of the trivially-copyable type &#39;int&#39; has no effect;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        b <span style="color:#f92672">=</span> std<span style="color:#f92672">::</span>move(other.b);
+</span></span><span style="display:flex;"><span>        c <span style="color:#f92672">=</span> std<span style="color:#f92672">::</span>move(other.c);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//非POD move
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        s <span style="color:#f92672">=</span> std<span style="color:#f92672">::</span>move(other.s);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//指针对于移动语义 可以直接拿过来 避免拷贝
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        p <span style="color:#f92672">=</span> other.p;
+</span></span><span style="display:flex;"><span>        size <span style="color:#f92672">=</span> other.size;
+</span></span><span style="display:flex;"><span>        other.p <span style="color:#f92672">=</span> <span style="color:#66d9ef">nullptr</span>;
+</span></span><span style="display:flex;"><span>        other.size <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>因此，对于类似std::vector扩容时调用元素的移动构造函数，实际上就是想实现一个资源所有权转移。这里说成“资源所有权转移”其实是有歧义的，好像是直接改变指向，没有进行任何赋值一样。实现上如上代码所示：</p>
+<p>对于POD类型，直接赋值；对于Non-Trivial类型，继续调用move，有一种递归调用的感觉，最终还是POD类型；对于指针，则是直接拿来用。</p>
 <h3 id="引用坍缩规则reference-collapsing">引用坍缩规则（Reference Collapsing）</h3>
 <p>左右值引用的本身仍然是左值。</p>
 <p>因此在函数传参、模板等情况。会遭遇引用组合的问题。</p>
@@ -210,7 +242,8 @@ if (!doNotTrack) {
 </tr>
 </tbody>
 </table>
-<p>声明一个转发引用可以把引用性完整传递过去，在模板中是有用的，可以不损失引用性。</p>
+<p>转发引用，<strong>在声明时</strong>，可以把引用性完整传递过去，在<strong>模板</strong>中是有用的，可以不损失引用性。</p>
+<p><code>std::forward&lt;T&gt;(rlValue)</code>，<strong>在调用函数时</strong>，可以把引用性完整传递过去。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> func(T <span style="color:#f92672">&amp;&amp;</span>t) {
 </span></span><span style="display:flex;"><span>    foo(std<span style="color:#f92672">::</span>forward<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span>(t));

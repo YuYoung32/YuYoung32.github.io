@@ -6,7 +6,21 @@
     <description>Recent content in c&#43;&#43; on YuYoung&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Tue, 16 May 2023 18:04:01 +0800</lastBuildDate><atom:link href="https://yuyoung32.github.io/categories/c++/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 23 May 2023 19:25:28 +0800</lastBuildDate><atom:link href="https://yuyoung32.github.io/categories/c++/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>gTest和gMock指引</title>
+      <link>https://yuyoung32.github.io/post/gtest%E5%92%8Cgmock%E6%8C%87%E5%BC%95/</link>
+      <pubDate>Tue, 23 May 2023 19:25:28 +0800</pubDate>
+      
+      <guid>https://yuyoung32.github.io/post/gtest%E5%92%8Cgmock%E6%8C%87%E5%BC%95/</guid>
+      <description>GTest 安装 下载zip
+https://github.com/google/googletest/releases 解压到某个目录
+目录树如下
+Root ├─.github ├─ci ├─docs ├─googlemock │ ├─cmake │ ├─docs │ ├─include │ ├─src │ └─test └─googletest ├─cmake ├─docs ├─include //包含此目录 ├─samples ├─src └─test 使用cmake添加以下：
+add_subdirectory(&amp;#34;Root&amp;#34; &amp;#34;gtest&amp;#34;) # 作为子项目附属到文件, 子项目在本目录里的文件名为&amp;#34;gtest&amp;#34; include_directories(&amp;#34;Root/googletest/include&amp;#34;) # 添加头文件路径 target_link_libraries(ProjectName gtest gtest_main) # 将gtest gtest_main链接到本项目 开始使用
+#include &amp;#34;gtest/gtest.h&amp;#34; TEST(FooSuiteTest, DISABLED_My_Test) { GTEST_SKIP(); } int main(int argc, char **argv) { ::testing::InitGoogleTest(&amp;amp;argc, argv); return RUN_ALL_TESTS(); } 测试指引 #include &amp;#34;gtest/gtest.h&amp;#34; class Foo { public: int Bar(int a, int b) { return a + b; } }; // 定义test fixture 必须继承自testing::Test class FooTest : public ::testing::Test { protected: FooTest() { // 整个测试套件开始前执行 } ~FooTest() override { // 整个测试套件结束后执行 } void SetUp() override { // 套件内的每个测试用例开始前执行 } void TearDown() override { // 套件内的每个测试用例结束后执行 } // 以下可以定义本测试用例共用的成员 }; // 使用测试套件 // TEST_F(test_fixture, 测试用例名) TEST_F(FooTest, My_Test_F) { int a = 1; int b = 1; Foo f; // 断言 EXPECT_EQ(f.</description>
+    </item>
+    
     <item>
       <title>C&#43;&#43;的引用与重载解析</title>
       <link>https://yuyoung32.github.io/post/c&#43;&#43;%E5%BC%95%E7%94%A8%E4%B8%8E%E9%87%8D%E8%BD%BD%E8%A7%A3%E6%9E%90/</link>
@@ -14,7 +28,7 @@
       
       <guid>https://yuyoung32.github.io/post/c&#43;&#43;%E5%BC%95%E7%94%A8%E4%B8%8E%E9%87%8D%E8%BD%BD%E8%A7%A3%E6%9E%90/</guid>
       <description>本文讲述了C++的左右值和左右值和左右值引用，以及它们在重载解析当中的顺序。
-左右值和左右值引用 左右值之分 expression | \ glvalue rvalue / \ / \ lvalue xvalue prvalue 广义左值glvalue，都是可以有标识符的。广义右值rvalue，都是可移动（std::move）的。xvalue属于这两者，既可以移动又可以有标识符。
+左右值和左右值引用和move 左右值之分 expression | \ glvalue rvalue / \ / \ lvalue xvalue prvalue 广义左值glvalue，都是可以有标识符的。广义右值rvalue，都是可移动（std::move）的。xvalue属于这两者，既可以移动又可以有标识符。
 左值lvalue： 可以取地址，有名字的，非临时的就是左值。non-const左值可以放在“=”的左侧。
 变量int a的a，引用int&amp;amp; a的a，数组元素int arr[]的arr[i]，左值对象的成员
 返回左值引用的表达式/函数，例如，++x，x=1，函数返回值如下
