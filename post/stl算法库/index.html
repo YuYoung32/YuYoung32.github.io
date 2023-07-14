@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Hugo 0.111.3">
+  <title> STL算法库 | YuYoung&#39;s Blog </title>
+  <meta name="description" content="YuYoung的博客">
+  <link rel="stylesheet" href="https://yuyoung32.github.io/css/simpleness.css">
+  <link rel="canonical" href="https://yuyoung32.github.io/post/stl%E7%AE%97%E6%B3%95%E5%BA%93/">
+  <link rel="alternate" type="application/rss+xml" href="" title="YuYoung&#39;s Blog">
+  
+  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+  
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6QCN1ZG6DB"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-6QCN1ZG6DB', { 'anonymize_ip': false });
+}
+</script>
+
+  
+</head>
+<body class="container">
+  <nav class="navigation">
+  <div class="nav-left">
+    
+    <div class="nav-item nav-title">
+      <a href="https://yuyoung32.github.io/"> YuYoung&#39;s Blog</a>
+    </div>
+    <div class="nav-item nav-menu">
+      
+      <a href="/"> Home</a>
+      
+      <a href="/about/"> About</a>
+      
+    </div>
+  </div>
+  <div class="nav-item nav-right fontawesome">
+    
+    
+    <a href="https://github.com/YuYoung32" target="_blank">
+      <i title="GitHub" class="fab fa-github"></i>
+    </a>
+    
+    
+    <a href="https://yuyoung32.github.io/index.xml" target="_blank">
+      <i title="RSS" class="fas fa-rss"></i>
+    </a>
+    
+  </div>
+</nav>
+
+  
+<article class="post">
+  <header class="post-header">
+    <h1 style="text-align: center;" >STL算法库</h1>
+    <div class="post-metadata">
+    
+      <time datetime="2023-05-31T12:38:41&#43;08:00">May 31, 2023</time> &nbsp; 
+    
+    
+    
+    
+    
+    
+      <i class="fas fa-folder"></i>
+      
+      <a href="/categories/c&#43;&#43;">c&#43;&#43;</a>
+      &nbsp;
+      
+    
+    </div>
+  </header>
+
+  
+  <div class="post-toc">
+    <div class="post-toc-title">-目录-</div>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#std算法库">std::算法库</a>
+      <ul>
+        <li><a href="#检查元素">检查元素</a></li>
+        <li><a href="#查找元素">查找元素</a></li>
+        <li><a href="#计数">计数</a></li>
+        <li><a href="#复制与移动">复制与移动</a></li>
+        <li><a href="#填充">填充</a></li>
+        <li><a href="#遍历处理">遍历处理</a></li>
+        <li><a href="#移除与替换">移除与替换</a></li>
+        <li><a href="#交换与改变顺序">交换与改变顺序</a></li>
+        <li><a href="#划分">划分</a></li>
+        <li><a href="#排序">排序</a></li>
+        <li><a href="#集合已排序范围上">集合（已排序范围上）</a></li>
+        <li><a href="#最大堆">最大堆</a></li>
+        <li><a href="#最小最大值与比较">最小最大值与比较</a></li>
+        <li><a href="#排列">排列</a></li>
+        <li><a href="#数值运算">数值运算</a></li>
+      </ul>
+    </li>
+    <li><a href="#惯用法">惯用法</a>
+      <ul>
+        <li><a href="#移动和擦除-remove-and-erease">移动和擦除 remove and erease</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+  
+
+  <div class="post-text">
+    <h2 id="std算法库">std::算法库</h2>
+<p>按照功能划分的STL算法库。</p>
+<p>内容详细来源：<a href="https://zh.cppreference.com/w/cpp/algorithm">算法库 - cppreference.com</a></p>
+<p>图解：<a href="https://hackingcpp.com/cpp/std/algorithms.html">C++ Standard Library Algorithms Visual Overview | hacking C++ (hackingcpp.com)</a></p>
+<p>注意：如果算法仅仅是替代了for循环，那么std算法适用于序列化容器。容器自己有相应方法时不要使用std算法。例如remove和成员方法erease。</p>
+<h3 id="检查元素">检查元素</h3>
+<ul>
+<li>all_of;any_of;none_of 检查元素是否符合谓词</li>
+</ul>
+<h3 id="查找元素">查找元素</h3>
+<ul>
+<li>find;find_if 找到首个满足条件的元素</li>
+<li>find_end</li>
+<li>find_first_of 查找目标序列中是否有与<strong>给定集合</strong>中任意一个元素匹配的元素</li>
+<li>search 搜索一个范围，例如子串查找</li>
+<li>search_n 搜索连续元素范围</li>
+<li>adjacent_find 搜索首对相邻元素</li>
+<li>mis_match 两个范围内首个不同</li>
+<li>二分查找
+<ul>
+<li>lower_bound;upper_bound 找到不小于或大于的迭代器</li>
+<li>binary_search 确定元素是否在范围中，返回bool</li>
+<li>equal_range 查找某个值的连续序列</li>
+</ul>
+</li>
+</ul>
+<h3 id="计数">计数</h3>
+<ul>
+<li>count;count_if</li>
+</ul>
+<h3 id="复制与移动">复制与移动</h3>
+<ul>
+<li>
+<p>copy;copy_if;copy_n;copy_backward 调用拷贝赋值函数<code>*d_first++ = *first++;</code></p>
+</li>
+<li>
+<p>move;move_backward</p>
+</li>
+<li>
+<p>uninitialized_copy;uninitialized_copy_n 将范围内的对象复制到未初始化的内存区域</p>
+</li>
+<li>
+<p>uninitialized_move;uninitialized_move_n</p>
+</li>
+</ul>
+<p>uninitialized系列会调用拷贝构造函数<code>::new (static_cast&lt;void*&gt;(std::addressof(*current))) T(*first);</code>，适用于需要额外分配内存的场景，例如对象内有一个char*，需要构造函数进行分配空间。</p>
+<h3 id="填充">填充</h3>
+<ul>
+<li>fill;fill_n 给范围内每个元素赋值const value</li>
+<li>generate;generate_n 给范围内每个元素赋值</li>
+<li>iota 用从起始值开始连续递增的值填充</li>
+<li>uninitialized_fill;uninitialized_fill_n</li>
+</ul>
+<h3 id="遍历处理">遍历处理</h3>
+<ul>
+<li>transform 输出结果到新的</li>
+<li>for_each 原地处理</li>
+</ul>
+<h3 id="移除与替换">移除与替换</h3>
+<ul>
+<li>
+<p>remove;remove_if 移动不符合的元素到末尾</p>
+</li>
+<li>
+<p>remove_copy;remove_copy_if 复制不符合的元素到指定位置</p>
+</li>
+<li>
+<p>replace;replace_if</p>
+</li>
+<li>
+<p>replace_copy;replace_copy_if 替换并复制到指定位置</p>
+</li>
+<li>
+<p>unique;unique_copy 移除连续重复元素</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">auto</span> end <span style="color:#f92672">=</span> unique(v.begin(), v.end(), [](<span style="color:#66d9ef">const</span> pair<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, string<span style="color:#f92672">&gt;</span> <span style="color:#f92672">&amp;</span>a, <span style="color:#66d9ef">const</span> pair<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, string<span style="color:#f92672">&gt;</span> <span style="color:#f92672">&amp;</span>b) { <span style="color:#66d9ef">return</span> a.first <span style="color:#f92672">==</span> b.first; });
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 返回无效的第一个，有效的最后一个的后一个
+</span></span></span></code></pre></div></li>
+<li>
+<p>destroy;destroy_n;destroy_at 调用范围内元素的析构函数/从指定位置开始的n个</p>
+</li>
+</ul>
+<h3 id="交换与改变顺序">交换与改变顺序</h3>
+<ul>
+<li>swap;swap_ranges</li>
+<li>iter_swap 交换迭代器所指</li>
+<li>reverse;reverse_copy  后者会额外创建一个副本</li>
+<li>rotate;rotate_copy [first mid end]以mid为中心交换前后</li>
+<li>shuffle;random_shuffle 打乱序列，前者需要额外指定一个随机数生成器</li>
+<li>sample 随机选择n个元素</li>
+</ul>
+<h3 id="划分">划分</h3>
+<ul>
+<li>is_partitioned;partition_point 是否已经按照谓词划分，确定划分点</li>
+<li>partition;partition_copy 按照谓词划分</li>
+<li>stable_partition 保持相对顺序</li>
+</ul>
+<h3 id="排序">排序</h3>
+<ul>
+<li>is_sorted;is_sorted_until 是否已经升序</li>
+<li>sort 排序</li>
+<li>partial_sort;partial_sort_copy 部分排序</li>
+<li>stable_sort 稳定排序</li>
+<li>nth_element 找到一个序列中第 n 个元素，并将这个元素放在序列的第 n 个位置，类似快排的一次分区</li>
+</ul>
+<h3 id="集合已排序范围上">集合（已排序范围上）</h3>
+<ul>
+<li>merge;inplace_merge 前者会创建一个新序列</li>
+<li>includes 若一个范围是另一个范围的子数组返回true</li>
+<li>set_difference 获得差集</li>
+<li>set_intersection 获得交集</li>
+<li>set_symmetric_difference 获得对称差</li>
+<li>set_union 获得并集</li>
+</ul>
+<h3 id="最大堆">最大堆</h3>
+<p>堆是一种满足特定规则的完全二叉树，其中每个节点的值都大于等于（或小于等于）它的子节点的值。堆通常使用数组来实现。最大堆是指大根堆，root是最大的</p>
+<ul>
+<li>is_heap 是否是最大堆</li>
+<li>is_heap_until 用于查找一个序列中前面一部分元素最后一个不满足堆的条件的位置的函数</li>
+<li>make_heap;push_heap;pop_heap</li>
+<li>sort_heap 将一个最大堆变成一个按升序排序的元素范围</li>
+</ul>
+<h3 id="最小最大值与比较">最小最大值与比较</h3>
+<ul>
+<li>max;max_element 后者应用于一个范围</li>
+<li>min;min_element</li>
+<li>minmax;minmax_element 返回两个元素/范围的较小和较大者</li>
+<li>clamp 输入元素，返回符合限制的元素</li>
+<li>equal 比较两个元素集合是否相同</li>
+</ul>
+<h3 id="排列">排列</h3>
+<ul>
+<li>is_permutation 判断一个序列是否为另一个序列的排列</li>
+<li>next_permutation 产生某个元素范围的按字典顺序的下一个较大的排列</li>
+<li>prev_permutation产生某个元素范围的按字典顺序的下一个较小的排列</li>
+</ul>
+<h3 id="数值运算">数值运算</h3>
+<ul>
+<li>accumulate 范围求和</li>
+<li>inner_product 内积。如果我们有两个n维向量x和y，它们的内积可以表示为： x·y = x1y1 + x2y2 + &hellip; + xnyn</li>
+<li>adjacent_difference 计算范围内相邻元素的差，写入到出口</li>
+<li>partial_sum 累加到某个元素然后写入。2, 2, 2, 2, 2, 2, 2, 2, 2, 2 -&gt; 2 4 6 8 10 12 14 16 18 20</li>
+<li>reduce 将一组值简化为一个单一的值，广义accumulate</li>
+</ul>
+<h2 id="惯用法">惯用法</h2>
+<h3 id="移动和擦除-remove-and-erease">移动和擦除 remove and erease</h3>
+<p>remove等会把元素移动到末尾并返回无效的第一个（有效的最后一个元素的后一个）的迭代器。</p>
+<p>利用erease移除这个迭代器到最后一个无效的，即可达成真正的移除目的。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#66d9ef">auto</span> end <span style="color:#f92672">=</span> unique(v.begin(), v.end());
+</span></span><span style="display:flex;"><span>v.erase(end, v.end());
+</span></span></code></pre></div>
+  </div>
+
+  <footer class="post-footer">
+    
+
+    
+
+    
+    
+  </footer>
+  
+  <div class="comments">
+  <div class="comments">
+
+
+
+</div>
+  </div>
+</article>
+
+  <div class="foot">
+  
+  &copy; 2019 - 2023 &#183;
+  <a href="/"> YuYoung&#39;s Blog </a> &nbsp;&nbsp;
+  <a href="#"><i class="fas fa-chevron-up"></i></a>
+</div>
+</body>
+  <script src="/js/lazyload.min.js"></script>
+<script>
+  var lazyImage = new LazyLoad({container: document.getElementById('article')});
+</script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous"></script>
+<script>
+    (function() {
+        var $toc = $('#TableOfContents');
+        if ($toc.length > 0) {
+            var $window = $(window);
+
+            function onScroll(){
+                var currentScroll = $window.scrollTop();
+                var h = $('.post-text h1, .post-text h2, .post-text h3, .post-text h4, .post-text h5, .post-text h6');
+                var id = "";
+                h.each(function (i, e) {
+                    e = $(e);
+                    if (e.offset().top - 10 <= currentScroll) {
+                        id = e.attr('id');
+                    }
+                });
+                var active = $toc.find('a.active');
+                if (active.length == 1 && active.eq(0).attr('href') == '#' + id) return true;
+
+                active.each(function (i, e) {
+                    $(e).removeClass('active').siblings('ul').hide();
+                });
+                $toc.find('a[href="#' + id + '"]').parentsUntil('#TableOfContents').each(function (i, e) {
+                    $(e).children('a').addClass('active').siblings('ul').show();
+                });
+            }
+
+            $window.on('scroll', onScroll);
+            $(document).ready(function() {
+                $toc.find('a').parent('li').find('ul').hide();
+                onScroll();
+                document.getElementsByClassName('post-toc')[0].style.display = '';
+            });
+        }
+    })();
+</script>
+
+
+</html>
